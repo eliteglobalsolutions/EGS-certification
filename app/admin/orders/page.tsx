@@ -3,7 +3,17 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-type Order = { id: string; order_no: string; status: string; customer_email: string | null; created_at: string };
+type Order = {
+  id: string;
+  order_no: string;
+  client_status: string;
+  internal_status: string;
+  customer_email: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+const statuses = ['', 'received', 'under_verification', 'submitted_processing', 'action_required', 'completed', 'dispatched', 'cancelled'];
 
 export default function AdminOrdersPage() {
   const [status, setStatus] = useState('');
@@ -17,25 +27,32 @@ export default function AdminOrdersPage() {
   }, [status]);
 
   return (
-    <div className="card">
-      <h2>管理后台 - 订单列表</h2>
-      <select value={status} onChange={(e) => setStatus(e.target.value)}>
-        <option value="">全部状态</option>
-        <option value="created">created</option>
-        <option value="paid">paid</option>
-        <option value="processing">processing</option>
-        <option value="need_more_docs">need_more_docs</option>
-        <option value="completed">completed</option>
-        <option value="cancelled">cancelled</option>
+    <div className="section-card stack-md">
+      <h2>Admin Orders</h2>
+      <div className="actions">
+        <Link className="btn btn-ghost" href="/admin/feedback">
+          Review Feedback
+        </Link>
+      </div>
+      <select className="select" value={status} onChange={(e) => setStatus(e.target.value)}>
+        {statuses.map((s) => (
+          <option key={s || 'all'} value={s}>
+            {s || 'all'}
+          </option>
+        ))}
       </select>
 
-      <ul>
+      <div className="stack-sm">
         {orders.map((o) => (
-          <li key={o.id}>
-            <Link href={`/admin/orders/${o.id}`}>{o.order_no}</Link> - {o.status} - {o.customer_email || '-'}
-          </li>
+          <div className="state-block" key={o.id}>
+            <Link href={`/admin/orders/${o.id}`}>
+              <strong>{o.order_no}</strong>
+            </Link>
+            <p className="small-text">client: {o.client_status} | internal: {o.internal_status}</p>
+            <p className="small-text">{o.customer_email || '-'}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

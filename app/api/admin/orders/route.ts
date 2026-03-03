@@ -6,8 +6,13 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
 
-    let query = supabaseAdmin.from('orders').select('*').order('created_at', { ascending: false }).limit(50);
-    if (status) query = query.eq('status', status);
+    let query = supabaseAdmin
+      .from('orders')
+      .select('id, order_no, client_status, internal_status, customer_email, created_at, updated_at')
+      .order('created_at', { ascending: false })
+      .limit(80);
+
+    if (status) query = query.eq('client_status', status);
 
     const { data, error } = await query;
     if (error) throw error;
@@ -15,6 +20,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ orders: data ?? [] });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: '获取订单失败' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
   }
 }

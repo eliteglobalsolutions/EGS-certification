@@ -2,12 +2,29 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
-const statuses = ['processing', 'need_more_docs', 'completed', 'cancelled'];
+const statuses = ['received', 'initial_verification', 'processing', 'awaiting_documents', 'completed', 'dispatched', 'cancelled'];
+const clientStatuses = ['received', 'under_verification', 'submitted_processing', 'action_required', 'completed', 'dispatched', 'cancelled'];
+
+function eventTypeLabel(type: string) {
+  switch (type) {
+    case 'UPLOAD_PORTAL':
+      return 'Initial Upload (Portal)';
+    case 'UPLOAD_SUPPLEMENTAL':
+      return 'Supplemental Upload (Portal)';
+    case 'EMAIL_SUBMISSION_CONFIRMED':
+      return 'Email Submission Confirmed';
+    default:
+      return type;
+  }
+}
 
 export default function AdminOrderDetailPage({ params }: { params: { orderId: string } }) {
   const [data, setData] = useState<any>(null);
-  const [status, setStatus] = useState('processing');
-  const [note, setNote] = useState('');
+  const [internalStatus, setInternalStatus] = useState('processing');
+  const [internalNote, setInternalNote] = useState('');
+  const [clientStatus, setClientStatus] = useState('under_verification');
+  const [clientNote, setClientNote] = useState('');
+  const [syncClientStatus, setSyncClientStatus] = useState(true);
   const [msg, setMsg] = useState('');
 
   async function load() {
@@ -25,20 +42,20 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
     const res = await fetch(`/api/admin/orders/${params.orderId}/status`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status, note }),
+      body: JSON.stringify({ internalStatus, internalNote, clientStatus, clientNote, syncClientStatus }),
     });
     const json = await res.json();
     if (!res.ok) {
-      setMsg(json.error || '更新失败');
+      setMsg(json.error || 'Update failed');
       return;
     }
-    setMsg('状态更新成功');
+    setMsg('Status updated');
     load();
   }
 
   async function uploadFiles(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const input = (e.currentTarget.elements.namedItem('files') as HTMLInputElement);
+    const input = e.currentTarget.elements.namedItem('files') as HTMLInputElement;
     if (!input.files?.length) return;
 
     const form = new FormData();
@@ -47,50 +64,91 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
     const res = await fetch(`/api/admin/orders/${params.orderId}/upload`, { method: 'POST', body: form });
     const json = await res.json();
     if (!res.ok) {
-      setMsg(json.error || '上传失败');
+      setMsg(json.error || 'Upload failed');
       return;
     }
-    setMsg('交付文件上传成功');
+    setMsg('Delivery files uploaded');
     e.currentTarget.reset();
     load();
   }
 
-  if (!data?.order) return <div className="card">加载中...</div>;
+  if (!data?.order) return <div className="section-card">Loading...</div>;
 
   return (
-    <div className="card">
-      <h2>订单详情：{data.order.order_no}</h2>
-      <p>状态：{data.order.status}</p>
-      <p>邮箱：{data.order.customer_email || '-'}</p>
+    <div className="stack-lg">
+      <section className="section-card stack-sm">
+        <h2>Order {data.order.order_no}</h2>
+        <p className="small-text">client: {data.order.client_status || '-'}</p>
+        <p className="small-text">internal: {data.order.internal_status || '-'}</p>
+        <p className="small-text">email: {data.order.customer_email || '-'}</p>
+      </section>
 
-      <form onSubmit={changeStatus}>
-        <h3>更新状态</h3>
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          {statuses.map((s) => (
-            <option key={s} value={s}>{s}</option>
+      <section className="section-card stack-md">
+        <h3>Update Status</h3>
+        <form className="stack-sm" onSubmit={changeStatus}>
+          <select className="select" value={internalStatus} onChange={(e) => setInternalStatus(e.target.value)}>
+            {statuses.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          <label className="small-text">
+            <input checked={syncClientStatus} onChange={(e) => setSyncClientStatus(e.target.checked)} type="checkbox" /> Sync mapped client_status
+          </label>
+          <select className="select" disabled={syncClientStatus} value={clientStatus} onChange={(e) => setClientStatus(e.target.value)}>
+            {clientStatuses.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          <textarea className="textarea" placeholder="Internal note" value={internalNote} onChange={(e) => setInternalNote(e.target.value)} />
+          <textarea className="textarea" placeholder="Client visible note" value={clientNote} onChange={(e) => setClientNote(e.target.value)} />
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
+        </form>
+      </section>
+
+      <section className="section-card stack-md">
+        <h3>Upload Delivery Files</h3>
+        <form className="stack-sm" onSubmit={uploadFiles}>
+          <input className="input" name="files" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple />
+          <button className="btn btn-secondary" type="submit">
+            Upload
+          </button>
+        </form>
+      </section>
+
+      {msg ? <p className="small-text">{msg}</p> : null}
+
+      <section className="section-card stack-md">
+        <h3>History</h3>
+        <ul>
+          {(data.history || []).map((h: any) => (
+            <li key={h.id}>
+              [{h.client_status}] {h.note || '-'} ({new Date(h.created_at).toLocaleString()})
+            </li>
           ))}
-        </select>
-        <textarea placeholder="备注（可选）" value={note} onChange={(e) => setNote(e.target.value)} />
-        <button type="submit">提交状态更新</button>
-      </form>
+        </ul>
+      </section>
 
-      <form onSubmit={uploadFiles}>
-        <h3>上传交付文件</h3>
-        <input name="files" type="file" accept=".pdf,.jpg,.jpeg,.png" multiple />
-        <button type="submit">上传</button>
-      </form>
-
-      {msg ? <p>{msg}</p> : null}
-
-      <h3>事件日志</h3>
-      <ul>
-        {(data.events || []).map((e: any) => <li key={e.id}>[{e.type}] {e.message || '-'} ({new Date(e.created_at).toLocaleString()})</li>)}
-      </ul>
-
-      <h3>文件</h3>
-      <ul>
-        {(data.files || []).map((f: any) => <li key={f.id}>[{f.role}] {f.file_name} - {f.storage_path}</li>)}
-      </ul>
+      <section className="section-card stack-md">
+        <h3>Submission Events / Evidence Log</h3>
+        <ul>
+          {(data.submissionEvents || []).map((e: any) => (
+            <li key={e.id}>
+              [{eventTypeLabel(e.event_type)}] channel={e.channel}
+              {typeof e.payload?.file_count === 'number' ? ` file_count=${e.payload.file_count}` : ''}
+              {typeof e.payload?.ack_subject_rule === 'boolean' ? ` ack_subject=${e.payload.ack_subject_rule}` : ''}
+              {typeof e.payload?.ack_email_risk === 'boolean' ? ` ack_risk=${e.payload.ack_email_risk}` : ''}
+              {' '}
+              ({new Date(e.created_at).toLocaleString()})
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
