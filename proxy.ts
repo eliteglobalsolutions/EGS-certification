@@ -1,27 +1,35 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
-function unauthorizedResponse() {
-  return new NextResponse('Authentication required', {
-    status: 401,
-    headers: { 'WWW-Authenticate': 'Basic realm="admin"' },
-  });
-}
+  const LOCALES = ['en', 'zh'];
 
-export function proxy(req: NextRequest) {
-  const auth = req.headers.get('authorization');
-  if (!auth?.startsWith('Basic ')) return unauthorizedResponse();
+  export function proxy(request: NextRequest) {
+    const { pathname } = request.nextUrl;
 
-  const raw = atob(auth.replace('Basic ', ''));
-  const [username, password] = raw.split(':');
+    // Skip Next.js assets, API, and real files
+    if (
+      pathname.startsWith('/_next') ||
+      pathname.startsWith('/api') ||
+      pathname === '/favicon.ico' ||
+      pathname === '/robots.txt' ||
+      pathname === '/sitemap.xml' ||
+      /\.[a-zA-Z0-9]+$/.test(pathname)
+    ) {
+      return NextResponse.next();
+    }
 
-  if (username !== 'admin' || password !== process.env.ADMIN_PASSWORD) {
-    return unauthorizedResponse();
+    const hasLocale = LOCALES.some(
+      (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
+    );
+
+    if (!hasLocale) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/en${pathname === '/' ? '' : pathname}`;
+      return NextResponse.redirect(url);
+    }
+
+    return NextResponse.next();
   }
 
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
-};
+  export const config = {
+    matcher: ['/((?!_next/static|_next/image).*)'],
+  };
