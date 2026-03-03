@@ -1,12 +1,11 @@
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  turbopack: {
-    root: __dirname,
+  async redirects() {
+    return [
+      { source: '/index.html', destination: '/en', permanent: true },
+      { source: '/v3.html', destination: '/en', permanent: true },
+      { source: '/:path*.html', destination: '/en', permanent: true },
+    ];
   },
 };
 

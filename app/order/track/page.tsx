@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function LegacyTrackPage() {
-  redirect('/track-order');
+export default function LegacyTrackRoute() {
+  redirect('/en/order/track');
 }

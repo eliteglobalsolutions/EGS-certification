@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function LegacyUploadPage() {
-  redirect('/upload-requirements');
+export default function LegacyUploadRoute() {
+  redirect('/en/order/upload');
 }

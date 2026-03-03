@@ -1,62 +1,79 @@
-# 本地跑通闭环步骤
+# Local End-to-End Setup
 
-## 1) 安装依赖
+## 1) Install dependencies
 
 ```bash
 npm install
 ```
 
-## 2) 配置环境变量
+## 2) Configure environment variables
 
-复制 `.env.example` 为 `.env.local`，填写 Supabase 与 Stripe 的 key。
+Copy `.env.example` to `.env.local`, then fill in:
+- Supabase keys
+- Stripe keys
+- `ADMIN_PASSWORD`
+- Optional mail delivery:
+  - `RESEND_API_KEY`
+  - `MAIL_FROM` (example: `EGS Certification <no-reply@yourdomain.com>`)
 
-## 3) 执行 Supabase migration
+If `RESEND_API_KEY` is empty, email sending falls back to dry-run logs.
 
-方式 A（CLI）：
+## 3) Run Supabase migrations
+
+Option A (CLI):
 
 ```bash
 supabase db push
 ```
 
-方式 B（SQL Editor）：执行 `supabase/migrations/202602220001_orders_workflow.sql`。
+Option B (SQL Editor): execute:
+- `supabase/migrations/202602220001_orders_workflow.sql`
+- `supabase/migrations/202602270001_structured_order_upgrade.sql`
 
-## 4) 启动 Next.js
+## 4) Start Next.js app
 
 ```bash
 npm run dev
 ```
 
-## 5) 启动 Stripe webhook 转发
+## 5) Start Stripe webhook forwarding
 
 ```bash
 stripe listen --forward-to localhost:3000/api/webhook/stripe
 ```
 
-复制输出的 signing secret 到 `STRIPE_WEBHOOK_SECRET`。
+Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
 
-## 6) 触发 checkout.session.completed
+## 6) Test checkout + success redirect
 
-```bash
-stripe trigger checkout.session.completed
-```
+1. Open `/en/order/new` (or `/zh/order/new`)
+2. Complete steps and enter Stripe Checkout
+3. Finish payment with test card
+4. Verify redirect to `/en/order/success?session_id=...&order_id=...`
+5. Confirm page shows reference number, current status, next steps, and tracking entry
 
-验证：`orders` 写入一条 `paid` 订单，`order_events` 至少两条（created + paid）。
+## 7) Test public tracking and upload
 
-## 7) 客户端验证
+1. Use `/en/order/track` with `order_no + access_token`
+2. Confirm timeline/status/history are visible
+3. If action-required, upload via `/en/order/upload`
 
-1. 进入 `/order/track`，输入 `order_no + access_token`，可看到状态、事件、文件。
-2. 进入 `/order/upload` 上传 pdf/jpg/png（<=10MB），成功后刷新 `/order/track` 可见新文件与事件。
+## 8) Test admin portal
 
-## 8) 管理端验证
+1. Open `/admin/orders`
+2. Basic Auth:
+   - username: `admin`
+   - password: `ADMIN_PASSWORD`
+3. Update internal status and optional client status sync
+4. Upload admin files and verify history entries
 
-1. 访问 `/admin/orders`，浏览器会弹 Basic Auth。
-2. 用户名固定 `admin`，密码为 `ADMIN_PASSWORD`。
-3. 在详情页 `/admin/orders/:orderId` 更新状态并上传交付文件。
-4. 刷新查看状态、事件、文件均更新。
+## 9) Mail verification
 
-## 关键设计选择
+- If `RESEND_API_KEY` is set, confirmation and status-update emails are sent via Resend.
+- If not set, payload is logged as `[mail][dry-run]`.
 
-- **客户校验方式**：采用 `order_no + access_token`，避免邮箱拼写误差，且访问码随机不可预测。
-- **订单号格式**：`EGS-YYYYMMDD-6位随机`，比 UUID 更便于用户输入与客服定位。
-- **数据安全**：三张业务表均开启 RLS 且默认拒绝，所有读写经服务端 API（service role）执行，避免客户端越权。
-- **存储规则**：统一 `order-uploads` bucket，路径按 `orders/{order_id}/{role}/...`，便于审计与隔离。
+## Security Notes
+
+- Public query endpoints return minimal fields.
+- Portal endpoint requires `order_no + access_token` and returns extended details.
+- Database tables remain RLS-enabled with deny-all policies; server uses service role.
