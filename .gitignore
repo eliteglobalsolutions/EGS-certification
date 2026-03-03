@@ -1,0 +1,8 @@
+node_modules/
+.next/
+*.patch
+*.patch.gz
+*.bundle
+.env
+.env.*
+!.env.example
