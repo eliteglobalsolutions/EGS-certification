@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
 export default function
-  MarketingRootPage() {
-  redirect('/en');
+  UploadRequirementsPage() {
+  redirect('/en/order/upload');
 }

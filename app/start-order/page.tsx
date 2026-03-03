@@ -1,5 +1,6 @@
-import Wizard from '@/components/order/Wizard';
+import { redirect } from 'next/navigation';
 
-export default function StartOrderPage() {
-  return <Wizard />;
+export default function
+  StartOrderPage() {
+  redirect('/en/order/new');
 }
