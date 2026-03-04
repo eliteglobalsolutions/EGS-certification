@@ -45,4 +45,25 @@ input:focus, select:focus, textarea:focus, button:focus { outline: 2px solid #77
   .nav-links { display:none; }
   .mobile-tabs { display: grid; grid-template-columns: repeat(4,1fr); position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--border); background: #fff; }
   .mobile-tabs a { text-align: center; padding: 12px 6px; font-size: 12px; color: #111; text-decoration: none; }
-}
+}.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9999;
+  }
+
+  .modal-panel {
+    width: min(560px, 100%);
+    max-height: 85vh;
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
