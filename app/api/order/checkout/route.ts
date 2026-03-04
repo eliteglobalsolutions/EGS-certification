@@ -16,25 +16,35 @@
   { status: 500 });
       }
 
-      const body = await req.json();
-      const orderNo = String(body?.orderNo || "").trim();
-      const amountCents = Number(body?.amountCents ?? body?.totalCents ?? 0);
+      const raw = await req.text();
+      let body: any = {};
+      try {
+        body = raw ? JSON.parse(raw) : {};
+      } catch {
+        const params = new URLSearchParams(raw);
+        if (Array.from(params.keys()).length > 0) {
+          body = Object.fromEntries(params.entries());
+        } else {
+          return NextResponse.json({ error: "Invalid JSON body" }, { status:
+  400 });
+        }
+      }
+
+      const orderNo = String(body?.orderNo || body?.order_no || "").trim();
+      const amountCents = Number(body?.amountCents ?? body?.totalCents ??
+  body?.amount ?? 0);
       const currency = String(body?.currency || "aud").toLowerCase();
 
       if (!orderNo) {
         return NextResponse.json({ error: "orderNo is required" }, { status:
   400 });
       }
-
       if (!Number.isInteger(amountCents) || amountCents <= 0) {
-        return NextResponse.json(
-          { error: "amountCents must be positive integer" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "amountCents must be positive
+  integer" }, { status: 400 });
       }
 
       const base = process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
-
       const session = await stripe.checkout.sessions.create({
         mode: "payment",
         payment_method_types: ["card"],
@@ -62,11 +72,8 @@
     } catch (error: any) {
       console.error("Checkout API failed", error);
       return NextResponse.json(
-        {
-          error: error?.message || "checkout init failed",
-          type: error?.type || null,
-          code: error?.code || null,
-        },
+        { error: error?.message || "checkout init failed", type: error?.type ||
+  null, code: error?.code || null },
         { status: 500 }
       );
     }
