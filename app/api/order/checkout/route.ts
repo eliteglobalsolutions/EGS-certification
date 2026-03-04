@@ -54,7 +54,6 @@ import { NextResponse } from "next/server";
       return NextResponse.json({ url: session.url });
     } catch (error: any) {
       console.error("Checkout API failed", error);
-      return NextResponse.json({ error: error?.message || "checkout init
-  failed" }, { status: 500 });
+      return NextResponse.json({ error: "checkout failed" }, { status: 500 });
     }
   }
