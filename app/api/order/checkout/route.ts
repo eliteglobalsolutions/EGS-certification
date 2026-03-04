@@ -7,8 +7,8 @@
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
   function toSafeObjectName(original: string) {
-    const ext = (original.split(".").pop() || "bin").toLowerCase().replace(/[^a-
-  z0-9]/g, "") || "bin";
+    const ext = (original.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-
+  9]/g, "") || "bin";
     return `${Date.now()}-${crypto.randomUUID()}.${ext}`;
   }
 
