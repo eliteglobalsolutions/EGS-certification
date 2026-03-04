@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
+<<<<<<< HEAD
 import { SamplesGallery } from '@/components/SamplesGallery';
+=======
+import { SamplesGallery, type SampleRecord } from '@/components/SamplesGallery';
+>>>>>>> sync-export
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 
+<<<<<<< HEAD
 type SampleRecord = {
   country: string;
   slug: string;
@@ -18,6 +23,8 @@ type SampleRecord = {
   notes?: string | null;
 };
 
+=======
+>>>>>>> sync-export
 export async function generateMetadata({
   params,
 }: {
@@ -29,9 +36,15 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
+<<<<<<< HEAD
       title: '样本库 | 文件认证样本 | EGS Certification',
       description: '浏览 EGS 文件认证样本库，按国家和文件类型筛选参考样本。',
       keywords: ['apostille sample', 'legalisation sample', 'redacted sample', 'document certification sample', 'EGS sample library'],
+=======
+      title: '样本库｜文件认证打码样本｜EGS Certification',
+      description: '浏览 EGS 文件认证打码样本库，按国家和文件类型筛选参考样本。',
+      keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', 'EGS 样本库'],
+>>>>>>> sync-export
       alternates: { canonical: `${siteUrl}/zh/samples` },
     };
   }
@@ -39,7 +52,11 @@ export async function generateMetadata({
   return {
     title: 'Sample Library | Redacted Certification Samples | EGS Certification',
     description: 'Browse EGS redacted sample library by country and document type for apostille and legalisation workflows.',
+<<<<<<< HEAD
     keywords: ['apostille sample', 'legalisation sample', 'redacted sample', 'document certification sample', 'EGS sample library'],
+=======
+    keywords: ['apostille sample', 'legalisation sample', 'redacted document sample', 'sample library EGS'],
+>>>>>>> sync-export
     alternates: { canonical: `${siteUrl}/en/samples` },
   };
 }
@@ -49,8 +66,13 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
+<<<<<<< HEAD
 
   let items: SampleRecord[] = [];
+=======
+  let items: SampleRecord[] = [];
+
+>>>>>>> sync-export
   try {
     const indexPath = path.join(process.cwd(), 'public', 'samples', 'index.json');
     const raw = await readFile(indexPath, 'utf8');
@@ -63,7 +85,13 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: locale === 'zh' ? 'EGS 样本库' : 'EGS Sample Library',
+<<<<<<< HEAD
     description: locale === 'zh' ? '按国家和文件类型浏览已打码样本。' : 'Browse redacted samples by country and document type.',
+=======
+    description: locale === 'zh'
+      ? '按国家和文件类型浏览已打码样本。'
+      : 'Browse redacted samples by country and document type.',
+>>>>>>> sync-export
     url: `${siteUrl}/${locale}/samples`,
     inLanguage: locale,
     mainEntity: {
@@ -93,9 +121,20 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
 
   return (
     <section className="ui-section" aria-labelledby="samples-heading">
+<<<<<<< HEAD
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
+=======
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+>>>>>>> sync-export
       <div className="page-header">
         <div className="stack-sm">
           <h1 id="samples-heading">{t.resources.samples.title}</h1>
@@ -114,17 +153,39 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
           </div>
         </div>
       </div>
+<<<<<<< HEAD
 
       <SamplesGallery
         items={items}
         
       />
 
+=======
+      <SamplesGallery
+        items={items}
+        text={{
+          searchLabel: t.resources.samples.searchLabel,
+          searchPlaceholder: t.resources.samples.searchPlaceholder,
+          filterLabel: t.resources.samples.filterLabel,
+          allCountries: t.resources.samples.allCountries,
+          empty: t.resources.samples.empty,
+          previewTitle: t.resources.samples.previewTitle,
+          openButton: t.resources.samples.openButton,
+          reviewedLabel: t.resources.samples.reviewedLabel,
+        }}
+      />
+>>>>>>> sync-export
       <div className="section-card stack-sm" style={{ marginTop: '1rem' }}>
         <p className="kicker">{locale === 'zh' ? '样本检索词' : 'Sample search terms'}</p>
         {locale === 'zh' ? (
           <>
+<<<<<<< HEAD
             <p className="small-text">常见检索词：海牙认证样本、领馆认证样本、文件认证样本、打码样本。</p>
+=======
+            <p className="small-text">
+              常见检索词：海牙认证样本、领馆认证样本、文件认证样本、打码样本、Apostille sample、legalisation sample。
+            </p>
+>>>>>>> sync-export
             <p className="small-text">
               相关页面：
               <Link className="inline-link" href={`/${locale}/services`}> 服务范围</Link> ·
@@ -135,8 +196,13 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
         ) : (
           <>
             <p className="small-text">
+<<<<<<< HEAD
               Common search terms: apostille sample, legalisation sample, redacted certification sample,
               document authentication sample, Australia apostille sample format.
+=======
+              Common search terms: apostille sample, legalisation sample, redacted certification sample, document authentication sample,
+              Australia apostille sample format.
+>>>>>>> sync-export
             </p>
             <p className="small-text">
               Related pages:
