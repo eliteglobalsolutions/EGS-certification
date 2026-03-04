@@ -355,7 +355,7 @@ Contact Details
 
 ELITE GLOBAL SOLUTIONS PTY LTD
 ACN 679 782 284
-Address: 185-187 Liverpool Street, Sydney NSW 2000, Australia
+Address: PO Box 97, Edgecliff NSW 2027, Australia
 Email: info@eliteglobalsolutions.co
 Phone: 1300 990 666
 

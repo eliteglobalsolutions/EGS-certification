@@ -196,7 +196,7 @@ export default function NewOrderPage() {
   }
 
   function applyEdgecliffPoBox() {
-    setAddressLine1('PO Box, Edgecliff NSW 2027');
+    setAddressLine1('PO Box 97, Edgecliff NSW 2027');
     setAddressLine2('');
     setCity('Edgecliff');
     setStateProvince('NSW');

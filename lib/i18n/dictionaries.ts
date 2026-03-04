@@ -455,8 +455,8 @@ export const copy = {
         legalTitle: 'Legal',
         clientAccessTitle: 'Client access',
         emailLabel: 'Email',
-        address: '185-187 Liverpool Street, Sydney NSW',
-        poBox: 'PO Box Edgecliff NSW 2027',
+        address: 'PO Box 97, Edgecliff NSW 2027',
+        poBox: 'PO Box 97, Edgecliff NSW 2027',
         phone: '1300 990 666',
         descriptor: 'Global cross-border document coordination from Sydney HQ.',
         roleDisclosure:
@@ -507,7 +507,7 @@ export const copy = {
       complianceBody:
         'ELITE GLOBAL SOLUTIONS PTY LTD is an independent document processing service provider. We coordinate submissions and communication while final outcomes remain under competent authorities.',
       footer: {
-        address: 'Address: 185-187 Liverpool Street, Sydney NSW',
+        address: 'Address: PO Box 97, Edgecliff NSW 2027',
         phone: 'Phone: 1300 990 666',
         hours: 'Business Hours: Mon-Fri 09:00-17:30',
         email: 'Email: info@eliteglobalsolutions.co',
@@ -701,7 +701,7 @@ export const copy = {
         ],
         shippingCountryCommonTitle: 'Supported shipping countries/regions',
         shippingCountrySearchHint: 'Search supported shipping country/region',
-        poBoxEdgecliff: 'Use PO Box Edgecliff NSW 2027',
+        poBoxEdgecliff: 'Use PO Box 97, Edgecliff NSW 2027',
         documentTypes: [
           'Certificates',
           'Letter',
@@ -1328,8 +1328,8 @@ export const copy = {
         legalTitle: '法律文件',
         clientAccessTitle: '客户入口',
         emailLabel: '邮箱',
-        address: '185-187 Liverpool Street, Sydney NSW',
-        poBox: 'PO Box Edgecliff NSW 2027',
+        address: 'PO Box 97, Edgecliff NSW 2027',
+        poBox: 'PO Box 97, Edgecliff NSW 2027',
         phone: '1300 990 666',
         descriptor: '由悉尼总部协调的全球跨境文件流程。',
         roleDisclosure: 'EGS 为私营流程协调服务机构，并非公证人、政府机关、使馆或签发机构。',
@@ -1376,7 +1376,7 @@ export const copy = {
       complianceTitle: '合规声明',
       complianceBody: 'ELITE GLOBAL SOLUTIONS PTY LTD 为独立文件流程服务机构，负责流程协调与递交流转，最终结果以相关主管机构处理为准。',
       footer: {
-        address: '地址：185-187 Liverpool Street, Sydney NSW',
+        address: '地址：PO Box 97, Edgecliff NSW 2027',
         phone: '电话：1300 990 666',
         hours: '工作时间：周一至周五 09:00-17:30',
         email: '邮箱：info@eliteglobalsolutions.co',
@@ -1567,7 +1567,7 @@ export const copy = {
         ],
         shippingCountryCommonTitle: '支持邮寄国家/地区',
         shippingCountrySearchHint: '搜索支持的邮寄国家/地区',
-        poBoxEdgecliff: '使用 PO Box Edgecliff NSW 2027',
+        poBoxEdgecliff: '使用 PO Box 97, Edgecliff NSW 2027',
         documentTypes: [
           '证书类（Certificates）',
           '信函类（Letter）',
