@@ -1,16 +1,9 @@
   import { NextResponse } from "next/server";
   import Stripe from "stripe";
-  import { supabaseAdmin } from "@/lib/supabase/admin";
 
   export const runtime = "nodejs";
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-
-  function toSafeObjectName(original: string) {
-    const ext = (original.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-
-  9]/g, "") || "bin";
-    return `${Date.now()}-${crypto.randomUUID()}.${ext}`;
-  }
 
   export async function POST(req: Request) {
     try {
@@ -25,45 +18,14 @@
 
       const body = await req.json();
       const orderNo = String(body?.orderNo || "").trim();
-      const amountCents = Number(body?.amountCents);
+      const amountCents = Number(body?.amountCents ?? body?.totalCents ?? 0);
       const currency = String(body?.currency || "aud").toLowerCase();
-      const files = Array.isArray(body?.files) ? body.files : [];
 
       if (!orderNo) return NextResponse.json({ error: "orderNo is required" },
   { status: 400 });
       if (!Number.isInteger(amountCents) || amountCents <= 0) {
         return NextResponse.json({ error: "amountCents must be positive
   integer" }, { status: 400 });
-      }
-
-      const { data: orderRow, error: orderErr } = await supabaseAdmin
-        .from("orders")
-        .select("id")
-        .eq("order_no", orderNo)
-        .single();
-
-      if (orderErr || !orderRow?.id) {
-        return NextResponse.json({ error: orderErr?.message || "Order not
-  found" }, { status: 400 });
-      }
-
-      for (const f of files) {
-        const rawName = String(f?.name || "upload.bin");
-        const base64 = String(f?.contentBase64 || "");
-        if (!base64) continue;
-
-        const safeName = toSafeObjectName(rawName);
-        const key = `orders/${orderRow.id}/intake/customer/${safeName}`;
-        const bytes = Buffer.from(base64, "base64");
-
-        const { error: upErr } = await supabaseAdmin.storage
-          .from("order-files")
-          .upload(key, bytes, { upsert: false, contentType: "application/octet-
-  stream" });
-
-        if (upErr) {
-          throw upErr;
-        }
       }
 
       const base = process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
@@ -95,17 +57,14 @@
     } catch (error: any) {
       console.error("Checkout API failed", error);
       return NextResponse.json(
-        {
-          error: error?.message || "checkout init failed",
-          type: error?.type || null,
-          code: error?.code || null,
-          status: error?.status || null,
-        },
+        { error: error?.message || "checkout init failed", type: error?.type ||
+  null, code: error?.code || null },
         { status: 500 }
       );
     }
   }
   EOF
+  npm run build
   git add app/api/order/checkout/route.ts
-  git commit -m "Fix checkout storage key with safe filename generator"
+  git commit -m "Replace checkout route with clean Stripe session flow"
   git push origin main
