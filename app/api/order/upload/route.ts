@@ -76,7 +76,9 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `${file.name} exceeds 10MB.` }, { status: 400 });
       }
 
-      const storagePath = `orders/${order.id}/customer/${role}/${Date.now()}-${file.name}`;
+      const ext = Array.from((file.name.split(".").pop() || "bin").toLowerCase()).filter((c) =>"abcdefghijklmnopqrstuvwxyz0123456789".includes(c)).join("") || "bin";
+  const safeName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const storagePath = `orders/${order.id}/customer/${role}/${safeName}`;
       const arrayBuffer = await file.arrayBuffer();
       const { error: uploadError } = await supabaseAdmin.storage
         .from('order-uploads')

@@ -20,7 +20,10 @@ export async function POST(req: Request, context: { params: Promise<{ orderId: s
       if (!ALLOWED.includes(file.type)) return NextResponse.json({ error: `${file.name} unsupported type` }, { status: 400 });
       if (file.size > MAX_BYTES) return NextResponse.json({ error: `${file.name} exceeds 10MB` }, { status: 400 });
 
-      const storagePath = `orders/${orderId}/admin/${Date.now()}-${file.name}`;
+      const ext = Array.from((file.name.split(".").pop() ||"bin").toLowerCase()).filter((c) =>
+  "abcdefghijklmnopqrstuvwxyz0123456789".includes(c)).join("") || "bin";
+  const safeName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const storagePath = `orders/${orderId}/admin/${safeName}`;
       const body = Buffer.from(await file.arrayBuffer());
       const { error } = await supabaseAdmin.storage.from('order-uploads').upload(storagePath, body, {
         contentType: file.type,
