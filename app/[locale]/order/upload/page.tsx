@@ -258,16 +258,7 @@ export default function UploadPage() {
       </details>
 
       {showConfirmModal ? (
-        <div
-    className="modal-backdrop"
-    role="dialog"
-    aria-modal="true"
-    aria-label={t.portal.fallback.confirmModal.title}
-    onClick={() => setShowConfirmModal(false)}
-  >
-    <div className="modal-panel stack-sm" onClick={(e) => e.stopPropagation()}>
-
-
+        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={t.portal.fallback.confirmModal.title}>
           <div className="modal-panel stack-sm">
             <h3>{t.portal.fallback.confirmModal.title}</h3>
             <label className="small-text">
