@@ -41,7 +41,6 @@
       }
       if (!Number.isInteger(amountCents) || amountCents <= 0) {
         return NextResponse.json({ error: "amountCents must be positive
-  integer" }, { status: 400 });
       }
 
       const base = process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
