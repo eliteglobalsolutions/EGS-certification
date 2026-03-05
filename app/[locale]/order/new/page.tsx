@@ -226,67 +226,66 @@ export default function NewOrderPage() {
       return;
     }
 
-    const form = new FormData();
-    form.append('locale', locale);
-    form.append('tosAccepted', String(tosAccepted));
-    form.append('privacyAccepted', String(privacyAccepted));
-    form.append('authAccepted', String(authAccepted));
-    form.append('destinationCode', destinationCode);
-    form.append('destinationCountry', destinationCountry);
-    form.append('routeOverride', routeOverride);
-    form.append('issuedIn', issuedIn);
-    form.append('issuingCountry', issuingCountry.trim());
-    form.append('serviceLevel', serviceLevel);
-    form.append('docCategory', docCategory);
-    form.append('documentType', documentType);
-    form.append('documentQuantity', String(documentQuantity));
-    form.append('pages', String(pages));
-    form.append('deliveryMethod', deliveryMethod);
-    form.append('recipientName', recipientName.trim());
-    form.append('phone', phone.trim());
-    form.append('postcode', postcode.trim());
-    form.append('addressLine1', addressLine1.trim());
-    form.append('addressLine2', addressLine2.trim());
-    form.append('city', city.trim());
-    form.append('state', stateProvince.trim());
-    form.append('country', country.trim());
-    form.append('mailingAddress', mailingAddress.trim());
-    form.append('certificateType', certificateType);
-    form.append('certificateQuantity', String(certificateQuantity));
-    form.append('email', email);
-    files.forEach((file) => form.append('files', file));
-    passportDocs.forEach((file) => form.append('passportDocs', file));
-    supportingIdDocs.forEach((file) => form.append('supportingIdDocs', file));
-
     setLoading(true);
-    const res = await fetch('/api/order/checkout', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-     body: JSON.stringify({ orderNo: String(form.get('orderNo') || ''),
-  amountCents: Number(form.get('amountCents') || 0), currency:
-  'aud' }),
-  });
 
-  const raw = await res.text();
-  let data: any = {};
-  try {
-    data = raw ? JSON.parse(raw) : {};
-  } catch {
-    data = { error: raw || 'Internal Error' };
-  }
+    const createRes = await fetch('/api/orders/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        locale,
+        email,
+        destinationCountry,
+        documentType,
+      }),
+    });
 
-  setLoading(false);
-
-  if (!res.ok || !data.url) {
-    setError(data.error || t.order.errors.checkout);
-    return;
-  }
+    const createRaw = await createRes.text();
+    let createData: any = {};
     try {
-      window.location.href = data.url;
+      createData = createRaw ? JSON.parse(createRaw) : {};
     } catch {
-      // Ignore storage errors.
+      createData = { error: createRaw || 'Internal Error' };
+    }
+    if (!createRes.ok) {
+      setLoading(false);
+      setError(createData.error || t.order.errors.checkout);
+      return;
     }
 
+    const orderNo = String(createData?.order?.order_no || createData?.order?.order_code || '').trim();
+    const orderId = String(createData?.order?.id || '').trim();
+    if (!orderNo) {
+      setLoading(false);
+      setError(t.order.errors.checkout);
+      return;
+    }
+
+    const res = await fetch('/api/order/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderNo,
+        orderId,
+        locale,
+        amountCents: summary.total,
+        currency: 'aud',
+      }),
+    });
+
+    const raw = await res.text();
+    let data: any = {};
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      data = { error: raw || 'Internal Error' };
+    }
+
+    setLoading(false);
+
+    if (!res.ok || !data.url) {
+      setError(data.error || t.order.errors.checkout);
+      return;
+    }
     window.location.href = data.url;
   }
 
