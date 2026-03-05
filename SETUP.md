@@ -14,7 +14,7 @@ Copy `.env.example` to `.env.local`, then fill in:
 - `ADMIN_PASSWORD`
 - Optional mail delivery:
   - `RESEND_API_KEY`
-  - `MAIL_FROM` (example: `EGS Certification <no-reply@yourdomain.com>`)
+  - `MAIL_FROM` (example: `ELITE GLOBAL SOLUTIONS PTY LTD <no-reply@yourdomain.com>`)
 
 If `RESEND_API_KEY` is empty, email sending falls back to dry-run logs.
 

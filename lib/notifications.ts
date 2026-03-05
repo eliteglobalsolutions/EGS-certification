@@ -9,7 +9,7 @@ type MailArgs = {
 
 async function sendEmail({ to, subject, body }: MailArgs) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.MAIL_FROM || 'EGS Certification <no-reply@egs.example>';
+  const from = process.env.MAIL_FROM || 'ELITE GLOBAL SOLUTIONS PTY LTD <no-reply@egs.example>';
 
   if (!apiKey) {
     console.info('[mail][dry-run]', { to, subject, body });

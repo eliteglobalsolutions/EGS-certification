@@ -27,7 +27,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: 'EGS Certification｜澳洲海牙认证与领事认证｜国际文件协调',
+      title: 'ELITE GLOBAL SOLUTIONS PTY LTD｜澳洲海牙认证与领事认证｜国际文件协调',
       description:
         'EGS 提供澳洲与海外文件跨境认证协调：Apostille、领事认证、文件上传、订单追踪与合规流程管理。',
       keywords: [
@@ -43,7 +43,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'EGS Certification | Apostille & Legalisation Australia | Global Coordination',
+    title: 'ELITE GLOBAL SOLUTIONS PTY LTD | Apostille & Legalisation Australia | Global Coordination',
     description:
       'Apostille and legalisation coordination for Australia-issued and overseas-issued documents. Route check, secure intake, and order tracking.',
     keywords: [
@@ -67,7 +67,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'EGS Certification',
+    name: 'ELITE GLOBAL SOLUTIONS PTY LTD',
     url: `${siteUrl}/${locale}`,
     email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || undefined,
     telephone: '1300 990 666',

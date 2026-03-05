@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '样本库｜文件认证打码样本｜EGS Certification',
+      title: '样本库｜文件认证打码样本｜ELITE GLOBAL SOLUTIONS PTY LTD',
       description: '浏览 EGS 文件认证打码样本库，按国家和文件类型筛选参考样本。',
       keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', 'EGS 样本库'],
       alternates: { canonical: `${siteUrl}/zh/samples` },
@@ -26,7 +26,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Sample Library | Redacted Certification Samples | EGS Certification',
+    title: 'Sample Library | Redacted Certification Samples | ELITE GLOBAL SOLUTIONS PTY LTD',
     description: 'Browse EGS redacted sample library by country and document type for apostille and legalisation workflows.',
     keywords: ['apostille sample', 'legalisation sample', 'redacted document sample', 'sample library EGS'],
     alternates: { canonical: `${siteUrl}/en/samples` },

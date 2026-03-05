@@ -13,8 +13,8 @@ export async function generateMetadata({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const title =
     locale === 'zh'
-      ? 'EGS Certification | 海牙认证与领事认证 | 澳洲及全球文件协调'
-      : 'EGS Certification | Apostille & Legalisation | Global Document Coordination';
+      ? 'ELITE GLOBAL SOLUTIONS PTY LTD | 海牙认证与领事认证 | 澳洲及全球文件协调'
+      : 'ELITE GLOBAL SOLUTIONS PTY LTD | Apostille & Legalisation | Global Document Coordination';
   const description =
     locale === 'zh'
       ? 'EGS 提供澳洲及全球文件跨境协调服务：Apostille、领事认证、文件上传、订单追踪与合规流程管理。'
@@ -31,7 +31,7 @@ export async function generateMetadata({
           '文件认证澳洲',
           '外交部认证澳洲',
           '订单追踪认证服务',
-          'EGS Certification',
+          'ELITE GLOBAL SOLUTIONS PTY LTD',
         ]
       : [
           'apostille Australia',
@@ -43,7 +43,7 @@ export async function generateMetadata({
           'notary coordination Australia',
           'certificate legalisation',
           'document attestation service',
-          'EGS Certification',
+          'ELITE GLOBAL SOLUTIONS PTY LTD',
         ];
 
   return {
@@ -61,7 +61,7 @@ export async function generateMetadata({
       title,
       description,
       url: `${siteUrl}/${locale}`,
-      siteName: 'EGS Certification',
+      siteName: 'ELITE GLOBAL SOLUTIONS PTY LTD',
       type: 'website',
       locale: locale === 'zh' ? 'zh_CN' : 'en_AU',
     },

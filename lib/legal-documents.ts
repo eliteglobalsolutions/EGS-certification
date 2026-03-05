@@ -224,7 +224,7 @@ Effective Date: 01/03/2026
 
 Introduction
 
-This Privacy Policy explains how EGS Certification Pty Ltd ("we", "us", "our") collects, holds, uses, discloses, and protects personal information in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs).
+This Privacy Policy explains how ELITE GLOBAL SOLUTIONS PTY LTD ("we", "us", "our") collects, holds, uses, discloses, and protects personal information in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs).
 
 This Policy applies to personal information collected through our website, online platforms, order forms, communications, and in connection with the provision of document authentication, apostille coordination, certification support, translation coordination, and related administrative services.
 
@@ -353,7 +353,7 @@ If you are not satisfied with our response, you may lodge a complaint with the O
 
 Contact Details
 
-EGS Certification Pty Ltd
+ELITE GLOBAL SOLUTIONS PTY LTD
 ACN 679 782 284
 Address: 185-187 Liverpool Street, Sydney NSW 2000, Australia
 Email: info@eliteglobalsolutions.co

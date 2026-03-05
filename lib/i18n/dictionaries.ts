@@ -46,7 +46,7 @@ export const timelineText: Record<Locale, { key: string; label: string; descript
 
 export const copy = {
   en: {
-    brand: { kicker: 'Independent Document Processing', title: 'EGS Certification' },
+    brand: { kicker: 'Independent Document Processing', title: 'ELITE GLOBAL SOLUTIONS PTY LTD' },
     nav: {
       start: 'Start Order',
       services: 'Services',
@@ -91,7 +91,7 @@ export const copy = {
         title: 'Apostille & Legalisation · Australia ⇄ 120+ Countries',
         operationalAnchor: 'Coordinated from Sydney HQ with authorised notaries, registries, consulates, and courier channels.',
         routeExample: 'Example route: Australia-issued police check -> UAE use -> route confirmation -> processing milestones -> DHL dispatch.',
-        evidenceLine: 'EGS Certification Pty Ltd · ACN 679 782 284 · Secure checkout by Stripe',
+        evidenceLine: 'ELITE GLOBAL SOLUTIONS PTY LTD · ACN 679 782 284 · Secure checkout by Stripe',
         trustLine: 'Before payment, we confirm route, required documents, timeline, and fee lines.',
         privacyLine: 'Client privacy is protected through controlled access, redaction workflow, and secure intake channels.',
         subtitle: 'Apostille and legalisation coordination for Australia-issued and overseas-issued documents.',
@@ -505,7 +505,7 @@ export const copy = {
       ],
       complianceTitle: 'Compliance Statement',
       complianceBody:
-        'EGS Certification is an independent document processing service provider. We coordinate submissions and communication while final outcomes remain under competent authorities.',
+        'ELITE GLOBAL SOLUTIONS PTY LTD is an independent document processing service provider. We coordinate submissions and communication while final outcomes remain under competent authorities.',
       footer: {
         address: 'Address: 185-187 Liverpool Street, Sydney NSW',
         phone: 'Phone: 1300 990 666',
@@ -935,7 +935,7 @@ export const copy = {
     },
   },
   zh: {
-    brand: { kicker: '独立文件流程服务', title: 'EGS Certification' },
+    brand: { kicker: '独立文件流程服务', title: 'ELITE GLOBAL SOLUTIONS PTY LTD' },
     nav: {
       start: '开始下单',
       services: '服务说明',
@@ -980,7 +980,7 @@ export const copy = {
         title: '海牙认证与领事认证 · 澳洲 ⇄ 120+ 国家',
         operationalAnchor: '由悉尼总部协调，对接授权公证人、登记机构、领馆及快递渠道。',
         routeExample: '路径示例：澳洲签发无犯罪记录 -> 阿联酋使用 -> 先确认路径 -> 分阶段处理 -> DHL 寄送。',
-        evidenceLine: 'EGS Certification Pty Ltd · ACN 679 782 284 · Stripe 安全支付',
+        evidenceLine: 'ELITE GLOBAL SOLUTIONS PTY LTD · ACN 679 782 284 · Stripe 安全支付',
         trustLine: '付款前先确认路径、所需材料、时效区间与费用明细。',
         privacyLine: '我们通过访问控制、打码流程与安全受理机制保障客户隐私。',
         subtitle: '面向澳洲签发与海外签发文件的跨境认证协调服务。',
@@ -1374,7 +1374,7 @@ export const copy = {
         { q: '公开查询会泄露隐私吗？', a: '不会，公开页仅显示最小必要信息。' },
       ],
       complianceTitle: '合规声明',
-      complianceBody: 'EGS Certification 为独立文件流程服务机构，负责流程协调与递交流转，最终结果以相关主管机构处理为准。',
+      complianceBody: 'ELITE GLOBAL SOLUTIONS PTY LTD 为独立文件流程服务机构，负责流程协调与递交流转，最终结果以相关主管机构处理为准。',
       footer: {
         address: '地址：185-187 Liverpool Street, Sydney NSW',
         phone: '电话：1300 990 666',

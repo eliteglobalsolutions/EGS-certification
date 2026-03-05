@@ -1,4 +1,4 @@
-# EGS Certification Workflow
+# ELITE GLOBAL SOLUTIONS PTY LTD Workflow
 
 ## Entrypoint
 - Single production entrypoint: Next.js App Router (`app/[locale]/...`).

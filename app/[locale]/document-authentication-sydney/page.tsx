@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '悉尼文件认证服务｜EGS Certification',
+      title: '悉尼文件认证服务｜ELITE GLOBAL SOLUTIONS PTY LTD',
       description:
         '悉尼文件认证协调服务：面向澳洲和海外签发文件，覆盖路径确认、受理、处理跟踪与寄送。',
       keywords: ['悉尼 文件认证', 'document authentication sydney', '澳洲 文件 认证 服务', '公证 认证 悉尼'],
@@ -25,7 +25,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Document Authentication Sydney Service | EGS Certification',
+    title: 'Document Authentication Sydney Service | ELITE GLOBAL SOLUTIONS PTY LTD',
     description:
       'Document authentication coordination in Sydney for Australia-issued and overseas-issued documents, with route check and status tracking.',
     keywords: ['document authentication Sydney', 'document certification Sydney', 'legalisation service Sydney'],

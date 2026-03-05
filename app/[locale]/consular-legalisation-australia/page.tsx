@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '澳洲领事认证 Legalisation 服务｜EGS Certification',
+      title: '澳洲领事认证 Legalisation 服务｜ELITE GLOBAL SOLUTIONS PTY LTD',
       description: '面向非海牙目的地的领事认证协调服务，覆盖路径确认、材料要求、处理进度与寄送。 ',
       keywords: ['澳洲 领事认证', 'Legalisation 澳洲', '非海牙 认证', '使馆 认证 澳洲'],
       alternates: { canonical: `${siteUrl}/zh/consular-legalisation-australia` },
@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Consular Legalisation Australia Service | EGS Certification',
+    title: 'Consular Legalisation Australia Service | ELITE GLOBAL SOLUTIONS PTY LTD',
     description: 'Consular legalisation coordination for non-Hague destinations, with route confirmation and tracking.',
     keywords: ['consular legalisation Australia', 'document legalisation Sydney', 'non Hague legalisation'],
     alternates: { canonical: `${siteUrl}/en/consular-legalisation-australia` },
