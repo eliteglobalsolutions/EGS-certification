@@ -33,6 +33,13 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
           </Button>
         </div>
       </div>
+      <nav className="marketing-nav-mobile-links page-container" aria-label="Mobile section links">
+        <Link href={`/${locale}#services`}>{t.landing.nav.services}</Link>
+        <Link href={`/${locale}#process`}>{t.landing.nav.process}</Link>
+        <Link href={`/${locale}#pricing`}>{t.landing.nav.pricing}</Link>
+        <Link href={`/${locale}#faq`}>{t.landing.nav.faq}</Link>
+        <Link href={`/${locale}/track`}>{t.landing.nav.track}</Link>
+      </nav>
     </header>
   );
 }
