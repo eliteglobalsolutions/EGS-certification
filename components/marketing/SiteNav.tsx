@@ -8,7 +8,7 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
       <div className="marketing-nav-inner page-container">
         <Link className="wordmark" href={`/${locale}`}>
           <span className="wordmark-kicker">{t.landing.nav.wordmarkKicker}</span>
-          <strong>EGS · ELITE GLOBAL SOLUTIONS PTY LTD</strong>
+          <strong>EGS Certification</strong>
         </Link>
 
         <nav className="marketing-nav-links" aria-label="Section links">
