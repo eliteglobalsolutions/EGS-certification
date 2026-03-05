@@ -47,13 +47,59 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
 
   if (locale === 'zh') {
     return {
-      subject: `付款成功受理 - ${payload.reference}`,
-      body: `我们已收到并受理你的付款。\n\n订单ID: ${orderIdLine}\n订单号: ${payload.reference}\n访问令牌: ${tokenLine}\n当前状态: ${payload.status}\n订单摘要: ${payload.summary}\n订单查询链接: ${portalLine}\n发票链接: ${invoiceLine}\n\n说明：如需补件，我们会通过邮件通知。`,
+      subject: `付款成功受理通知 | ${payload.reference}`,
+      body: `尊敬的客户，您好：
+
+感谢你选择 ELITE GLOBAL SOLUTIONS PTY LTD。我们已成功收到并受理你的付款。
+
+【订单信息】
+订单ID: ${orderIdLine}
+订单号: ${payload.reference}
+访问令牌: ${tokenLine}
+当前状态: ${payload.status}
+订单摘要: ${payload.summary}
+
+【查询与发票】
+订单查询链接: ${portalLine}
+状态追踪页: ${payload.trackingLink}
+发票链接: ${invoiceLine}
+
+如需补充材料，我们将通过邮件通知你。请妥善保存本邮件中的订单号与访问令牌以便后续查询。
+
+此致
+ELITE GLOBAL SOLUTIONS PTY LTD
+Customer Support
+Email: info@eliteglobalsolutions.co
+
+免责声明：办理时效为预估时间，最终处理进度以相关主管机构为准。`,
     };
   }
 
   return {
-    subject: `Payment Accepted - ${payload.reference}`,
-    body: `We have received and accepted your payment.\n\nOrder ID: ${orderIdLine}\nReference: ${payload.reference}\nAccess Token: ${tokenLine}\nCurrent Status: ${payload.status}\nOrder Summary: ${payload.summary}\nOrder Portal Link: ${portalLine}\nInvoice Link: ${invoiceLine}\n\nNote: if additional documents are required, we will notify you by email.`,
+    subject: `Payment Acceptance Notice | ${payload.reference}`,
+    body: `Dear Client,
+
+Thank you for choosing ELITE GLOBAL SOLUTIONS PTY LTD. We confirm your payment has been successfully received and accepted.
+
+[Order Details]
+Order ID: ${orderIdLine}
+Reference: ${payload.reference}
+Access Token: ${tokenLine}
+Current Status: ${payload.status}
+Order Summary: ${payload.summary}
+
+[Tracking & Invoice]
+Order Portal Link: ${portalLine}
+Status Tracking Link: ${payload.trackingLink}
+Invoice Link: ${invoiceLine}
+
+If additional documents are required, we will notify you by email. Please keep this email for your records, including your reference and access token.
+
+Sincerely,
+ELITE GLOBAL SOLUTIONS PTY LTD
+Customer Support
+Email: info@eliteglobalsolutions.co
+
+Disclaimer: processing timelines are estimates and remain subject to the relevant authority's handling time.`,
   };
 }
