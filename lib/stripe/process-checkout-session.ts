@@ -6,6 +6,7 @@ import { generateOrderNo } from '@/lib/format';
 import { sendOrderConfirmation, sendPaymentAccepted } from '@/lib/notifications';
 import { getStatusLabel } from '@/lib/i18n/dictionaries';
 import { recordPaymentEvent } from '@/lib/stripe/order-payments';
+import { buildOrderSummaryPdf } from '@/lib/pdf/order-summary';
 
 type ProcessSource = 'webhook' | 'admin_replay';
 
@@ -14,6 +15,7 @@ type PaymentSnapshot = {
   chargeId: string | null;
   receiptUrl: string | null;
   invoiceUrl: string | null;
+  invoicePdfUrl: string | null;
   riskLevel: string | null;
   riskScore: number | null;
 };
@@ -26,23 +28,26 @@ function toStripeId(value: string | Stripe.PaymentIntent | Stripe.Charge | null 
 async function readPaymentSnapshot(session: Stripe.Checkout.Session): Promise<PaymentSnapshot> {
   const paymentIntentId = toStripeId(session.payment_intent);
   let invoiceUrl: string | null = null;
+  let invoicePdfUrl: string | null = null;
   const invoiceId = typeof session.invoice === 'string' ? session.invoice : session.invoice?.id;
   if (invoiceId) {
     try {
       const invoice = await stripe.invoices.retrieve(invoiceId);
       invoiceUrl = invoice.hosted_invoice_url || invoice.invoice_pdf || null;
+      invoicePdfUrl = invoice.invoice_pdf || null;
     } catch {
       invoiceUrl = null;
+      invoicePdfUrl = null;
     }
   }
   if (!paymentIntentId) {
-    return { paymentIntentId: null, chargeId: null, receiptUrl: null, invoiceUrl, riskLevel: null, riskScore: null };
+    return { paymentIntentId: null, chargeId: null, receiptUrl: null, invoiceUrl, invoicePdfUrl, riskLevel: null, riskScore: null };
   }
 
   const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] });
   const latestCharge = intent.latest_charge;
   if (!latestCharge || typeof latestCharge === 'string') {
-    return { paymentIntentId, chargeId: null, receiptUrl: null, invoiceUrl, riskLevel: null, riskScore: null };
+    return { paymentIntentId, chargeId: null, receiptUrl: null, invoiceUrl, invoicePdfUrl, riskLevel: null, riskScore: null };
   }
 
   const outcome = latestCharge.outcome;
@@ -51,9 +56,62 @@ async function readPaymentSnapshot(session: Stripe.Checkout.Session): Promise<Pa
     chargeId: latestCharge.id,
     receiptUrl: latestCharge.receipt_url || null,
     invoiceUrl,
+    invoicePdfUrl,
     riskLevel: outcome?.risk_level || null,
     riskScore: typeof outcome?.risk_score === 'number' ? outcome.risk_score : null,
   };
+}
+
+async function buildPaymentEmailAttachments(input: {
+  locale: 'en' | 'zh';
+  orderId: string;
+  orderNo: string;
+  statusLabel: string;
+  summary: string;
+  portalLink: string;
+  trackingLink: string;
+  invoiceUrl: string;
+  invoicePdfUrl: string;
+  amount: number | null | undefined;
+  currency: string | null | undefined;
+}) {
+  const attachments: Array<{ filename: string; content: string; type: string }> = [];
+
+  const orderSummaryBuffer = buildOrderSummaryPdf({
+    locale: input.locale,
+    orderId: input.orderId,
+    orderNo: input.orderNo,
+    status: input.statusLabel,
+    summary: input.summary,
+    portalLink: input.portalLink,
+    trackingLink: input.trackingLink,
+    invoiceUrl: input.invoiceUrl,
+    amount: input.amount,
+    currency: input.currency,
+  });
+  attachments.push({
+    filename: `${input.orderNo}-order-summary.pdf`,
+    content: orderSummaryBuffer.toString('base64'),
+    type: 'application/pdf',
+  });
+
+  if (input.invoicePdfUrl) {
+    try {
+      const r = await fetch(input.invoicePdfUrl);
+      if (r.ok) {
+        const bytes = Buffer.from(await r.arrayBuffer());
+        attachments.push({
+          filename: `${input.orderNo}-invoice.pdf`,
+          content: bytes.toString('base64'),
+          type: 'application/pdf',
+        });
+      }
+    } catch {
+      // keep email delivery even if invoice attachment fetch fails
+    }
+  }
+
+  return attachments;
 }
 
 function acceptanceNote(locale: 'en' | 'zh') {
@@ -150,6 +208,19 @@ export async function processCheckoutSessionCompleted(
         const trackLink = siteBase
           ? `${siteBase}/${locale}/order/track`
           : `/${locale}/order/track`;
+        const attachments = await buildPaymentEmailAttachments({
+          locale,
+          orderId: existing.id,
+          orderNo: existing.order_no,
+          statusLabel: getStatusLabel(locale, 'action_required'),
+          summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+          portalLink,
+          trackingLink: trackLink,
+          invoiceUrl: basePayload.invoice_url || '',
+          invoicePdfUrl: payment.invoicePdfUrl || '',
+          amount: basePayload.amount_total,
+          currency: basePayload.currency,
+        });
         await sendPaymentAccepted({
           locale,
           to: basePayload.customer_email,
@@ -161,6 +232,7 @@ export async function processCheckoutSessionCompleted(
           accessToken: existing.access_token || '',
           portalLink,
           invoiceUrl: basePayload.invoice_url || '',
+          attachments,
         });
       }
 
@@ -224,29 +296,46 @@ export async function processCheckoutSessionCompleted(
       const trackLink = siteBase
         ? `${siteBase}/${locale}/order/track`
         : `/${locale}/order/track`;
+      const summaryText = `${existing.service_type || '-'} / ${existing.destination_country || '-'}`;
+      const statusLabel = getStatusLabel(locale, nextValues.client_status);
+      const attachments = await buildPaymentEmailAttachments({
+        locale,
+        orderId: existing.id,
+        orderNo: existing.order_no,
+        statusLabel,
+        summary: summaryText,
+        portalLink,
+        trackingLink: trackLink,
+        invoiceUrl: nextValues.invoice_url || '',
+        invoicePdfUrl: payment.invoicePdfUrl || '',
+        amount: nextValues.amount_total,
+        currency: nextValues.currency,
+      });
       await sendPaymentAccepted({
         locale,
         to: nextValues.customer_email,
         reference: existing.order_no,
-        status: getStatusLabel(locale, nextValues.client_status),
+        status: statusLabel,
         trackingLink: trackLink,
-        summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        summary: summaryText,
         orderId: existing.id,
         accessToken: existing.access_token || '',
         portalLink,
         invoiceUrl: nextValues.invoice_url || '',
+        attachments,
       });
       await sendOrderConfirmation({
         locale,
         to: nextValues.customer_email,
         reference: existing.order_no,
-        status: getStatusLabel(locale, nextValues.client_status),
+        status: statusLabel,
         trackingLink: trackLink,
-        summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        summary: summaryText,
         orderId: existing.id,
         accessToken: existing.access_token || '',
         portalLink,
         invoiceUrl: nextValues.invoice_url || '',
+        attachments,
       });
     }
 
@@ -320,6 +409,19 @@ export async function processCheckoutSessionCompleted(
     const trackLink = siteBase
       ? `${siteBase}/${locale}/order/track`
       : `/${locale}/order/track`;
+    const attachments = await buildPaymentEmailAttachments({
+      locale,
+      orderId: created.id,
+      orderNo: created.order_no,
+      statusLabel: getStatusLabel(locale, 'action_required'),
+      summary: `${created.service_type || '-'} / ${created.destination_country || '-'}`,
+      portalLink,
+      trackingLink: trackLink,
+      invoiceUrl: created.invoice_url || '',
+      invoicePdfUrl: payment.invoicePdfUrl || '',
+      amount: created.amount_total,
+      currency: created.currency,
+    });
     await sendPaymentAccepted({
       locale,
       to: created.customer_email,
@@ -331,6 +433,7 @@ export async function processCheckoutSessionCompleted(
       accessToken: created.access_token || '',
       portalLink,
       invoiceUrl: created.invoice_url || '',
+      attachments,
     });
   }
 

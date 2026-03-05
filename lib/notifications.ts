@@ -5,9 +5,10 @@ type MailArgs = {
   to: string;
   subject: string;
   body: string;
+  attachments?: Array<{ filename: string; content: string; type?: string }>;
 };
 
-async function sendEmail({ to, subject, body }: MailArgs) {
+async function sendEmail({ to, subject, body, attachments }: MailArgs) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.MAIL_FROM || 'ELITE GLOBAL SOLUTIONS PTY LTD <no-reply@egs.example>';
 
@@ -27,6 +28,7 @@ async function sendEmail({ to, subject, body }: MailArgs) {
       to: [to],
       subject,
       text: body,
+      attachments: attachments || undefined,
     }),
   });
 
@@ -48,9 +50,10 @@ export async function sendOrderConfirmation(args: {
   accessToken?: string;
   portalLink?: string;
   invoiceUrl?: string;
+  attachments?: Array<{ filename: string; content: string; type?: string }>;
 }) {
   const mail = orderConfirmationEmail(args.locale, args);
-  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });
+  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body, attachments: args.attachments });
 }
 
 export async function sendStatusUpdate(args: {
@@ -76,7 +79,8 @@ export async function sendPaymentAccepted(args: {
   accessToken?: string;
   portalLink?: string;
   invoiceUrl?: string;
+  attachments?: Array<{ filename: string; content: string; type?: string }>;
 }) {
   const mail = paymentAcceptedEmail(args.locale, args);
-  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });
+  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body, attachments: args.attachments });
 }
