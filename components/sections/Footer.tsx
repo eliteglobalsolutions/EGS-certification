@@ -6,8 +6,8 @@ export function Footer({ locale, t }: { locale: string; t: AppCopy }) {
   const year = new Date().getFullYear();
   const copyright =
     locale === 'zh'
-      ? `© ${year} EGS Certification Pty Ltd. 版权所有。`
-      : `© ${year} EGS Certification Pty Ltd. All rights reserved.`;
+      ? `© ${year} ELITE GLOBAL SOLUTIONS PTY LTD. 版权所有。`
+      : `© ${year} ELITE GLOBAL SOLUTIONS PTY LTD. All rights reserved.`;
 
   return (
     <Card>
