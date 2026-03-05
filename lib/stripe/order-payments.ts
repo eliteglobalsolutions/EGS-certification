@@ -36,7 +36,12 @@ export async function recordPaymentEvent(input: PaymentRecordInput) {
     risk_score: input.riskScore ?? null,
     payload: input.payload ?? {},
   });
-  if (error && error.code !== '23505') throw error;
+  if (!error || error.code === '23505') return;
+  if (error.code === 'PGRST205') {
+    console.warn('[payments][schema-cache-miss][record]', { eventType: input.eventType, orderId: input.orderId });
+    return;
+  }
+  throw error;
 }
 
 export async function findOrderByPaymentRefs(refs: {
@@ -63,7 +68,13 @@ export async function findOrderByPaymentRefs(refs: {
   else return null;
 
   const paymentRef = await query.maybeSingle();
-  if (paymentRef.error) throw paymentRef.error;
+  if (paymentRef.error) {
+    if (paymentRef.error.code === 'PGRST205') {
+      console.warn('[payments][schema-cache-miss][lookup]', refs);
+      return null;
+    }
+    throw paymentRef.error;
+  }
   if (!paymentRef.data?.order_id) return null;
 
   const order = await supabaseAdmin.from('orders').select('*').eq('id', paymentRef.data.order_id).limit(1).maybeSingle();
