@@ -26,6 +26,7 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
   const [clientNote, setClientNote] = useState('');
   const [syncClientStatus, setSyncClientStatus] = useState(true);
   const [msg, setMsg] = useState('');
+  const [replaying, setReplaying] = useState(false);
 
   async function load() {
     const res = await fetch(`/api/admin/orders/${params.orderId}`);
@@ -72,6 +73,23 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
     load();
   }
 
+  async function replayStripe() {
+    setReplaying(true);
+    const res = await fetch(`/api/admin/orders/${params.orderId}/replay-stripe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    const json = await res.json();
+    setReplaying(false);
+    if (!res.ok) {
+      setMsg(json.error || 'Replay failed');
+      return;
+    }
+    setMsg(`Stripe replayed (${json.sessionId})`);
+    load();
+  }
+
   if (!data?.order) return <div className="section-card">Loading...</div>;
 
   return (
@@ -81,6 +99,10 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
         <p className="small-text">client: {data.order.client_status || '-'}</p>
         <p className="small-text">internal: {data.order.internal_status || '-'}</p>
         <p className="small-text">email: {data.order.customer_email || '-'}</p>
+        <p className="small-text">stripe_session_id: {data.order.stripe_session_id || '-'}</p>
+        <button className="btn btn-secondary" disabled={replaying} onClick={replayStripe} type="button">
+          {replaying ? 'Replaying...' : 'Replay Stripe Payment'}
+        </button>
       </section>
 
       <section className="section-card stack-md">
