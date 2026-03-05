@@ -1576,7 +1576,13 @@ p {
 .process-section {
   position: relative;
   isolation: isolate;
-  contain: layout paint;
+  overflow: visible;
+  padding-top: 4px;
+}
+
+.process-section .page-header,
+.process-section h2 {
+  overflow: visible;
 }
 
 
