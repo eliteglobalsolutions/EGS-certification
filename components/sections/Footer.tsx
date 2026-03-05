@@ -3,6 +3,12 @@ import { Card } from '@/components/ui/Card';
 import type { AppCopy } from '@/lib/i18n/dictionaries';
 
 export function Footer({ locale, t }: { locale: string; t: AppCopy }) {
+  const year = new Date().getFullYear();
+  const copyright =
+    locale === 'zh'
+      ? `© ${year} EGS Certification Pty Ltd. 版权所有。`
+      : `© ${year} EGS Certification Pty Ltd. All rights reserved.`;
+
   return (
     <Card>
       <footer className="footer stack-sm">
@@ -19,6 +25,7 @@ export function Footer({ locale, t }: { locale: string; t: AppCopy }) {
         <Link className="small-text" href={`/${locale}/disclaimer`}>
           {t.home.footer.disclaimerLink}
         </Link>
+        <p className="small-text">{copyright}</p>
       </footer>
     </Card>
   );

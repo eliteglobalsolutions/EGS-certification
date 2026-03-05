@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limit';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { safeEqual } from '@/lib/security';
 
@@ -21,6 +22,14 @@ function extractSurname(fullName: string): string {
 
 export async function POST(req: Request) {
   try {
+    const limited = rateLimit(req, { namespace: 'order_upload', limit: 12, windowMs: 60_000 });
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please retry shortly.' },
+        { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec) } }
+      );
+    }
+
     const form = await req.formData();
     const orderNo = String(form.get('orderNo') || '');
     const accessToken = String(form.get('accessToken') || '');

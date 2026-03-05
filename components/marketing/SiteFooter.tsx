@@ -3,6 +3,11 @@ import type { AppCopy } from '@/lib/i18n/dictionaries';
 
 export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  const year = new Date().getFullYear();
+  const copyright =
+    locale === 'zh'
+      ? `© ${year} EGS Certification Pty Ltd. 版权所有。`
+      : `© ${year} EGS Certification Pty Ltd. All rights reserved.`;
 
   return (
     <footer id="contact" className="site-footer surface-0" aria-labelledby="footer-heading">
@@ -38,6 +43,7 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
           </div>
         </section>
       </div>
+      <p className="small-text" style={{ marginTop: '1rem' }}>{copyright}</p>
     </footer>
   );
 }

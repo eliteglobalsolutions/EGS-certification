@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { rateLimit } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -12,6 +13,14 @@ function getStripeClient(secretKey: string) {
 
 export async function POST(req: Request) {
   try {
+    const limited = rateLimit(req, { namespace: 'order_checkout', limit: 20, windowMs: 60_000 });
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please retry shortly.' },
+        { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec) } }
+      );
+    }
+
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
     if (!stripeSecretKey) {

@@ -1,11 +1,20 @@
 import { NextResponse } from 'next/server';
 import { getLegalContent, sha256 } from '@/lib/legal-documents';
+import { rateLimit } from '@/lib/rate-limit';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { generateOrderCode } from '@/lib/order';
 import { generateAccessToken } from '@/lib/security';
 
 export async function POST(req: Request) {
   try {
+    const limited = rateLimit(req, { namespace: 'orders_create', limit: 30, windowMs: 60_000 });
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please retry shortly.' },
+        { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec) } }
+      );
+    }
+
     const body = await req.json();
     const locale = body.locale === 'zh' ? 'zh' : 'en';
     const email = String(body.email || '');
