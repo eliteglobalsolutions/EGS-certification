@@ -15,6 +15,10 @@ export async function GET(req: Request) {
     const { data: order, error } = await query;
     if (error) throw error;
     if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    const paymentConfirmed = Boolean(order.stripe_session_id) && ['paid', 'requires_manual_review'].includes(order.status || '');
+    if (!paymentConfirmed) {
+      return NextResponse.json({ error: 'Payment not confirmed yet.', pending: true }, { status: 409 });
+    }
 
     return NextResponse.json({
       order: {

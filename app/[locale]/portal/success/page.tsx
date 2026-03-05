@@ -27,16 +27,33 @@ export default function PortalSuccessPage() {
     if (sessionId) url.searchParams.set('session_id', sessionId);
     if (orderId) url.searchParams.set('order_id', orderId);
 
-    fetch(url.toString())
-      .then((r) => r.json().then((j) => ({ ok: r.ok, body: j })))
-      .then(({ ok, body }) => {
-        if (!ok) {
+    let cancelled = false;
+    let attempts = 0;
+
+    async function pull() {
+      try {
+        const r = await fetch(url.toString(), { cache: 'no-store' });
+        const body = await r.json();
+        if (cancelled) return;
+        if (r.status === 409 && body?.pending && attempts < 15) {
+          attempts += 1;
+          setTimeout(pull, 2000);
+          return;
+        }
+        if (!r.ok) {
           setError(body.error || 'Order not found');
           return;
         }
         setData(body.order);
-      })
-      .catch(() => setError('Failed to fetch order'));
+      } catch {
+        if (!cancelled) setError('Failed to fetch order');
+      }
+    }
+
+    pull();
+    return () => {
+      cancelled = true;
+    };
   }, [searchParams]);
 
   if (error) {

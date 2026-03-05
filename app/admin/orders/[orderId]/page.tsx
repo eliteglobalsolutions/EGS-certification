@@ -27,6 +27,7 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
   const [syncClientStatus, setSyncClientStatus] = useState(true);
   const [msg, setMsg] = useState('');
   const [replaying, setReplaying] = useState(false);
+  const [refunding, setRefunding] = useState(false);
 
   async function load() {
     const res = await fetch(`/api/admin/orders/${params.orderId}`);
@@ -90,6 +91,23 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
     load();
   }
 
+  async function refundPayment() {
+    setRefunding(true);
+    const res = await fetch(`/api/admin/orders/${params.orderId}/refund`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    const json = await res.json();
+    setRefunding(false);
+    if (!res.ok) {
+      setMsg(json.error || 'Refund failed');
+      return;
+    }
+    setMsg(`Refund created (${json.refund?.id || 'ok'})`);
+    load();
+  }
+
   if (!data?.order) return <div className="section-card">Loading...</div>;
 
   return (
@@ -102,6 +120,9 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
         <p className="small-text">stripe_session_id: {data.order.stripe_session_id || '-'}</p>
         <button className="btn btn-secondary" disabled={replaying} onClick={replayStripe} type="button">
           {replaying ? 'Replaying...' : 'Replay Stripe Payment'}
+        </button>
+        <button className="btn btn-ghost" disabled={refunding} onClick={refundPayment} type="button">
+          {refunding ? 'Refunding...' : 'Issue Full Refund'}
         </button>
       </section>
 
@@ -167,6 +188,20 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
               {typeof e.payload?.ack_email_risk === 'boolean' ? ` ack_risk=${e.payload.ack_email_risk}` : ''}
               {' '}
               ({new Date(e.created_at).toLocaleString()})
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="section-card stack-md">
+        <h3>Payments</h3>
+        <ul>
+          {(data.payments || []).map((p: any) => (
+            <li key={p.id}>
+              [{p.event_type}] {p.status || '-'} {typeof p.amount === 'number' ? `${p.amount} ${String(p.currency || '').toUpperCase()}` : '-'}
+              {p.risk_level ? ` risk=${p.risk_level}${typeof p.risk_score === 'number' ? `(${p.risk_score})` : ''}` : ''}
+              {' '}
+              ({new Date(p.created_at).toLocaleString()})
             </li>
           ))}
         </ul>

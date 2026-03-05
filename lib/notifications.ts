@@ -1,5 +1,5 @@
 import { Locale } from '@/lib/i18n/dictionaries';
-import { orderConfirmationEmail, statusUpdateEmail } from './email/templates';
+import { orderConfirmationEmail, paymentAcceptedEmail, statusUpdateEmail } from './email/templates';
 
 type MailArgs = {
   to: string;
@@ -58,5 +58,17 @@ export async function sendStatusUpdate(args: {
   summary: string;
 }) {
   const mail = statusUpdateEmail(args.locale, args);
+  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });
+}
+
+export async function sendPaymentAccepted(args: {
+  locale: Locale;
+  to: string;
+  reference: string;
+  status: string;
+  trackingLink: string;
+  summary: string;
+}) {
+  const mail = paymentAcceptedEmail(args.locale, args);
   await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });
 }
