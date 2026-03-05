@@ -20,8 +20,8 @@ function extractSurname(fullName: string): string {
 export async function POST(req: Request) {
   try {
     const { orderNo, accessToken, surname } = await req.json();
-    if (!orderNo || !accessToken || !surname) {
-      return NextResponse.json({ error: 'Missing order number, access token, or surname.' }, { status: 400 });
+    if (!orderNo || !accessToken) {
+      return NextResponse.json({ error: 'Missing order number or access token.' }, { status: 400 });
     }
 
     const { data: order, error } = await supabaseAdmin
@@ -51,11 +51,7 @@ export async function POST(req: Request) {
     const expectedSurname = extractSurname(recipientName);
     const providedSurname = extractSurname(String(surname || ''));
 
-    if (!expectedSurname) {
-      return NextResponse.json({ error: 'Surname verification is unavailable for this order. Please contact support.' }, { status: 422 });
-    }
-
-    if (!providedSurname || providedSurname !== expectedSurname) {
+    if (expectedSurname && (!providedSurname || providedSurname !== expectedSurname)) {
       return NextResponse.json({ error: 'Surname verification failed.' }, { status: 403 });
     }
 

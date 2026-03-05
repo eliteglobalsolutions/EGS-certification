@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     const legacyIdDocs = form.getAll('idDocs') as File[];
     const normalizedSupportingIdDocs = supportingIdDocs.length > 0 ? supportingIdDocs : legacyIdDocs;
 
-    if (!orderNo || !accessToken || !surname || files.length === 0 || passportDocs.length === 0 || normalizedSupportingIdDocs.length === 0) {
+    if (!orderNo || !accessToken || files.length === 0 || passportDocs.length === 0 || normalizedSupportingIdDocs.length === 0) {
       return NextResponse.json({ error: 'Missing required parameters.' }, { status: 400 });
     }
 
@@ -54,10 +54,7 @@ export async function POST(req: Request) {
     const expectedSurname = extractSurname(recipientName);
     const providedSurname = extractSurname(surname);
 
-    if (!expectedSurname) {
-      return NextResponse.json({ error: 'Surname verification is unavailable for this order. Please contact support.' }, { status: 422 });
-    }
-    if (!providedSurname || providedSurname !== expectedSurname) {
+    if (expectedSurname && (!providedSurname || providedSurname !== expectedSurname)) {
       return NextResponse.json({ error: 'Surname verification failed.' }, { status: 403 });
     }
 
