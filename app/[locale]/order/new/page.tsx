@@ -259,22 +259,35 @@ export default function NewOrderPage() {
     supportingIdDocs.forEach((file) => form.append('supportingIdDocs', file));
 
     setLoading(true);
-    const res = await fetch('/api/order/checkout', { method: 'POST', body: form });
-    const json = await res.json();
-    setLoading(false);
+    const res = await fetch('/api/order/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ orderNo: String(form.get('orderNo') || ''),
+  amountCents: Number(form.get('amountCents') || 0), currency:
+  'aud' }),
+  });
 
-    if (!res.ok || !json.url) {
-      setError(json.error || t.order.errors.checkout);
-      return;
-    }
+  const raw = await res.text();
+  let data: any = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    data = { error: raw || 'Internal Error' };
+  }
 
+  setLoading(false);
+
+  if (!res.ok || !data.url) {
+    setError(data.error || t.order.errors.checkout);
+    return;
+  }
     try {
-      window.localStorage.removeItem(draftStorageKey);
+      window.location.href = data.url;
     } catch {
       // Ignore storage errors.
     }
 
-    window.location.href = json.url;
+    window.location.href = data.url;
   }
 
   const routeText = routeLabel(locale, summary.resolvedRoute);
