@@ -29,7 +29,8 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
             </Link>
           </div>
           <Button href={`/${locale}/intake`} variant="primary">
-            {t.landing.nav.startOrder}
+            <span className="nav-cta-full">{t.landing.nav.startOrder}</span>
+            <span className="nav-cta-short">{locale === 'zh' ? '下单' : 'Start'}</span>
           </Button>
         </div>
       </div>
