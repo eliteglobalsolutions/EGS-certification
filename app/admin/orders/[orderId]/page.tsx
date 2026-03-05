@@ -206,6 +206,32 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
           ))}
         </ul>
       </section>
+
+      <section className="section-card stack-md">
+        <h3>Files</h3>
+        {(data.files || []).length === 0 ? <p className="small-text">No files uploaded yet.</p> : null}
+        <ul>
+          {(data.files || []).map((f: any) => (
+            <li key={f.id}>
+              [{f.role}] {f.file_name} ({new Date(f.created_at).toLocaleString()})
+              {f.download_url ? (
+                <>
+                  {' '}
+                  <a className="inline-link" href={f.download_url} target="_blank" rel="noreferrer">
+                    Download
+                  </a>
+                </>
+              ) : null}
+              {f.storage_path ? (
+                <>
+                  <br />
+                  <span className="small-text">{f.storage_path}</span>
+                </>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

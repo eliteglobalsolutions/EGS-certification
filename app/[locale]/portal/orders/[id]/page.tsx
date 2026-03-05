@@ -120,6 +120,20 @@ export default function PortalOrderPage() {
                   {(data.files || []).map((f: any) => (
                     <li key={f.id}>
                       [{f.role}] {f.file_name} ({new Date(f.created_at).toLocaleString()})
+                      {f.download_url ? (
+                        <>
+                          {' '}
+                          <a className="inline-link" href={f.download_url} target="_blank" rel="noreferrer">
+                            {locale === 'zh' ? '下载' : 'Download'}
+                          </a>
+                        </>
+                      ) : null}
+                      {f.storage_path ? (
+                        <>
+                          <br />
+                          <span className="small-text">{f.storage_path}</span>
+                        </>
+                      ) : null}
                     </li>
                   ))}
                 </ul>

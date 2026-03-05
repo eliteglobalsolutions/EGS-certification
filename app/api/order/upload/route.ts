@@ -5,6 +5,7 @@ import { safeEqual } from '@/lib/security';
 
 const MAX_BYTES = 10 * 1024 * 1024;
 const ALLOWED = ['application/pdf', 'image/jpeg', 'image/png'];
+const DOWNLOAD_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 function normalizeName(value: string): string {
   return value
@@ -18,6 +19,28 @@ function extractSurname(fullName: string): string {
   if (!cleaned) return '';
   const parts = cleaned.split(/\s+/).filter(Boolean);
   return parts[parts.length - 1] || '';
+}
+
+function sanitizeFilenameBase(name: string): string {
+  const raw = name.replace(/\.[^.]+$/, '').trim().toLowerCase();
+  const cleaned = raw.replace(/[^a-z0-9\u00c0-\u024f\u4e00-\u9fff]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  return cleaned || 'document';
+}
+
+function sanitizeExt(name: string): string {
+  return Array.from((name.split('.').pop() || 'bin').toLowerCase())
+    .filter((c) => 'abcdefghijklmnopqrstuvwxyz0123456789'.includes(c))
+    .join('') || 'bin';
+}
+
+function buildStoragePath(orderNo: string, orderId: string, actor: 'customer' | 'admin', category: string, originalName: string) {
+  const now = new Date();
+  const yyyy = String(now.getUTCFullYear());
+  const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const stamp = now.toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
+  const ext = sanitizeExt(originalName);
+  const base = sanitizeFilenameBase(originalName).slice(0, 40);
+  return `orders/${orderNo}/${yyyy}/${mm}/${orderId}/${actor}/${category}/${stamp}-${base}-${crypto.randomUUID()}.${ext}`;
 }
 
 export async function POST(req: Request) {
@@ -82,9 +105,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: `${file.name} exceeds 10MB.` }, { status: 400 });
       }
 
-      const ext = Array.from((file.name.split(".").pop() || "bin").toLowerCase()).filter((c) =>"abcdefghijklmnopqrstuvwxyz0123456789".includes(c)).join("") || "bin";
-  const safeName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
-  const storagePath = `orders/${order.id}/customer/${role}/${safeName}`;
+      const storagePath = buildStoragePath(order.order_no || order.id, order.id, 'customer', role, file.name);
       const arrayBuffer = await file.arrayBuffer();
       const { error: uploadError } = await supabaseAdmin.storage
         .from('order-uploads')
@@ -131,7 +152,19 @@ export async function POST(req: Request) {
       meta: { count: uploaded.length, role: 'customer' },
     });
 
-    return NextResponse.json({ ok: true, count: uploaded.length });
+    const signedUrls = await Promise.all(
+      uploaded.map(async (f) => {
+        const signed = await supabaseAdmin.storage.from('order-uploads').createSignedUrl(f.storage_path, DOWNLOAD_TTL_SECONDS);
+        return {
+          file_name: f.file_name,
+          role: f.role,
+          storage_path: f.storage_path,
+          download_url: signed.error ? null : signed.data?.signedUrl || null,
+        };
+      })
+    );
+
+    return NextResponse.json({ ok: true, count: uploaded.length, files: signedUrls });
   } catch (error) {
     console.error('Upload API failed', error);
     return NextResponse.json({ error: 'Upload failed, please retry.' }, { status: 500 });

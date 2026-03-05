@@ -33,7 +33,7 @@ export async function GET(req: Request) {
         delivery_method: order.delivery_method,
         amount_total: order.amount_total,
         currency: order.currency,
-        invoice_url: order.invoice_url,
+        invoice_url: order.invoice_pdf_url || order.invoice_url,
       },
     });
   } catch (error) {

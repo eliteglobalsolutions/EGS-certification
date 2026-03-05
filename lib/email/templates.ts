@@ -7,7 +7,6 @@ type EmailPayload = {
   trackingLink: string;
   summary: string;
   orderId?: string;
-  accessToken?: string;
   portalLink?: string;
   invoiceUrl?: string;
 };
@@ -43,7 +42,6 @@ export function statusUpdateEmail(locale: Locale, payload: EmailPayload) {
 export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
   const invoiceLine = payload.invoiceUrl || (locale === 'zh' ? '待生成（系统处理中）' : 'Pending (still processing)');
   const portalLine = payload.portalLink || payload.trackingLink;
-  const tokenLine = payload.accessToken || '-';
   const orderIdLine = payload.orderId || '-';
 
   if (locale === 'zh') {
@@ -56,7 +54,6 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
 【订单信息】
 订单ID: ${orderIdLine}
 订单号: ${payload.reference}
-访问令牌: ${tokenLine}
 当前状态: ${payload.status}
 订单摘要: ${payload.summary}
 
@@ -64,8 +61,9 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
 订单查询链接: ${portalLine}
 状态追踪页: ${payload.trackingLink}
 发票链接: ${invoiceLine}
+邮件附件: Invoice PDF（已附上）
 
-如需补充材料，我们将通过邮件通知你。请妥善保存本邮件中的订单号与访问令牌以便后续查询。
+如需补充材料，我们将通过邮件通知你。请妥善保存本邮件中的订单号以便后续查询。
 
 此致
 ${COMPANY_LEGAL_NAME}
@@ -87,7 +85,6 @@ Thank you for choosing ELITE GLOBAL SOLUTIONS PTY LTD. We confirm your payment h
 [Order Details]
 Order ID: ${orderIdLine}
 Reference: ${payload.reference}
-Access Token: ${tokenLine}
 Current Status: ${payload.status}
 Order Summary: ${payload.summary}
 
@@ -95,8 +92,9 @@ Order Summary: ${payload.summary}
 Order Portal Link: ${portalLine}
 Status Tracking Link: ${payload.trackingLink}
 Invoice Link: ${invoiceLine}
+Email Attachment: Invoice PDF (attached)
 
-If additional documents are required, we will notify you by email. Please keep this email for your records, including your reference and access token.
+If additional documents are required, we will notify you by email. Please keep this email for your records, including your reference.
 
 Sincerely,
 ${COMPANY_LEGAL_NAME}

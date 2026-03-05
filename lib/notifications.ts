@@ -28,7 +28,11 @@ async function sendEmail({ to, subject, body, attachments }: MailArgs) {
       to: [to],
       subject,
       text: body,
-      attachments: attachments || undefined,
+      attachments: attachments?.map((item) => ({
+        filename: item.filename,
+        content: item.content,
+        contentType: item.type || 'application/octet-stream',
+      })) || undefined,
     }),
   });
 
@@ -47,7 +51,6 @@ export async function sendOrderConfirmation(args: {
   trackingLink: string;
   summary: string;
   orderId?: string;
-  accessToken?: string;
   portalLink?: string;
   invoiceUrl?: string;
   attachments?: Array<{ filename: string; content: string; type?: string }>;
@@ -76,10 +79,25 @@ export async function sendPaymentAccepted(args: {
   trackingLink: string;
   summary: string;
   orderId?: string;
-  accessToken?: string;
   portalLink?: string;
   invoiceUrl?: string;
   attachments?: Array<{ filename: string; content: string; type?: string }>;
+}) {
+  const mail = paymentAcceptedEmail(args.locale, args);
+  await sendEmail({ to: args.to, subject: mail.subject, body: mail.body, attachments: args.attachments });
+}
+
+export async function sendOrderPaidEmail(args: {
+  locale: Locale;
+  to: string;
+  reference: string;
+  status: string;
+  trackingLink: string;
+  summary: string;
+  orderId?: string;
+  portalLink?: string;
+  invoiceUrl?: string;
+  attachments: Array<{ filename: string; content: string; type?: string }>;
 }) {
   const mail = paymentAcceptedEmail(args.locale, args);
   await sendEmail({ to: args.to, subject: mail.subject, body: mail.body, attachments: args.attachments });

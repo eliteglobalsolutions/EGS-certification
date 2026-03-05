@@ -3,10 +3,10 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { stripe } from '@/lib/stripe';
 import { generateAccessToken } from '@/lib/security';
 import { generateOrderNo } from '@/lib/format';
-import { sendOrderConfirmation, sendPaymentAccepted } from '@/lib/notifications';
+import { sendOrderPaidEmail } from '@/lib/notifications';
 import { getStatusLabel } from '@/lib/i18n/dictionaries';
 import { recordPaymentEvent } from '@/lib/stripe/order-payments';
-import { buildOrderSummaryPdf } from '@/lib/pdf/order-summary';
+import { generateInvoiceForOrder } from '@/lib/invoice/generateInvoiceForOrder';
 
 type ProcessSource = 'webhook' | 'admin_replay';
 
@@ -62,56 +62,71 @@ async function readPaymentSnapshot(session: Stripe.Checkout.Session): Promise<Pa
   };
 }
 
-async function buildPaymentEmailAttachments(input: {
+function buildPortalLink(siteBase: string, locale: 'en' | 'zh', orderId: string, orderNo: string, accessToken: string) {
+  return siteBase
+    ? `${siteBase}/${locale}/portal/orders/${orderId}?orderNo=${encodeURIComponent(orderNo)}&accessToken=${encodeURIComponent(accessToken || '')}`
+    : `/${locale}/portal/orders/${orderId}?orderNo=${encodeURIComponent(orderNo)}&accessToken=${encodeURIComponent(accessToken || '')}`;
+}
+
+function buildTrackLink(siteBase: string, locale: 'en' | 'zh') {
+  return siteBase ? `${siteBase}/${locale}/order/track` : `/${locale}/order/track`;
+}
+
+async function sendPaidEmailOnce(input: {
+  order: any;
   locale: 'en' | 'zh';
-  orderId: string;
-  orderNo: string;
   statusLabel: string;
   summary: string;
-  portalLink: string;
-  trackingLink: string;
-  invoiceUrl: string;
-  invoicePdfUrl: string;
-  amount: number | null | undefined;
-  currency: string | null | undefined;
+  siteBase: string;
 }) {
-  const attachments: Array<{ filename: string; content: string; type: string }> = [];
+  if (!input.order?.customer_email) return;
+  if (input.order?.paid_email_sent_at) return;
 
-  const orderSummaryBuffer = buildOrderSummaryPdf({
-    locale: input.locale,
-    orderId: input.orderId,
-    orderNo: input.orderNo,
-    status: input.statusLabel,
-    summary: input.summary,
-    portalLink: input.portalLink,
-    trackingLink: input.trackingLink,
-    invoiceUrl: input.invoiceUrl,
-    amount: input.amount,
-    currency: input.currency,
-  });
-  attachments.push({
-    filename: `${input.orderNo}-order-summary.pdf`,
-    content: orderSummaryBuffer.toString('base64'),
-    type: 'application/pdf',
-  });
+  const now = new Date().toISOString();
+  const portalLink = buildPortalLink(
+    input.siteBase,
+    input.locale,
+    input.order.id,
+    input.order.order_no,
+    input.order.access_token || ''
+  );
+  const trackLink = buildTrackLink(input.siteBase, input.locale);
 
-  if (input.invoicePdfUrl) {
-    try {
-      const r = await fetch(input.invoicePdfUrl);
-      if (r.ok) {
-        const bytes = Buffer.from(await r.arrayBuffer());
-        attachments.push({
-          filename: `${input.orderNo}-invoice.pdf`,
-          content: bytes.toString('base64'),
+  try {
+    const invoice = await generateInvoiceForOrder(input.order.id);
+    await sendOrderPaidEmail({
+      locale: input.locale,
+      to: input.order.customer_email,
+      reference: input.order.order_no,
+      status: input.statusLabel,
+      trackingLink: trackLink,
+      summary: input.summary,
+      orderId: input.order.id,
+      portalLink,
+      invoiceUrl: invoice.pdf_signed_url || input.order.invoice_url || '',
+      attachments: [
+        {
+          filename: invoice.pdf_filename,
+          content: invoice.pdf_buffer.toString('base64'),
           type: 'application/pdf',
-        });
-      }
-    } catch {
-      // keep email delivery even if invoice attachment fetch fails
-    }
-  }
+        },
+      ],
+    });
 
-  return attachments;
+    await supabaseAdmin.from('orders').update({
+      paid_email_sent_at: now,
+      email_last_error: null,
+      invoice_url: invoice.pdf_signed_url || input.order.invoice_url || null,
+      updated_at: now,
+    }).eq('id', input.order.id);
+  } catch (error: any) {
+    const message = String(error?.message || error || 'failed_to_send_paid_email').slice(0, 2000);
+    console.error('Paid email dispatch failed', { orderId: input.order.id, message });
+    await supabaseAdmin.from('orders').update({
+      email_last_error: message,
+      updated_at: now,
+    }).eq('id', input.order.id);
+  }
 }
 
 function acceptanceNote(locale: 'en' | 'zh') {
@@ -158,6 +173,13 @@ export async function processCheckoutSessionCompleted(
       && existing.status === 'paid'
       && existing.client_status === 'under_verification';
     if (alreadySynced) {
+      await sendPaidEmailOnce({
+        order: existing,
+        locale,
+        statusLabel: getStatusLabel(locale, existing.client_status || 'under_verification'),
+        summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        siteBase,
+      });
       return { ok: true as const, action: 'already_synced' as const, orderId: existing.id, orderNo: existing.order_no };
     }
 
@@ -172,7 +194,7 @@ export async function processCheckoutSessionCompleted(
     if (!consentValid) {
       await supabaseAdmin.from('orders').update({
         ...basePayload,
-        status: 'requires_manual_review',
+        status: 'paid',
         internal_status: 'requires_manual_review',
         client_status: 'action_required',
         client_note: manualReviewNote(locale),
@@ -201,40 +223,17 @@ export async function processCheckoutSessionCompleted(
         payload: { source, consent_valid: false },
       });
 
-      if (basePayload.customer_email) {
-        const portalLink = siteBase
-          ? `${siteBase}/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`
-          : `/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`;
-        const trackLink = siteBase
-          ? `${siteBase}/${locale}/order/track`
-          : `/${locale}/order/track`;
-        const attachments = await buildPaymentEmailAttachments({
-          locale,
-          orderId: existing.id,
-          orderNo: existing.order_no,
-          statusLabel: getStatusLabel(locale, 'action_required'),
-          summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
-          portalLink,
-          trackingLink: trackLink,
-          invoiceUrl: basePayload.invoice_url || '',
-          invoicePdfUrl: payment.invoicePdfUrl || '',
-          amount: basePayload.amount_total,
-          currency: basePayload.currency,
-        });
-        await sendPaymentAccepted({
-          locale,
-          to: basePayload.customer_email,
-          reference: existing.order_no,
-          status: getStatusLabel(locale, 'action_required'),
-          trackingLink: trackLink,
-          summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
-          orderId: existing.id,
-          accessToken: existing.access_token || '',
-          portalLink,
-          invoiceUrl: basePayload.invoice_url || '',
-          attachments,
-        });
-      }
+      await sendPaidEmailOnce({
+        order: {
+          ...existing,
+          customer_email: basePayload.customer_email,
+          invoice_url: basePayload.invoice_url || existing.invoice_url || null,
+        },
+        locale,
+        statusLabel: getStatusLabel(locale, 'action_required'),
+        summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        siteBase,
+      });
 
       return { ok: true as const, action: 'consent_missing' as const, orderId: existing.id, orderNo: existing.order_no };
     }
@@ -242,7 +241,7 @@ export async function processCheckoutSessionCompleted(
     const highRisk = payment.riskLevel === 'highest' || payment.riskLevel === 'elevated';
     const nextValues = {
       ...basePayload,
-      status: highRisk ? 'requires_manual_review' : 'paid',
+      status: 'paid',
       internal_status: highRisk ? 'requires_manual_review' : 'initial_verification',
       client_status: highRisk ? 'action_required' : 'under_verification',
       client_note: highRisk
@@ -289,55 +288,20 @@ export async function processCheckoutSessionCompleted(
       payload: { source, consent_valid: true, high_risk: highRisk },
     });
 
-    if (nextValues.customer_email) {
-      const portalLink = siteBase
-        ? `${siteBase}/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`
-        : `/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`;
-      const trackLink = siteBase
-        ? `${siteBase}/${locale}/order/track`
-        : `/${locale}/order/track`;
-      const summaryText = `${existing.service_type || '-'} / ${existing.destination_country || '-'}`;
-      const statusLabel = getStatusLabel(locale, nextValues.client_status);
-      const attachments = await buildPaymentEmailAttachments({
-        locale,
-        orderId: existing.id,
-        orderNo: existing.order_no,
-        statusLabel,
-        summary: summaryText,
-        portalLink,
-        trackingLink: trackLink,
-        invoiceUrl: nextValues.invoice_url || '',
-        invoicePdfUrl: payment.invoicePdfUrl || '',
-        amount: nextValues.amount_total,
-        currency: nextValues.currency,
-      });
-      await sendPaymentAccepted({
-        locale,
-        to: nextValues.customer_email,
-        reference: existing.order_no,
-        status: statusLabel,
-        trackingLink: trackLink,
-        summary: summaryText,
-        orderId: existing.id,
-        accessToken: existing.access_token || '',
-        portalLink,
-        invoiceUrl: nextValues.invoice_url || '',
-        attachments,
-      });
-      await sendOrderConfirmation({
-        locale,
-        to: nextValues.customer_email,
-        reference: existing.order_no,
-        status: statusLabel,
-        trackingLink: trackLink,
-        summary: summaryText,
-        orderId: existing.id,
-        accessToken: existing.access_token || '',
-        portalLink,
-        invoiceUrl: nextValues.invoice_url || '',
-        attachments,
-      });
-    }
+    const summaryText = `${existing.service_type || '-'} / ${existing.destination_country || '-'}`;
+    const statusLabel = getStatusLabel(locale, nextValues.client_status);
+    await sendPaidEmailOnce({
+      order: {
+        ...existing,
+        customer_email: nextValues.customer_email,
+        invoice_url: nextValues.invoice_url || existing.invoice_url || null,
+        paid_email_sent_at: existing.paid_email_sent_at || null,
+      },
+      locale,
+      statusLabel,
+      summary: summaryText,
+      siteBase,
+    });
 
     return { ok: true as const, action: 'updated_existing' as const, orderId: existing.id, orderNo: existing.order_no };
   }
@@ -349,7 +313,7 @@ export async function processCheckoutSessionCompleted(
       order_no: metadata.order_no ?? generateOrderNo(),
       order_code: metadata.order_no ?? generateOrderNo(),
       access_token: accessToken,
-      status: 'requires_manual_review',
+      status: 'paid',
       internal_status: 'requires_manual_review',
       client_status: 'action_required',
       client_note: locale === 'zh' ? '付款已收到，但缺少预建订单记录，订单已转人工复核。' : 'Payment received without pre-created order. Moved to manual review.',
@@ -402,40 +366,13 @@ export async function processCheckoutSessionCompleted(
     payload: { source, auto_created_order: true },
   });
 
-  if (created.customer_email) {
-    const portalLink = siteBase
-      ? `${siteBase}/${locale}/portal/orders/${created.id}?orderNo=${encodeURIComponent(created.order_no)}&accessToken=${encodeURIComponent(created.access_token || '')}`
-      : `/${locale}/portal/orders/${created.id}?orderNo=${encodeURIComponent(created.order_no)}&accessToken=${encodeURIComponent(created.access_token || '')}`;
-    const trackLink = siteBase
-      ? `${siteBase}/${locale}/order/track`
-      : `/${locale}/order/track`;
-    const attachments = await buildPaymentEmailAttachments({
-      locale,
-      orderId: created.id,
-      orderNo: created.order_no,
-      statusLabel: getStatusLabel(locale, 'action_required'),
-      summary: `${created.service_type || '-'} / ${created.destination_country || '-'}`,
-      portalLink,
-      trackingLink: trackLink,
-      invoiceUrl: created.invoice_url || '',
-      invoicePdfUrl: payment.invoicePdfUrl || '',
-      amount: created.amount_total,
-      currency: created.currency,
-    });
-    await sendPaymentAccepted({
-      locale,
-      to: created.customer_email,
-      reference: created.order_no,
-      status: getStatusLabel(locale, 'action_required'),
-      trackingLink: trackLink,
-      summary: `${created.service_type || '-'} / ${created.destination_country || '-'}`,
-      orderId: created.id,
-      accessToken: created.access_token || '',
-      portalLink,
-      invoiceUrl: created.invoice_url || '',
-      attachments,
-    });
-  }
+  await sendPaidEmailOnce({
+    order: created,
+    locale,
+    statusLabel: getStatusLabel(locale, 'action_required'),
+    summary: `${created.service_type || '-'} / ${created.destination_country || '-'}`,
+    siteBase,
+  });
 
   return { ok: true as const, action: 'created_from_session' as const, orderId: created.id, orderNo: created.order_no };
 }

@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { safeEqual } from '@/lib/security';
 import { normalizeClientStatus } from '@/lib/status';
 
+const DOWNLOAD_TTL_SECONDS = 60 * 60 * 24 * 7;
+
 export async function POST(req: Request) {
   try {
     const { orderNo, accessToken } = await req.json();
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
     }
 
     const [{ data: files }, { data: history }, { data: submissionEvents }] = await Promise.all([
-      supabaseAdmin.from('order_files').select('id, role, file_name, created_at').eq('order_id', order.id).order('created_at', { ascending: false }),
+      supabaseAdmin.from('order_files').select('id, role, file_name, storage_path, created_at').eq('order_id', order.id).order('created_at', { ascending: false }),
       supabaseAdmin
         .from('orders_history')
         .select('id, client_status, note, created_at')
@@ -33,6 +35,16 @@ export async function POST(req: Request) {
         .limit(30),
     ]);
 
+    const filesWithLinks = await Promise.all(
+      (files || []).map(async (file: any) => {
+        const signed = await supabaseAdmin.storage.from('order-uploads').createSignedUrl(file.storage_path, DOWNLOAD_TTL_SECONDS);
+        return {
+          ...file,
+          download_url: signed.error ? null : signed.data?.signedUrl || null,
+        };
+      })
+    );
+
     return NextResponse.json({
       order: {
         id: order.id,
@@ -46,10 +58,10 @@ export async function POST(req: Request) {
         delivery_method: order.delivery_method,
         amount_total: order.amount_total,
         currency: order.currency,
-        invoice_url: order.invoice_url,
+        invoice_url: order.invoice_pdf_url || order.invoice_url,
         updated_at: order.updated_at,
       },
-      files: files ?? [],
+      files: filesWithLinks,
       history: history ?? [],
       submissionEvents: submissionEvents ?? [],
     });

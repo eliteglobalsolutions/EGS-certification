@@ -19,6 +19,7 @@ export default function UploadPage() {
   const [supportingIdDocs, setSupportingIdDocs] = useState<File[]>([]);
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<Array<{ file_name: string; role: string; storage_path: string; download_url: string | null }>>([]);
   const [lookupOrderId, setLookupOrderId] = useState('');
   const [showFallback, setShowFallback] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
@@ -68,6 +69,7 @@ export default function UploadPage() {
       return;
     }
 
+    setUploadedFiles(Array.isArray(json.files) ? json.files : []);
     setMsg(t.upload.success);
   }
 
@@ -288,6 +290,28 @@ export default function UploadPage() {
       ) : null}
       {err ? <ErrorState title={t.common.error} body={err} /> : null}
       {msg ? <p className="ok-text">{msg}</p> : null}
+      {uploadedFiles.length > 0 ? (
+        <div className="ui-card stack-sm">
+          <h3>{locale === 'zh' ? '已上传文件' : 'Uploaded files'}</h3>
+          <ul className="list-plain">
+            {uploadedFiles.map((file, idx) => (
+              <li key={`${file.storage_path}-${idx}`}>
+                [{file.role}] {file.file_name}
+                {file.download_url ? (
+                  <>
+                    {' '}
+                    <a className="inline-link" href={file.download_url} target="_blank" rel="noreferrer">
+                      {locale === 'zh' ? '下载' : 'Download'}
+                    </a>
+                  </>
+                ) : null}
+                <br />
+                <span className="small-text">{file.storage_path}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </section>
   );
 }

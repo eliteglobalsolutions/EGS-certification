@@ -10,6 +10,7 @@
     "samples:review": "node scripts/mark_reviewed.js"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.2",
     "@supabase/supabase-js": "^2.48.1",
     "next": "^16.1.6",
     "react": "18.3.1",
