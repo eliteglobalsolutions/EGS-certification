@@ -292,6 +292,7 @@ export default function NewOrderPage() {
         orderNo,
         orderId,
         locale,
+        email,
         amountCents: summary.total,
         currency: 'aud',
       }),

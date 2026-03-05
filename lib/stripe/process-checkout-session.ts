@@ -13,6 +13,7 @@ type PaymentSnapshot = {
   paymentIntentId: string | null;
   chargeId: string | null;
   receiptUrl: string | null;
+  invoiceUrl: string | null;
   riskLevel: string | null;
   riskScore: number | null;
 };
@@ -24,14 +25,24 @@ function toStripeId(value: string | Stripe.PaymentIntent | Stripe.Charge | null 
 
 async function readPaymentSnapshot(session: Stripe.Checkout.Session): Promise<PaymentSnapshot> {
   const paymentIntentId = toStripeId(session.payment_intent);
+  let invoiceUrl: string | null = null;
+  const invoiceId = typeof session.invoice === 'string' ? session.invoice : session.invoice?.id;
+  if (invoiceId) {
+    try {
+      const invoice = await stripe.invoices.retrieve(invoiceId);
+      invoiceUrl = invoice.hosted_invoice_url || invoice.invoice_pdf || null;
+    } catch {
+      invoiceUrl = null;
+    }
+  }
   if (!paymentIntentId) {
-    return { paymentIntentId: null, chargeId: null, receiptUrl: null, riskLevel: null, riskScore: null };
+    return { paymentIntentId: null, chargeId: null, receiptUrl: null, invoiceUrl, riskLevel: null, riskScore: null };
   }
 
   const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] });
   const latestCharge = intent.latest_charge;
   if (!latestCharge || typeof latestCharge === 'string') {
-    return { paymentIntentId, chargeId: null, receiptUrl: null, riskLevel: null, riskScore: null };
+    return { paymentIntentId, chargeId: null, receiptUrl: null, invoiceUrl, riskLevel: null, riskScore: null };
   }
 
   const outcome = latestCharge.outcome;
@@ -39,6 +50,7 @@ async function readPaymentSnapshot(session: Stripe.Checkout.Session): Promise<Pa
     paymentIntentId,
     chargeId: latestCharge.id,
     receiptUrl: latestCharge.receipt_url || null,
+    invoiceUrl,
     riskLevel: outcome?.risk_level || null,
     riskScore: typeof outcome?.risk_score === 'number' ? outcome.risk_score : null,
   };
@@ -79,7 +91,7 @@ export async function processCheckoutSessionCompleted(
     currency: session.currency,
     stripe_session_id: sessionId,
     paid_at: paidNow,
-    invoice_url: payment.receiptUrl,
+    invoice_url: payment.invoiceUrl || payment.receiptUrl,
     updated_at: paidNow,
   };
 

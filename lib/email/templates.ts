@@ -1,4 +1,5 @@
 import { Locale } from '@/lib/i18n/dictionaries';
+import { COMPANY_ABN, COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME } from '@/lib/company';
 
 type EmailPayload = {
   reference: string;
@@ -67,9 +68,11 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
 如需补充材料，我们将通过邮件通知你。请妥善保存本邮件中的订单号与访问令牌以便后续查询。
 
 此致
-ELITE GLOBAL SOLUTIONS PTY LTD
+${COMPANY_LEGAL_NAME}
 Customer Support
-Email: info@eliteglobalsolutions.co
+ABN: ${COMPANY_ABN}
+Address: ${COMPANY_ADDRESS}
+Email: ${COMPANY_EMAIL}
 
 免责声明：办理时效为预估时间，最终处理进度以相关主管机构为准。`,
     };
@@ -96,9 +99,11 @@ Invoice Link: ${invoiceLine}
 If additional documents are required, we will notify you by email. Please keep this email for your records, including your reference and access token.
 
 Sincerely,
-ELITE GLOBAL SOLUTIONS PTY LTD
+${COMPANY_LEGAL_NAME}
 Customer Support
-Email: info@eliteglobalsolutions.co
+ABN: ${COMPANY_ABN}
+Address: ${COMPANY_ADDRESS}
+Email: ${COMPANY_EMAIL}
 
 Disclaimer: processing timelines are estimates and remain subject to the relevant authority's handling time.`,
   };

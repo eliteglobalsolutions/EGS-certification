@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { rateLimit } from '@/lib/rate-limit';
+import { COMPANY_ABN, COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME } from '@/lib/company';
 
 export const runtime = 'nodejs';
 
@@ -36,6 +37,7 @@ export async function POST(req: Request) {
     const currency = String(body?.currency || 'aud').toLowerCase();
     const locale = body?.locale === 'zh' ? 'zh' : 'en';
     const orderId = body?.orderId ? String(body.orderId) : '';
+    const customerEmail = String(body?.email || '').trim();
 
     if (!orderNo) {
       return NextResponse.json({ error: 'orderNo is required' }, { status: 400 });
@@ -62,6 +64,7 @@ export async function POST(req: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
+      customer_email: customerEmail || undefined,
       line_items: [
         {
           quantity: 1,
@@ -75,6 +78,18 @@ export async function POST(req: Request) {
           },
         },
       ],
+      invoice_creation: {
+        enabled: true,
+        invoice_data: {
+          description: `Service invoice for order ${orderNo}`,
+          footer: `${COMPANY_LEGAL_NAME} | ABN ${COMPANY_ABN} | ${COMPANY_ADDRESS} | ${COMPANY_EMAIL}`,
+          metadata,
+          custom_fields: [
+            { name: 'Order Reference', value: orderNo },
+            { name: 'ABN', value: COMPANY_ABN },
+          ],
+        },
+      },
       metadata,
       success_url: successUrl.toString(),
       cancel_url: cancelUrl.toString(),
