@@ -44,6 +44,10 @@ export async function sendOrderConfirmation(args: {
   status: string;
   trackingLink: string;
   summary: string;
+  orderId?: string;
+  accessToken?: string;
+  portalLink?: string;
+  invoiceUrl?: string;
 }) {
   const mail = orderConfirmationEmail(args.locale, args);
   await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });
@@ -68,6 +72,10 @@ export async function sendPaymentAccepted(args: {
   status: string;
   trackingLink: string;
   summary: string;
+  orderId?: string;
+  accessToken?: string;
+  portalLink?: string;
+  invoiceUrl?: string;
 }) {
   const mail = paymentAcceptedEmail(args.locale, args);
   await sendEmail({ to: args.to, subject: mail.subject, body: mail.body });

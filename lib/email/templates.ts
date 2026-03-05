@@ -5,6 +5,10 @@ type EmailPayload = {
   status: string;
   trackingLink: string;
   summary: string;
+  orderId?: string;
+  accessToken?: string;
+  portalLink?: string;
+  invoiceUrl?: string;
 };
 
 export function orderConfirmationEmail(locale: Locale, payload: EmailPayload) {
@@ -36,15 +40,20 @@ export function statusUpdateEmail(locale: Locale, payload: EmailPayload) {
 }
 
 export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
+  const invoiceLine = payload.invoiceUrl || (locale === 'zh' ? '待生成（系统处理中）' : 'Pending (still processing)');
+  const portalLine = payload.portalLink || payload.trackingLink;
+  const tokenLine = payload.accessToken || '-';
+  const orderIdLine = payload.orderId || '-';
+
   if (locale === 'zh') {
     return {
       subject: `付款成功受理 - ${payload.reference}`,
-      body: `我们已收到并受理你的付款。\n\n订单号: ${payload.reference}\n当前状态: ${payload.status}\n订单摘要: ${payload.summary}\n查询链接: ${payload.trackingLink}\n\n说明：如需补件，我们会通过邮件通知。`,
+      body: `我们已收到并受理你的付款。\n\n订单ID: ${orderIdLine}\n订单号: ${payload.reference}\n访问令牌: ${tokenLine}\n当前状态: ${payload.status}\n订单摘要: ${payload.summary}\n订单查询链接: ${portalLine}\n发票链接: ${invoiceLine}\n\n说明：如需补件，我们会通过邮件通知。`,
     };
   }
 
   return {
     subject: `Payment Accepted - ${payload.reference}`,
-    body: `We have received and accepted your payment.\n\nReference: ${payload.reference}\nCurrent Status: ${payload.status}\nOrder Summary: ${payload.summary}\nTracking Link: ${payload.trackingLink}\n\nNote: if additional documents are required, we will notify you by email.`,
+    body: `We have received and accepted your payment.\n\nOrder ID: ${orderIdLine}\nReference: ${payload.reference}\nAccess Token: ${tokenLine}\nCurrent Status: ${payload.status}\nOrder Summary: ${payload.summary}\nOrder Portal Link: ${portalLine}\nInvoice Link: ${invoiceLine}\n\nNote: if additional documents are required, we will notify you by email.`,
   };
 }

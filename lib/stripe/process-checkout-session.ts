@@ -71,6 +71,7 @@ export async function processCheckoutSessionCompleted(
   if (findError) throw findError;
 
   const locale = (metadata.locale === 'zh' ? 'zh' : 'en') as 'en' | 'zh';
+  const siteBase = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '');
   const paidNow = new Date().toISOString();
   const basePayload = {
     customer_email: session.customer_details?.email ?? session.customer_email ?? null,
@@ -131,13 +132,23 @@ export async function processCheckoutSessionCompleted(
       });
 
       if (basePayload.customer_email) {
+        const portalLink = siteBase
+          ? `${siteBase}/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`
+          : `/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`;
+        const trackLink = siteBase
+          ? `${siteBase}/${locale}/order/track`
+          : `/${locale}/order/track`;
         await sendPaymentAccepted({
           locale,
           to: basePayload.customer_email,
           reference: existing.order_no,
           status: getStatusLabel(locale, 'action_required'),
-          trackingLink: `/${locale}/order/track`,
+          trackingLink: trackLink,
           summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+          orderId: existing.id,
+          accessToken: existing.access_token || '',
+          portalLink,
+          invoiceUrl: basePayload.invoice_url || '',
         });
       }
 
@@ -195,21 +206,35 @@ export async function processCheckoutSessionCompleted(
     });
 
     if (nextValues.customer_email) {
+      const portalLink = siteBase
+        ? `${siteBase}/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`
+        : `/${locale}/portal/orders/${existing.id}?orderNo=${encodeURIComponent(existing.order_no)}&accessToken=${encodeURIComponent(existing.access_token || '')}`;
+      const trackLink = siteBase
+        ? `${siteBase}/${locale}/order/track`
+        : `/${locale}/order/track`;
       await sendPaymentAccepted({
         locale,
         to: nextValues.customer_email,
         reference: existing.order_no,
         status: getStatusLabel(locale, nextValues.client_status),
-        trackingLink: `/${locale}/order/track`,
+        trackingLink: trackLink,
         summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        orderId: existing.id,
+        accessToken: existing.access_token || '',
+        portalLink,
+        invoiceUrl: nextValues.invoice_url || '',
       });
       await sendOrderConfirmation({
         locale,
         to: nextValues.customer_email,
         reference: existing.order_no,
         status: getStatusLabel(locale, nextValues.client_status),
-        trackingLink: `/${locale}/order/track`,
+        trackingLink: trackLink,
         summary: `${existing.service_type || '-'} / ${existing.destination_country || '-'}`,
+        orderId: existing.id,
+        accessToken: existing.access_token || '',
+        portalLink,
+        invoiceUrl: nextValues.invoice_url || '',
       });
     }
 
@@ -277,13 +302,23 @@ export async function processCheckoutSessionCompleted(
   });
 
   if (created.customer_email) {
+    const portalLink = siteBase
+      ? `${siteBase}/${locale}/portal/orders/${created.id}?orderNo=${encodeURIComponent(created.order_no)}&accessToken=${encodeURIComponent(created.access_token || '')}`
+      : `/${locale}/portal/orders/${created.id}?orderNo=${encodeURIComponent(created.order_no)}&accessToken=${encodeURIComponent(created.access_token || '')}`;
+    const trackLink = siteBase
+      ? `${siteBase}/${locale}/order/track`
+      : `/${locale}/order/track`;
     await sendPaymentAccepted({
       locale,
       to: created.customer_email,
       reference: created.order_no,
       status: getStatusLabel(locale, 'action_required'),
-      trackingLink: `/${locale}/order/track`,
+      trackingLink: trackLink,
       summary: `${created.service_type || '-'} / ${created.destination_country || '-'}`,
+      orderId: created.id,
+      accessToken: created.access_token || '',
+      portalLink,
+      invoiceUrl: created.invoice_url || '',
     });
   }
 
