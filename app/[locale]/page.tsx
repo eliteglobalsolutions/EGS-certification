@@ -74,10 +74,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     address: {
       '@type': 'PostalAddress',
       postOfficeBoxNumber: 'PO Box 97',
-      streetAddress: 'PO Box 97',
-      addressLocality: 'Edgecliff',
+      streetAddress: '185-187 Liverpool Street',
+      addressLocality: 'Sydney',
       addressRegion: 'NSW',
-      postalCode: '2027',
+      postalCode: '2000',
       addressCountry: 'AU',
     },
     areaServed: 'Worldwide',
