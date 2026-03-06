@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
 import type { AppCopy } from '@/lib/i18n/dictionaries';
+import { COMPANY_BRAND_NAME } from '@/lib/company';
 
 export function Footer({ locale, t }: { locale: string; t: AppCopy }) {
   const year = new Date().getFullYear();
   const copyright =
     locale === 'zh'
-      ? `© ${year} ELITE GLOBAL SOLUTIONS PTY LTD. 版权所有。`
-      : `© ${year} ELITE GLOBAL SOLUTIONS PTY LTD. All rights reserved.`;
+      ? `© ${year} ${COMPANY_BRAND_NAME}. 版权所有。`
+      : `© ${year} ${COMPANY_BRAND_NAME}. All rights reserved.`;
 
   return (
     <Card>

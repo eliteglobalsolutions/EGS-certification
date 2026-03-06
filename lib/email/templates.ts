@@ -1,5 +1,5 @@
 import { Locale } from '@/lib/i18n/dictionaries';
-import { COMPANY_ABN, COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME } from '@/lib/company';
+import { COMPANY_ABN, COMPANY_ADDRESS, COMPANY_BRAND_NAME, COMPANY_EMAIL, COMPANY_LEGAL_NAME } from '@/lib/company';
 
 type EmailPayload = {
   reference: string;
@@ -49,7 +49,7 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
       subject: `EGS Verification | 付款成功受理通知 | ${payload.reference}`,
       body: `尊敬的客户，您好：
 
-感谢你选择 ELITE GLOBAL SOLUTIONS PTY LTD。我们已成功收到并受理你的付款。
+感谢你选择 ${COMPANY_BRAND_NAME}。我们已成功收到并受理你的付款。
 
 【订单信息】
 订单ID: ${orderIdLine}
@@ -66,9 +66,10 @@ export function paymentAcceptedEmail(locale: Locale, payload: EmailPayload) {
 如需补充材料，我们将通过邮件通知你。请妥善保存本邮件中的订单号以便后续查询。
 
 此致
-${COMPANY_LEGAL_NAME}
+${COMPANY_BRAND_NAME}
 Customer Support
 ABN: ${COMPANY_ABN}
+Legal Entity: ${COMPANY_LEGAL_NAME}
 Address: ${COMPANY_ADDRESS}
 Email: ${COMPANY_EMAIL}
 
@@ -80,7 +81,7 @@ Email: ${COMPANY_EMAIL}
     subject: `EGS Verification | Payment Acceptance Notice | ${payload.reference}`,
     body: `Dear Client,
 
-Thank you for choosing ELITE GLOBAL SOLUTIONS PTY LTD. We confirm your payment has been successfully received and accepted.
+Thank you for choosing ${COMPANY_BRAND_NAME}. We confirm your payment has been successfully received and accepted.
 
 [Order Details]
 Order ID: ${orderIdLine}
@@ -97,9 +98,10 @@ Email Attachment: Invoice PDF (attached)
 If additional documents are required, we will notify you by email. Please keep this email for your records, including your reference.
 
 Sincerely,
-${COMPANY_LEGAL_NAME}
+${COMPANY_BRAND_NAME}
 Customer Support
 ABN: ${COMPANY_ABN}
+Legal Entity: ${COMPANY_LEGAL_NAME}
 Address: ${COMPANY_ADDRESS}
 Email: ${COMPANY_EMAIL}
 

@@ -1,5 +1,6 @@
 import { Locale } from '@/lib/i18n/dictionaries';
 import { orderConfirmationEmail, paymentAcceptedEmail, statusUpdateEmail } from './email/templates';
+import { COMPANY_BRAND_NAME } from '@/lib/company';
 
 type MailArgs = {
   to: string;
@@ -10,7 +11,7 @@ type MailArgs = {
 
 async function sendEmail({ to, subject, body, attachments }: MailArgs) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.MAIL_FROM || 'ELITE GLOBAL SOLUTIONS PTY LTD <no-reply@egs.example>';
+  const from = process.env.MAIL_FROM || `${COMPANY_BRAND_NAME} <no-reply@egs.example>`;
 
   if (!apiKey) {
     console.info('[mail][dry-run]', { to, subject, body });
