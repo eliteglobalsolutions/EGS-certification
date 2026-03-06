@@ -29,7 +29,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '样本库 | 文件认证样本 | EGS Certification',
+      title: '样本库 | 文件认证样本 | EGS Verification',
       description: '浏览 EGS 文件认证样本库，按国家和文件类型筛选参考样本。',
       keywords: ['apostille sample', 'legalisation sample', 'redacted sample', 'document certification sample', 'EGS sample library'],
       alternates: { canonical: `${siteUrl}/zh/samples` },
@@ -37,7 +37,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Sample Library | Redacted Certification Samples | EGS Certification',
+    title: 'Sample Library | Redacted Certification Samples | EGS Verification',
     description: 'Browse EGS redacted sample library by country and document type for apostille and legalisation workflows.',
     keywords: ['apostille sample', 'legalisation sample', 'redacted sample', 'document certification sample', 'EGS sample library'],
     alternates: { canonical: `${siteUrl}/en/samples` },

@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '澳洲海牙认证 Apostille 服务｜EGS Certification',
+      title: '澳洲海牙认证 Apostille 服务｜EGS Verification',
       description: '澳洲文件海牙认证协调服务：先确认路径、材料、时效和费用，再进入受理流程。',
       keywords: ['澳洲 海牙认证', 'Apostille 澳洲', '澳洲 文件认证', '悉尼 海牙认证'],
       alternates: { canonical: `${siteUrl}/zh/apostille-australia` },
@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Apostille Australia Service | EGS Certification',
+    title: 'Apostille Australia Service | EGS Verification',
     description: 'Apostille coordination for Australia-issued documents with route check, intake, and tracking.',
     keywords: ['apostille Australia', 'apostille Sydney', 'document apostille service'],
     alternates: { canonical: `${siteUrl}/en/apostille-australia` },
