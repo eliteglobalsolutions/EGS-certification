@@ -21,7 +21,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '服务范围｜海牙认证、领事认证、翻译协调｜ELITE GLOBAL SOLUTIONS PTY LTD',
+      title: '服务范围｜海牙认证、领事认证、翻译协调｜EGS Verification',
       description: '查看 EGS 服务范围：海牙认证、领事认证路径、翻译协调、证书支持与跨境文件流程。',
       keywords: ['海牙认证服务', '领事认证服务', '文件认证流程', '翻译协调', '澳洲文件认证'],
       alternates: { canonical: `${siteUrl}/zh/services` },
@@ -29,7 +29,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Services | Apostille, Legalisation, Translation Coordination | ELITE GLOBAL SOLUTIONS PTY LTD',
+    title: 'Services | Apostille, Legalisation, Translation Coordination | EGS Verification',
     description:
       'Explore EGS services for apostille, consular legalisation, translation coordination, and structured cross-border document workflows.',
     keywords: [
@@ -55,7 +55,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
     name: locale === 'zh' ? '国际文件认证协调服务' : 'Cross-border document coordination service',
     provider: {
       '@type': 'Organization',
-      name: 'ELITE GLOBAL SOLUTIONS PTY LTD',
+      name: 'EGS Verification',
       url: `${siteUrl}/${locale}`,
     },
     areaServed: 'Worldwide',

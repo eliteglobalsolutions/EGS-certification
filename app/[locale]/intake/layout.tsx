@@ -12,7 +12,7 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '开始受理｜国际文件认证下单｜ELITE GLOBAL SOLUTIONS PTY LTD',
+      title: '开始受理｜国际文件认证下单｜EGS Verification',
       description: '在线提交文件认证需求，先确认路径，再进入受理与支付流程。',
       keywords: ['开始下单 文件认证', '海牙认证 下单', '领事认证 下单', '澳洲 文件认证 下单'],
       alternates: { canonical: `${siteUrl}/zh/intake` },
@@ -20,7 +20,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Begin Intake | Apostille & Legalisation Order | ELITE GLOBAL SOLUTIONS PTY LTD',
+    title: 'Begin Intake | Apostille & Legalisation Order | EGS Verification',
     description: 'Start secure intake for apostille and legalisation. Confirm route, upload files, and proceed to payment.',
     keywords: ['start apostille order', 'legalisation intake form', 'document authentication order'],
     alternates: { canonical: `${siteUrl}/en/intake` },
