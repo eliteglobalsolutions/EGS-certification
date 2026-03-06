@@ -355,7 +355,8 @@ Contact Details
 
 EGS Certification Pty Ltd
 ACN 679 782 284
-Address: PO Box 97, Edgecliff NSW 2027, Australia
+Address: 185-187 Liverpool Street, Sydney NSW 2000, Australia
+PO Box: PO Box 97, Edgecliff NSW 2027, Australia
 Email: info@eliteglobalsolutions.co
 Phone: 1300 990 666
 
