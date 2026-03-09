@@ -1,57 +1,69 @@
 'use client';
 
-import { useMemo, useState, type KeyboardEvent } from 'react';
-import { useEffect } from 'react';
-
-export type SampleRecord = {
-  country: string;
-  slug: string;
-  title: string;
-  file_path: string;
-  reviewed: boolean;
-  reviewed_by?: string | null;
-  reviewed_at?: string | null;
-  notes?: string | null;
-};
+import Link from 'next/link';
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import type { EnrichedSampleRecord } from '@/lib/sample-library';
 
 type SamplesGalleryText = {
-  searchLabel: string;
-  searchPlaceholder: string;
-  filterLabel: string;
-  allCountries: string;
   empty: string;
   previewTitle: string;
   openButton: string;
-  reviewedLabel: string;
+  groupDocumentType: string;
+  groupIssuingCountry: string;
+  clearFilters: string;
+  detailCta: string;
+  previewCaptionLabel: string;
+  protectedLabel: string;
+  selectPrompt: string;
 };
+
+function uniqueValues(items: EnrichedSampleRecord[], key: 'groupDocumentType' | 'issuingCountry' | 'groupDestination') {
+  return Array.from(new Set(items.map((item) => item[key]))).sort((a, b) => a.localeCompare(b));
+}
 
 export function SamplesGallery({
   items,
+  locale,
   text,
 }: {
-  items: SampleRecord[];
+  items: EnrichedSampleRecord[];
+  locale: string;
   text: SamplesGalleryText;
 }) {
-  const [query, setQuery] = useState('');
   const [country, setCountry] = useState('all');
+  const [documentType, setDocumentType] = useState('');
+  const [query, setQuery] = useState('');
   const [shielded, setShielded] = useState(false);
+
   const countries = useMemo(
     () => ['all', ...Array.from(new Set(items.map((i) => i.country))).sort()],
     [items]
   );
-
+  const documentTypes = useMemo(() => uniqueValues(items, 'groupDocumentType'), [items]);
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
     return items.filter((item) => {
       const matchesCountry = country === 'all' || item.country === country;
-      const haystack = `${item.title} ${item.slug} ${item.country}`.toLowerCase();
-      const matchesQuery = !q || haystack.includes(q);
-      return matchesCountry && matchesQuery;
+      const matchesDocumentType = !documentType || item.groupDocumentType === documentType;
+      const haystack = `${item.sampleTitle} ${item.routeMetaLine} ${item.documentType} ${item.issuingCountry} ${item.destinationUse}`.toLowerCase();
+      const matchesQuery = !query.trim() || haystack.includes(query.trim().toLowerCase());
+      return matchesCountry && matchesDocumentType && matchesQuery;
     });
-  }, [items, query, country]);
+  }, [items, country, documentType, query]);
 
   const [selectedSlug, setSelectedSlug] = useState('');
-  const selected = filtered.find((x) => x.slug === selectedSlug);
+
+  useEffect(() => {
+    if (!filtered.length) {
+      setSelectedSlug('');
+      return;
+    }
+
+    if (!selectedSlug || !filtered.some((item) => item.slug === selectedSlug)) {
+      setSelectedSlug(filtered[0].slug);
+    }
+  }, [filtered, selectedSlug]);
+
+  const selected = filtered.find((item) => item.slug === selectedSlug) ?? null;
 
   const blockHotkeys = (e: KeyboardEvent<HTMLElement>) => {
     if (!selected) return;
@@ -80,62 +92,61 @@ export function SamplesGallery({
     };
   }, []);
 
+  const clearFilters = () => {
+    setCountry('all');
+    setDocumentType('');
+    setQuery('');
+  };
+
   return (
-    <div className="samples-layout">
-      <aside className="section-card samples-list-panel stack-sm">
-        <label className="small-text" htmlFor="samples-query">
-          {text.searchLabel}
-        </label>
+    <div className="samples-shell stack-md">
+      <div className="section-card samples-facet-card stack-sm">
         <input
-          id="samples-query"
+          aria-label={locale === 'zh' ? '搜索样本' : 'Search samples'}
+          className="samples-search-input"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={locale === 'zh' ? '按国家、文件或目的地搜索' : 'Search by country, document, or destination'}
           type="search"
           value={query}
-          placeholder={text.searchPlaceholder}
-          onChange={(e) => setQuery(e.target.value)}
         />
-
-        <label className="small-text" htmlFor="samples-country">
-          {text.filterLabel}
-        </label>
-        <select
-          id="samples-country"
-          value={country}
-          onChange={(e) => {
-            setCountry(e.target.value);
-            setSelectedSlug('');
-          }}
-        >
-          <option value="all">{text.allCountries}</option>
-          {countries
-            .filter((c) => c !== 'all')
-            .map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-        </select>
-
-        <div className="samples-list">
-          {filtered.length === 0 ? (
-            <p className="small-text">{text.empty}</p>
-          ) : (
-            filtered.map((item) => (
-              <button
-                className={`samples-item ${selected?.slug === item.slug ? 'is-active' : ''}`}
-                key={`${item.country}/${item.slug}`}
-                onClick={() => setSelectedSlug(item.slug)}
-                type="button"
-              >
-                <strong>{item.title}</strong>
-                <span className="small-text">{item.country}</span>
-                <span className="small-text">
-                  {text.reviewedLabel}: {item.reviewed ? 'Yes' : 'No'}
-                </span>
-              </button>
-            ))
-          )}
+        <div className="samples-facet-groups">
+          <div className="samples-facet-group">
+            <p className="kicker">{text.groupDocumentType}</p>
+            <div className="samples-chip-row">
+              {documentTypes.map((value) => (
+                <button
+                  className={`samples-chip ${documentType === value ? 'is-active' : ''}`}
+                  key={value}
+                  onClick={() => setDocumentType(documentType === value ? '' : value)}
+                  type="button"
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="samples-facet-group">
+            <p className="kicker">{text.groupIssuingCountry}</p>
+            <div className="samples-chip-row">
+              {countries
+                .filter((value) => value !== 'all')
+                .map((value) => (
+                  <button
+                    className={`samples-chip ${country === value ? 'is-active' : ''}`}
+                    key={value}
+                    onClick={() => setCountry(country === value ? 'all' : value)}
+                    type="button"
+                  >
+                    {value}
+                  </button>
+                ))}
+            </div>
+          </div>
         </div>
-      </aside>
+        <button className="samples-clear-link" onClick={clearFilters} type="button">
+          {text.clearFilters}
+        </button>
+      </div>
 
       <section
         className="section-card samples-viewer-panel stack-sm"
@@ -146,16 +157,28 @@ export function SamplesGallery({
         {selected ? (
           <>
             <div className="samples-viewer-head">
-              <h2>{selected.title}</h2>
-              <span className="small-text">Protected preview</span>
+              <div className="stack-xs">
+                <h2>{selected.sampleTitle}</h2>
+                <p className="small-text">{selected.routeMetaLine}</p>
+              </div>
+              <span className="small-text">{text.protectedLabel}</span>
             </div>
             <div className="samples-viewer-wrap">
-              <iframe
-                className="samples-pdf-viewer"
-                src={`${selected.file_path}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                title={selected.title}
-                loading="lazy"
-              />
+              {selected.thumb_path ? (
+                <img
+                  alt={selected.altText}
+                  className="samples-image-preview"
+                  loading="lazy"
+                  src={selected.thumb_path}
+                />
+              ) : (
+                <iframe
+                  className="samples-pdf-viewer"
+                  src={`${selected.file_path}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                  title={selected.altText}
+                  loading="lazy"
+                />
+              )}
               <div className="samples-guard-overlay" aria-hidden="true">
                 <span>EGS EliteGlobalSolutions.co</span>
                 <span>EGS EliteGlobalSolutions.co</span>
@@ -172,9 +195,28 @@ export function SamplesGallery({
                 </div>
               ) : null}
             </div>
+            <div className="samples-caption stack-xs">
+              <p className="small-text">{selected.routeDescription}</p>
+              <div className="actions">
+                <a
+                  className="btn btn-secondary"
+                  href={selected.file_path}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  View full sample
+                </a>
+                <Link className="btn btn-secondary" href={`/${locale}/samples/${selected.slug}`}>
+                  {text.detailCta}
+                </Link>
+                <Link className="btn btn-primary" href={`/${locale}/intake`}>
+                  {text.openButton}
+                </Link>
+              </div>
+            </div>
           </>
         ) : (
-          <p className="small-text">Select a sample file from the left panel to load preview.</p>
+          <p className="small-text">{text.selectPrompt}</p>
         )}
       </section>
     </div>

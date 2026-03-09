@@ -33,6 +33,7 @@ export async function POST(req: Request) {
     const issuedIn = String(body.issuedIn || '');
     const destinationCountry = String(body.destinationCountry || '');
     const documentType = String(body.documentType || '');
+    const submissionMethod = String(body.submissionMethod || '');
     const deliveryMethod = String(body.deliveryMethod || '');
     const estimatedDays = String(body.estimatedDays || '');
     const tosAccepted = body.tosAccepted === true;
@@ -100,7 +101,7 @@ export async function POST(req: Request) {
       order_id: orderId,
       type: 'created',
       message: 'Order created before checkout',
-      meta: {
+        meta: {
         recipient_name: recipientName || null,
         email: email || null,
         phone: phone || null,
@@ -113,9 +114,10 @@ export async function POST(req: Request) {
         mailing_address: mailingAddress || null,
         route_override: routeOverride || null,
         service_level: serviceLevel || null,
-        doc_category: docCategory || null,
-        issued_in: issuedIn || null,
-      },
+          doc_category: docCategory || null,
+          issued_in: issuedIn || null,
+          submission_method: submissionMethod || null,
+        },
     });
     if (createdEventError) throw createdEventError;
 

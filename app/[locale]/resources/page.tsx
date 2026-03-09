@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { Button } from '@/components/ui/Button';
+import { buildPrefillHref } from '@/lib/prefill';
+import { destinationCountryEntries, getEntryList, getEntryText, getSearchEntry } from '@/lib/search-entry-data';
 
 export async function generateMetadata({
   params,
@@ -35,6 +37,110 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
+  const countryResources = [
+    {
+      slug: 'china',
+      lane: { en: 'Apostille-led', zh: '海牙主线' },
+      routeHref: `/${locale}/routes/australian-apostille-for-use-in-china`,
+      links: [
+        {
+          label: locale === 'zh' ? '中国驻澳使馆 Apostille / 认证通知' : 'PRC Embassy in Australia apostille notice',
+          url: 'http://au.china-embassy.gov.cn/eng/lsfw_12/consularservices1/202311/t20231108_11175926.htm',
+        },
+      ],
+    },
+    {
+      slug: 'singapore',
+      lane: { en: 'Apostille-led', zh: '海牙主线' },
+      routeHref: `/${locale}/routes/australian-documents-for-use-in-singapore`,
+      links: [
+        {
+          label: locale === 'zh' ? '新加坡驻堪培拉高专署官方领事服务' : 'Singapore High Commission Canberra consular services',
+          url: 'https://www.mfa.gov.sg/Overseas-Mission/Canberra/Consular-Services/Notarial-and-Legalisation-Services',
+        },
+      ],
+    },
+    {
+      slug: 'usa',
+      lane: { en: 'Receiving-side review', zh: '接收方审核型' },
+      routeHref: `/${locale}/routes/australian-documents-for-use-in-united-states`,
+      links: [
+        {
+          label: locale === 'zh' ? '美国国务院认证信息' : 'U.S. Department of State authentications guidance',
+          url: 'https://travel.state.gov/content/travel/en/replace-certify-docs/authenticate-your-document/office-of-authentications.html',
+        },
+      ],
+    },
+    {
+      slug: 'united-kingdom',
+      lane: { en: 'Apostille-led', zh: '海牙主线' },
+      routeHref: `/${locale}/routes/australian-documents-for-use-in-united-kingdom`,
+      links: [],
+    },
+    {
+      slug: 'canada',
+      lane: { en: 'Apostille-led', zh: '海牙主线' },
+      routeHref: undefined,
+      links: [],
+    },
+    {
+      slug: 'hong-kong',
+      lane: { en: 'Commercial route', zh: '商业文件强路线' },
+      routeHref: `/${locale}/routes/canadian-documents-for-use-in-hong-kong`,
+      links: [],
+    },
+    {
+      slug: 'uae',
+      lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
+      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-uae`,
+      links: [],
+    },
+    {
+      slug: 'saudi-arabia',
+      lane: { en: 'Consular / mixed path', zh: '领馆 / 混合路径' },
+      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-saudi-arabia`,
+      links: [],
+    },
+    {
+      slug: 'kuwait',
+      lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
+      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-kuwait`,
+      links: [],
+    },
+    {
+      slug: 'malaysia',
+      lane: { en: 'Document-sensitive lane', zh: '文件类型敏感路径' },
+      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-malaysia`,
+      links: [
+        {
+          label: locale === 'zh' ? '马来西亚驻堪培拉官方入口' : 'Malaysia High Commission Canberra portal',
+          url: 'https://www.kln.gov.my/web/aus_canberra/home',
+        },
+      ],
+    },
+    {
+      slug: 'vietnam',
+      lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
+      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-vietnam`,
+      links: [
+        {
+          label: locale === 'zh' ? '越南驻澳使馆领事信息' : 'Embassy of Vietnam in Australia consular information',
+          url: 'https://vietnamembassy.org.au/',
+        },
+      ],
+    },
+  ]
+    .map((item) => {
+      const entry = getSearchEntry('destination', item.slug);
+      return entry ? { ...item, entry } : null;
+    })
+    .filter((value): value is NonNullable<typeof value> => Boolean(value));
+  const priorityCountryResources = countryResources.filter((item) =>
+    ['china', 'singapore', 'usa', 'united-kingdom', 'canada', 'hong-kong'].includes(item.slug),
+  );
+  const secondaryCountryResources = countryResources.filter((item) =>
+    ['uae', 'saudi-arabia', 'kuwait', 'malaysia', 'vietnam'].includes(item.slug),
+  );
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -65,7 +171,11 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
         <div className="stack-sm">
           <h1 id="resources-heading">{t.resources.title}</h1>
           <p className="body-text">{t.resources.subtitle}</p>
-          <p className="small-text">{t.resources.disclaimer}</p>
+          <p className="small-text">
+            {locale === 'zh'
+              ? '先看官方入口，再按目的地国家进入对应路线页和受理页。资源页负责快速判断，不再只做一层通用链接堆叠。'
+              : 'Start from official reference points, then move into the destination-country route page and intake. This page is now structured for fast route triage rather than generic link dumping.'}
+          </p>
         </div>
       </div>
 
@@ -112,6 +222,91 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
           </ul>
         </article>
       </div>
+
+      <article className="section-card stack-md" aria-labelledby="country-resource-heading">
+        <div className="stack-sm">
+          <p className="kicker">{locale === 'zh' ? '国家资源入口' : 'Country route resources'}</p>
+          <h2 id="country-resource-heading">
+            {locale === 'zh' ? '按目的地国家进入对应路线' : 'Destination-country resource lanes'}
+          </h2>
+          <p className="small-text">
+            {locale === 'zh'
+              ? '这层只保留高价值国家入口。主线国家用简洁卡片呈现，副线国家压缩成轻量列表，不再让所有模块同权重展开。'
+              : 'This layer keeps only high-value destination lanes. Core countries are shown as compact cards, while secondary countries are reduced to a lighter list so the page does not read like another full directory.'}
+          </p>
+        </div>
+        <div className="resources-country-grid">
+          {priorityCountryResources.map(({ slug, lane, routeHref, links, entry }) => {
+            const summary = entry.regionalRequirements?.[0]
+              ? getEntryText(entry.regionalRequirements[0].summary, locale)
+              : getEntryText(entry.scope, locale);
+
+            return (
+              <article className="resources-country-card" key={slug}>
+                <div className="stack-sm">
+                  <div className="resources-country-head">
+                    <h3>{getEntryText(entry.name, locale)}</h3>
+                    <span className="resources-country-badge">{getEntryText(lane, locale)}</span>
+                  </div>
+                  <p className="small-text">{summary}</p>
+                  {links[0] ? (
+                    <p className="small-text">
+                      <a className="inline-link" href={links[0].url} rel="noreferrer noopener" target="_blank">
+                        {links[0].label}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+                <div className="actions">
+                  <Link className="btn btn-secondary" href={routeHref || `/${locale}/used-in/${slug}`}>
+                    {locale === 'zh' ? '查看路线' : 'View route'}
+                  </Link>
+                  <Link
+                    className="btn btn-primary"
+                    href={buildPrefillHref(locale, '/intake', { locale, destinationSlug: slug })}
+                  >
+                    {locale === 'zh' ? '开始受理' : 'Start intake'}
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <div className="resources-country-list">
+          <div className="stack-sm">
+            <h3>{locale === 'zh' ? '其他高价值领馆路线' : 'Other high-value consular lanes'}</h3>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '这一层只保留路线入口，不再完整展开每个国家的说明。更详细的判断放在对应 route page 里。'
+                : 'This layer keeps only the route entry. The fuller country-specific handling notes remain on the destination and route pages.'}
+            </p>
+          </div>
+          <div className="resources-country-list-items">
+            {secondaryCountryResources.map(({ slug, lane, routeHref, entry }) => (
+              <article className="resources-country-row" key={slug}>
+                <div className="stack-xs">
+                  <div className="resources-country-head">
+                    <h4>{getEntryText(entry.name, locale)}</h4>
+                    <span className="resources-country-badge">{getEntryText(lane, locale)}</span>
+                  </div>
+                  <p className="small-text">{getEntryText(entry.scope, locale)}</p>
+                </div>
+                <div className="actions">
+                  <Link className="btn btn-secondary" href={routeHref || `/${locale}/used-in/${slug}`}>
+                    {locale === 'zh' ? '查看路线' : 'View route'}
+                  </Link>
+                  <Link
+                    className="btn btn-primary"
+                    href={buildPrefillHref(locale, '/intake', { locale, destinationSlug: slug })}
+                  >
+                    {locale === 'zh' ? '开始受理' : 'Start intake'}
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </article>
 
       <aside className="section-card ui-card-muted stack-sm resources-note-card" aria-labelledby="resources-note-heading">
         <h3 id="resources-note-heading">{t.resources.noteTitle}</h3>

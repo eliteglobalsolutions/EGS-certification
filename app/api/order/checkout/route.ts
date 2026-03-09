@@ -12,6 +12,23 @@ function getStripeClient(secretKey: string) {
   return stripeClient;
 }
 
+function resolveBaseUrl(req: Request) {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (configured) return configured.replace(/\/$/, '');
+
+  const origin = req.headers.get('origin')?.trim();
+  if (origin) return origin.replace(/\/$/, '');
+
+  const forwardedHost = req.headers.get('x-forwarded-host')?.trim();
+  const host = forwardedHost || req.headers.get('host')?.trim();
+  if (host) {
+    const proto = req.headers.get('x-forwarded-proto')?.trim() || 'http';
+    return `${proto}://${host}`.replace(/\/$/, '');
+  }
+
+  return new URL(req.url).origin.replace(/\/$/, '');
+}
+
 export async function POST(req: Request) {
   try {
     const limited = rateLimit(req, { namespace: 'order_checkout', limit: 20, windowMs: 60_000 });
@@ -23,12 +40,9 @@ export async function POST(req: Request) {
     }
 
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    const siteUrl = resolveBaseUrl(req);
     if (!stripeSecretKey) {
       return NextResponse.json({ error: 'Missing STRIPE_SECRET_KEY' }, { status: 500 });
-    }
-    if (!siteUrl) {
-      return NextResponse.json({ error: 'Missing NEXT_PUBLIC_SITE_URL' }, { status: 500 });
     }
 
     const body = await req.json();

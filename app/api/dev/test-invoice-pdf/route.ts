@@ -11,9 +11,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const orderId = String(body?.orderId || '').trim();
+    const force = body?.force === true;
     if (!orderId) return NextResponse.json({ error: 'Missing orderId' }, { status: 400 });
 
-    const result = await generateInvoiceForOrder(orderId);
+    const result = await generateInvoiceForOrder(orderId, { forceRegenerate: force });
     return new NextResponse(new Uint8Array(result.pdf_buffer), {
       status: 200,
       headers: {

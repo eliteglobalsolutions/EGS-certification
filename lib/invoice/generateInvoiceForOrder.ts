@@ -48,6 +48,10 @@ type Result = {
   pdf_signed_url: string | null;
 };
 
+type GenerateInvoiceOptions = {
+  forceRegenerate?: boolean;
+};
+
 function isoDateText(input: string) {
   const d = new Date(input);
   if (Number.isNaN(d.getTime())) return '00000000';
@@ -108,7 +112,7 @@ async function createSignedUrl(path: string): Promise<string | null> {
   return signed.data?.signedUrl || null;
 }
 
-export async function generateInvoiceForOrder(orderId: string): Promise<Result> {
+export async function generateInvoiceForOrder(orderId: string, options: GenerateInvoiceOptions = {}): Promise<Result> {
   const { data: order, error: orderError } = await supabaseAdmin
     .from('orders')
     .select(
@@ -137,7 +141,7 @@ export async function generateInvoiceForOrder(orderId: string): Promise<Result> 
     if (metaUpdateError) throw metaUpdateError;
   }
 
-  if (order.invoice_generated_at && order.invoice_pdf_path) {
+  if (!options.forceRegenerate && order.invoice_generated_at && order.invoice_pdf_path) {
     const download = await supabaseAdmin.storage.from(INVOICE_BUCKET).download(order.invoice_pdf_path);
     if (!download.error && download.data) {
       const pdfBuffer = Buffer.from(await download.data.arrayBuffer());
@@ -155,6 +159,10 @@ export async function generateInvoiceForOrder(orderId: string): Promise<Result> 
     }
   }
 
+  if (options.forceRegenerate && order.invoice_pdf_path) {
+    await supabaseAdmin.storage.from(INVOICE_BUCKET).remove([order.invoice_pdf_path]);
+  }
+
   const { data: rawItems, error: itemError } = await supabaseAdmin
     .from('invoice_line_items')
     .select('id,order_id,description,qty,unit_amount_cents,amount_cents,sort_order')
@@ -170,7 +178,7 @@ export async function generateInvoiceForOrder(orderId: string): Promise<Result> 
       0,
       Number.isFinite(order.amount_total) ? Math.trunc(order.amount_total as number) : 0
     );
-    const fallbackDescription = `Service Fee — ${serviceName} (${serviceSpeed})`;
+    const fallbackDescription = `Service Fee - ${serviceName} (${serviceSpeed})`;
     const { error: insertLineError } = await supabaseAdmin.from('invoice_line_items').insert({
       order_id: order.id,
       description: fallbackDescription,

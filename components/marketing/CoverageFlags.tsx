@@ -1,22 +1,23 @@
 import type { AppCopy } from '@/lib/i18n/dictionaries';
 import { CoverageRail } from './CoverageRail';
 import Link from 'next/link';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { loadSampleLibrary } from '@/lib/sample-library';
 
 export async function CoverageFlags({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
-  let sampleItems: Array<{ title: string; country: string; thumb_path?: string }> = [];
+  let sampleItems: Array<{ title: string; country: string; thumb_path?: string | null }> = [];
   try {
-    const indexPath = path.join(process.cwd(), 'public', 'samples', 'index.json');
-    const raw = await readFile(indexPath, 'utf8');
-    const parsed = JSON.parse(raw) as Array<{ title: string; country: string; thumb_path?: string }>;
-    const byCountry = new Map<string, Array<{ title: string; country: string; thumb_path?: string }>>();
+    const parsed = await loadSampleLibrary();
+    const byCountry = new Map<string, Array<{ title: string; country: string; thumb_path?: string | null }>>();
     for (const item of parsed) {
       if (!byCountry.has(item.country)) byCountry.set(item.country, []);
-      byCountry.get(item.country)!.push(item);
+      byCountry.get(item.country)!.push({
+        title: item.sampleTitle,
+        country: item.country,
+        thumb_path: item.thumb_path,
+      });
     }
     const buckets = Array.from(byCountry.values());
-    const mixed: Array<{ title: string; country: string; thumb_path?: string }> = [];
+    const mixed: Array<{ title: string; country: string; thumb_path?: string | null }> = [];
     let idx = 0;
     while (mixed.length < 12) {
       let added = false;
@@ -58,7 +59,15 @@ export async function CoverageFlags({ locale, t }: { locale: 'en' | 'zh'; t: App
             {sampleItems.map((item, index) => (
               <Link className="sample-rail-card stack-sm" href={`/${locale}/samples`} key={`${item.country}-${item.title}-${index}`}>
                 <div className="sample-rail-preview">
-                  {item.thumb_path ? <img src={item.thumb_path} alt={item.title} loading="lazy" /> : <span className="sample-file-icon">SAMPLE</span>}
+                  {item.thumb_path ? (
+                    <img
+                      src={item.thumb_path}
+                      alt={item.title}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="sample-file-icon">{locale === 'zh' ? '样本' : 'SAMPLE'}</span>
+                  )}
                 </div>
                 <p className="sample-meta">
                   <strong>{item.title}</strong>

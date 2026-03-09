@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { AppCopy, Locale } from '@/lib/i18n/dictionaries';
+import { DOCUMENT_TYPE_SUGGESTIONS } from '@/lib/prefill';
 
 type RouteResult = {
   routeType: 'apostille' | 'consular_legalisation' | 'needs_review';
@@ -16,6 +18,7 @@ type RouteResult = {
 };
 
 export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
+  const searchParams = useSearchParams();
   const [issuingCountry, setIssuingCountry] = useState(locale === 'zh' ? '澳大利亚' : 'Australia');
   const [destinationCountry, setDestinationCountry] = useState('');
   const [documentType, setDocumentType] = useState('');
@@ -27,6 +30,20 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
   const [result, setResult] = useState<RouteResult | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const documentTypeSuggestions = useMemo(
+    () => DOCUMENT_TYPE_SUGGESTIONS[locale],
+    [locale],
+  );
+
+  useEffect(() => {
+    const issuingPrefill = searchParams.get('issuingCountry');
+    const destinationPrefill = searchParams.get('destinationCountry');
+    const documentPrefill = searchParams.get('documentType');
+
+    if (issuingPrefill) setIssuingCountry(issuingPrefill);
+    if (destinationPrefill) setDestinationCountry(destinationPrefill);
+    if (documentPrefill) setDocumentType(documentPrefill);
+  }, [searchParams]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -68,7 +85,14 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
       <div className="page-header">
         <div>
           <p className="kicker">{t.landing.routeChecker.kicker}</p>
-          <h2 id="route-checker-heading">{t.landing.routeChecker.title}</h2>
+          <h2 id="route-checker-heading">
+            {locale === 'zh' ? '先确认路线，再进入正式受理' : 'Confirm the route first, then move into intake'}
+          </h2>
+          <p className="small-text">
+            {locale === 'zh'
+              ? '先填写签发地、使用地和文件类型，系统会给出一个初步路径判断。若你从某个路线页进入，这些字段会尽量自动带入。'
+              : 'Start with issuing country, destination country, and document type to get a working route estimate. If you arrived from a route page, these fields will prefill where possible.'}
+          </p>
           <p className="small-text">{t.landing.routeChecker.subtitle}</p>
         </div>
       </div>
@@ -87,7 +111,25 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.documentType}</label>
-              <input className="input" value={documentType} onChange={(e) => setDocumentType(e.target.value)} />
+                <input
+                  className="input"
+                  list="route-document-type-options"
+                  placeholder={locale === 'zh' ? '例如：毕业证、成绩单、在读证明、法定声明' : 'For example: Degree Certificate, Transcript, Enrollment Letter, Statutory Declaration'}
+                  value={documentType}
+                  onChange={(e) => setDocumentType(e.target.value)}
+                />
+              <datalist id="route-document-type-options">
+                {documentTypeSuggestions.map((item) => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+              <div className="actions">
+                {documentTypeSuggestions.slice(0, 8).map((item) => (
+                  <button className="btn btn-ghost" key={item} onClick={() => setDocumentType(item)} type="button">
+                    {item}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.quantity}</label>
@@ -125,7 +167,14 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           <button className="btn btn-primary" disabled={loading} type="submit">
             {loading ? t.common.loading : t.landing.routeChecker.ctaEstimate}
           </button>
-          <Link className="btn btn-secondary" href={`/${locale}/intake`}>
+          <Link
+            className="btn btn-secondary"
+            href={`/${locale}/intake?${new URLSearchParams({
+              ...(issuingCountry.trim() ? { issuingCountry } : {}),
+              ...(destinationCountry.trim() ? { destinationCountry } : {}),
+              ...(documentType.trim() ? { documentType } : {}),
+            }).toString()}`}
+          >
             {t.landing.routeChecker.ctaIntake}
           </Link>
         </div>
@@ -169,7 +218,14 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           </div>
           <p className="small-text">{result.complianceNote}</p>
           <div className="actions">
-            <Link className="btn btn-primary" href={`/${locale}/intake`}>
+            <Link
+              className="btn btn-primary"
+              href={`/${locale}/intake?${new URLSearchParams({
+                ...(issuingCountry.trim() ? { issuingCountry } : {}),
+                ...(destinationCountry.trim() ? { destinationCountry } : {}),
+                ...(documentType.trim() ? { documentType } : {}),
+              }).toString()}`}
+            >
               {t.landing.routeChecker.ctaBeginIntake}
             </Link>
           </div>

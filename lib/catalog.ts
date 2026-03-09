@@ -1020,7 +1020,7 @@ export const CERT_OPTIONS = [
     "key": "police",
     "en": "Police clearance (AFP / relevant)",
     "zh": "无犯罪记录（AFP 等）",
-    "price": 288
+    "price": 188
   },
   {
     "key": "birth",
@@ -1044,31 +1044,31 @@ export const CERT_OPTIONS = [
     "key": "transcript",
     "en": "Academic transcript",
     "zh": "学校成绩单",
-    "price": 228
+    "price": 188
   },
   {
     "key": "testamur",
     "en": "Testamur / Degree certificate",
     "zh": "毕业证/学位证（Testamur）",
-    "price": 228
+    "price": 188
   },
   {
     "key": "single",
     "en": "Single status / declaration",
     "zh": "单身证明/声明",
-    "price": 248
+    "price": 188
   },
   {
     "key": "divorce",
     "en": "Divorce certificate",
     "zh": "离婚证",
-    "price": 248
+    "price": 188
   },
   {
     "key": "company",
     "en": "Company extract / certificate",
     "zh": "公司证书/摘录（含 ASIC 类）",
-    "price": 388
+    "price": 188
   }
 ] as const;
 

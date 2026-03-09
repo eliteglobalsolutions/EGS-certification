@@ -15,9 +15,14 @@ guard let data = try? Data(contentsOf: indexPath),
 func makeThumb(pdfURL: URL, outURL: URL) -> Bool {
   guard let doc = PDFDocument(url: pdfURL), let page = doc.page(at: 0) else { return false }
   let pageRect = page.bounds(for: .mediaBox)
+  let rotation = ((page.rotation % 360) + 360) % 360
+  let isQuarterTurn = rotation == 90 || rotation == 270
+  let drawRect = isQuarterTurn
+    ? NSRect(x: 0, y: 0, width: pageRect.height, height: pageRect.width)
+    : pageRect
   let targetW: CGFloat = 560
-  let scale = targetW / max(1, pageRect.width)
-  let targetH = max(1, Int((pageRect.height * scale).rounded()))
+  let scale = targetW / max(1, drawRect.width)
+  let targetH = max(1, Int((drawRect.height * scale).rounded()))
   let size = NSSize(width: Int(targetW), height: targetH)
 
   let img = NSImage(size: size)
@@ -32,6 +37,19 @@ func makeThumb(pdfURL: URL, outURL: URL) -> Bool {
   ctx.saveGState()
   ctx.translateBy(x: 0, y: size.height)
   ctx.scaleBy(x: scale, y: -scale)
+  switch rotation {
+  case 90:
+    ctx.translateBy(x: drawRect.width, y: 0)
+    ctx.rotate(by: .pi / 2)
+  case 180:
+    ctx.translateBy(x: drawRect.width, y: drawRect.height)
+    ctx.rotate(by: .pi)
+  case 270:
+    ctx.translateBy(x: 0, y: drawRect.height)
+    ctx.rotate(by: -.pi / 2)
+  default:
+    break
+  }
   page.draw(with: .mediaBox, to: ctx)
   ctx.restoreGState()
   img.unlockFocus()
@@ -53,12 +71,13 @@ var failed = 0
 
 for i in 0..<arr.count {
   guard let fp = arr[i]["file_path"] as? String else { continue }
-  let rel = fp.replacingOccurrences(of: "/samples/", with: "")
+  let rel = fp.replacingOccurrences(of: "/samples/", with: "").removingPercentEncoding ?? fp.replacingOccurrences(of: "/samples/", with: "")
   let pdfURL = root.appendingPathComponent(rel)
   let thumbURL = pdfURL.deletingLastPathComponent().appendingPathComponent("thumb.jpg")
 
   if makeThumb(pdfURL: pdfURL, outURL: thumbURL) {
-    arr[i]["thumb_path"] = "/samples/" + rel.replacingOccurrences(of: "sample.pdf", with: "thumb.jpg")
+    let baseDir = rel.split(separator: "/").dropLast().joined(separator: "/")
+    arr[i]["thumb_path"] = "/samples/" + baseDir + "/thumb.jpg"
     success += 1
   } else {
     failed += 1

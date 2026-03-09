@@ -9,6 +9,15 @@ import { RouteChecker } from '@/components/marketing/RouteChecker';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import Link from 'next/link';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
+import {
+  AUSTRALIA_CITY_COVERAGE,
+  AUSTRALIA_CITY_KEYWORDS,
+  INTERNATIONAL_ROUTE_COVERAGE,
+  INTERNATIONAL_ROUTE_KEYWORDS,
+  KEY_DESTINATION_CITY_COVERAGE,
+  KEY_DESTINATION_CITY_KEYWORDS,
+} from '@/lib/australia-city-coverage';
 
 export async function generateMetadata({
   params,
@@ -17,18 +26,35 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '/services',
       title: '服务范围｜海牙认证、领事认证、翻译协调｜EGS Verification',
       description: '查看 EGS 服务范围：海牙认证、领事认证路径、翻译协调、证书支持与跨境文件流程。',
-      keywords: ['海牙认证服务', '领事认证服务', '文件认证流程', '翻译协调', '澳洲文件认证'],
-      alternates: { canonical: `${siteUrl}/zh/services` },
-    };
+      keywords: [
+        '海牙认证服务',
+        '领事认证服务',
+        '文件认证流程',
+        '翻译协调',
+        '澳洲文件认证',
+        '国际文件认证服务',
+        '悉尼文件认证服务',
+        '美国 文件认证',
+        '加拿大 文件认证',
+        '新加坡 文件认证',
+        '英国 文件认证',
+        '纽约 文件认证',
+        '多伦多 文件认证',
+        '伦敦 文件认证',
+      ],
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/services',
     title: 'Services | Apostille, Legalisation, Translation Coordination | EGS Verification',
     description:
       'Explore EGS services for apostille, consular legalisation, translation coordination, and structured cross-border document workflows.',
@@ -37,18 +63,20 @@ export async function generateMetadata({
       'consular legalisation service',
       'document attestation service',
       'translation coordination',
-      'certificate support Australia',
-    ],
-    alternates: { canonical: `${siteUrl}/en/services` },
-  };
+        'certificate support Australia',
+        'document legalisation Australia',
+        'Sydney document authentication service',
+        ...AUSTRALIA_CITY_KEYWORDS,
+        ...INTERNATIONAL_ROUTE_KEYWORDS,
+        ...KEY_DESTINATION_CITY_KEYWORDS,
+      ],
+  });
 }
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
-
   const serviceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -107,6 +135,39 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               : 'No. Timelines are estimates and remain subject to authority queues and destination requirements.',
         },
       },
+      {
+        '@type': 'Question',
+        name: locale === 'zh' ? '人在墨尔本、布里斯班或其他澳洲城市也可以办理吗？' : 'Can clients in Melbourne, Brisbane, or other Australian cities still use the service?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            locale === 'zh'
+              ? '可以。悉尼总部统筹，墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市通常都可以通过在线受理、邮寄和回寄方式办理。'
+              : 'Yes. Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can usually proceed through online intake, tracked mail, and return dispatch.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: locale === 'zh' ? '是否也覆盖美国、加拿大、新加坡和英国等热门路线？' : 'Do you also cover popular routes involving the USA, Canada, Singapore, and the UK?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            locale === 'zh'
+              ? '是。除澳洲主线外，也持续处理美国、加拿大、新加坡和英国相关文件的跨境使用路径。具体要求仍按签发地、目的地和接收机构规则逐案确认。'
+              : 'Yes. Alongside the Australia main lane, we regularly handle routes involving the United States, Canada, Singapore, and the United Kingdom. Exact handling still depends on issuing country, destination, and receiving-side requirements.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: locale === 'zh' ? '这些国家下面的主要城市也可以覆盖吗？' : 'Can major cities within those countries also be covered?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            locale === 'zh'
+              ? '可以。常见受理场景包括美国、加拿大、新加坡和英国下的主要城市与机构使用场景，例如纽约、多伦多、新加坡、伦敦等。最终仍以具体接收机构要求为准。'
+              : 'Yes. Common routes also cover major city and institution-side use within the United States, Canada, Singapore, and the United Kingdom, including places such as New York, Toronto, Singapore, and London. Final handling still depends on the actual receiving institution.',
+        },
+      },
     ],
   };
 
@@ -135,6 +196,49 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               { label: t.services.ctaTrack, href: `/${locale}/track`, variant: 'secondary' },
             ]}
           />
+        </Card>
+
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '澳洲城市覆盖' : 'Australia-wide coverage'}</p>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '虽然由悉尼总部统筹，但墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市的客户，通常都可以通过在线 intake、邮寄和回寄方式处理文件。'
+                : 'Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can usually proceed through online intake, tracked mail, and return dispatch.'}
+            </p>
+            <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
+          </div>
+        </Card>
+
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '国际热门覆盖' : 'International route coverage'}</p>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '除澳洲主线外，也持续处理美国、加拿大、新加坡和英国等热门跨境文件路线。具体路径仍按签发地、目的地和接收机构要求复核。'
+                : 'Alongside the Australia main lane, we also handle high-value routes involving the United States, Canada, Singapore, and the United Kingdom. Final route choice still depends on issuing country, destination, and receiving-side requirements.'}
+            </p>
+            <p className="small-text">{INTERNATIONAL_ROUTE_COVERAGE.join(' · ')}</p>
+          </div>
+        </Card>
+
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '海外城市覆盖' : 'Destination-city coverage'}</p>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '常见受理路线也覆盖这些国家下的主要城市与机构场景。公开页只做城市级别覆盖说明，具体接收要求仍按实际机构复核。'
+                : 'Common routes also cover major destination cities and institution-side use within these countries. Public pages only surface city-level coverage; final receiving requirements are still confirmed against the actual institution.'}
+            </p>
+            <div className="grid-2">
+              {Object.entries(KEY_DESTINATION_CITY_COVERAGE).map(([country, cities]) => (
+                <div className="state-block stack-sm" key={country}>
+                  <strong>{country}</strong>
+                  <p className="small-text">{cities.join(' · ')}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </Card>
 
         <ServiceLanes locale={locale} t={t} />

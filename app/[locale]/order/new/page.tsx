@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -11,6 +11,13 @@ import { InfoRow } from '@/components/ui/InfoRow';
 import { ErrorState } from '@/components/ui/States';
 import { getCopy, type Locale } from '@/lib/i18n/dictionaries';
 import { estimateOrder } from '@/lib/order';
+import {
+  buildCertificateChecklist,
+  buildOrderChecklist,
+  getCombinedNotarialSetHint,
+  inferOrderDocumentProfile,
+  supportsCombinedNotarialSet,
+} from '@/lib/order-profile';
 import { convertAudCents, detectUserCurrency, formatMoney } from '@/lib/currency';
 import {
   CERT_OPTIONS,
@@ -24,6 +31,8 @@ import {
   isSupportedShippingCountry,
   routeLabel,
 } from '@/lib/catalog';
+import { findDestinationMatch } from '@/lib/prefill';
+import { DOCUMENT_TYPE_SUGGESTIONS } from '@/lib/prefill';
 
 type OrderDraft = {
   step: number;
@@ -34,8 +43,13 @@ type OrderDraft = {
   serviceLevel: 'standard' | 'express';
   docCategory: 'personal' | 'company';
   documentType: string;
+  combineIntoOneNotarialSet: boolean;
+  combinedDocumentType1: string;
+  combinedDocumentType2: string;
+  combinedDocumentType3: string;
   documentQuantityInput: string;
   pagesInput: string;
+  submissionMethod: 'upload' | 'mail_po_box';
   deliveryMethod: 'domestic' | 'intl_dhl';
   recipientName: string;
   phone: string;
@@ -55,6 +69,7 @@ type OrderDraft = {
 
 export default function NewOrderPage() {
   const params = useParams<{ locale: Locale }>();
+  const searchParams = useSearchParams();
   const locale = params.locale;
   const t = getCopy(locale);
 
@@ -66,8 +81,13 @@ export default function NewOrderPage() {
   const [serviceLevel, setServiceLevel] = useState<'standard' | 'express'>('standard');
   const [docCategory, setDocCategory] = useState<'personal' | 'company'>('personal');
   const [documentType, setDocumentType] = useState('');
+  const [combineIntoOneNotarialSet, setCombineIntoOneNotarialSet] = useState(false);
+  const [combinedDocumentType1, setCombinedDocumentType1] = useState('');
+  const [combinedDocumentType2, setCombinedDocumentType2] = useState('');
+  const [combinedDocumentType3, setCombinedDocumentType3] = useState('');
   const [documentQuantityInput, setDocumentQuantityInput] = useState('1');
   const [pagesInput, setPagesInput] = useState('1');
+  const [submissionMethod, setSubmissionMethod] = useState<'upload' | 'mail_po_box'>('upload');
   const [deliveryMethod, setDeliveryMethod] = useState<'domestic' | 'intl_dhl'>('domestic');
   const [recipientName, setRecipientName] = useState('');
   const [phone, setPhone] = useState('');
@@ -83,6 +103,7 @@ export default function NewOrderPage() {
   const [passportDocs, setPassportDocs] = useState<File[]>([]);
   const [supportingIdDocs, setSupportingIdDocs] = useState<File[]>([]);
   const [showChecklist, setShowChecklist] = useState(false);
+  const [showAllDocSuggestions, setShowAllDocSuggestions] = useState(false);
   const [email, setEmail] = useState('');
   const [tosAccepted, setTosAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
@@ -106,7 +127,20 @@ export default function NewOrderPage() {
     [locale]
   );
   const documentTypeOptions = useMemo(() => t.order.options.documentTypes, [t]);
+  const quickDocumentTypeSuggestions = useMemo(
+    () => DOCUMENT_TYPE_SUGGESTIONS[locale],
+    [locale],
+  );
+  const visibleDocumentSuggestions = useMemo(
+    () => (showAllDocSuggestions ? quickDocumentTypeSuggestions : quickDocumentTypeSuggestions.slice(0, 8)),
+    [quickDocumentTypeSuggestions, showAllDocSuggestions],
+  );
   const destinationCountry = destination ? (locale === 'zh' ? destination.zh : destination.en) : '';
+  const combinedDocumentNames = useMemo(
+    () => [combinedDocumentType1, combinedDocumentType2, combinedDocumentType3].map((item) => item.trim()).filter(Boolean),
+    [combinedDocumentType1, combinedDocumentType2, combinedDocumentType3],
+  );
+  const combinedDocumentCount = combinedDocumentNames.length;
   const documentQuantity = Math.max(1, Number.parseInt(documentQuantityInput || '1', 10) || 1);
   const pages = Math.max(1, Number.parseInt(pagesInput || '1', 10) || 1);
   const certificateQuantity = Math.max(0, Number.parseInt(certificateQuantityInput || '0', 10) || 0);
@@ -122,14 +156,18 @@ export default function NewOrderPage() {
         serviceLevel,
         docCategory,
         documentType,
+        combineIntoOneNotarialSet,
+        combinedDocumentNames,
+        combinedDocumentCount,
         documentQuantity,
         pages,
         deliveryMethod,
         certificateType,
         certificateQuantity,
         email,
+        issuingCountry,
       }),
-    [locale, destinationCountry, destinationCode, routeOverride, serviceLevel, docCategory, documentType, documentQuantity, pages, deliveryMethod, certificateType, certificateQuantity, email]
+    [locale, destinationCountry, destinationCode, issuingCountry, routeOverride, serviceLevel, docCategory, documentType, combineIntoOneNotarialSet, combinedDocumentNames, combinedDocumentCount, documentQuantity, pages, submissionMethod, deliveryMethod, certificateType, certificateQuantity, email]
   );
 
   const steps = t.order.steps.map((label, index) => ({ id: index + 1, label }));
@@ -155,7 +193,10 @@ export default function NewOrderPage() {
     if (stepId === 1) return Boolean(destinationCode) && Boolean(issuingCountry.trim());
     if (stepId === 2) return Boolean(routeOverride) && Boolean(serviceLevel) && Boolean(docCategory);
     if (stepId === 3) return Boolean(documentType) && documentQuantity > 0 && pages > 0;
-    if (stepId === 4) return files.length > 0 && passportDocs.length > 0 && supportingIdDocs.length > 0;
+    if (stepId === 4) {
+      if (submissionMethod === 'mail_po_box') return true;
+      return files.length > 0 && passportDocs.length > 0 && supportingIdDocs.length > 0;
+    }
     if (stepId === 5) {
       return Boolean(deliveryMethod)
         && Boolean(recipientName.trim())
@@ -251,7 +292,13 @@ export default function NewOrderPage() {
         serviceLevel,
         docCategory,
         issuedIn,
-        documentType,
+        documentType: combineIntoOneNotarialSet && combinedDocumentNames.length
+          ? `${documentType} + ${combinedDocumentNames.join(' + ')}`
+          : documentType,
+        submissionMethod,
+        combineIntoOneNotarialSet,
+        combinedDocumentNames,
+        combinedDocumentCount,
         documentQuantity,
         pages,
         deliveryMethod,
@@ -317,11 +364,22 @@ export default function NewOrderPage() {
 
   const routeText = routeLabel(locale, summary.resolvedRoute);
   const serviceLevelText = SERVICE_LEVEL.find((x) => x.key === serviceLevel)?.[locale] || serviceLevel;
+  const documentProfile = inferOrderDocumentProfile(docCategory, documentType);
+  const canCombineDocuments = supportsCombinedNotarialSet(issuingCountry, documentProfile);
+  const combinedSetHint = getCombinedNotarialSetHint(locale, issuingCountry, documentProfile);
+  const dynamicChecklist = buildOrderChecklist({
+    locale,
+    issuingCountry,
+    route: summary.resolvedRoute,
+    profile: documentProfile,
+    serviceLevel,
+  });
+  const certificateChecklist = buildCertificateChecklist(locale, certificateType);
   const displaySubtotal = convertAudCents(summary.subtotal, displayCurrency);
   const displayServiceFee = convertAudCents(summary.serviceFee, displayCurrency);
   const displayTotal = convertAudCents(summary.total, displayCurrency);
   const showConverted = displayCurrency !== 'AUD';
-  const surchargeLabel = locale === 'zh' ? '页数加价' : 'Page Surcharge';
+  const surchargeLabel = locale === 'zh' ? '附加项 / 调整项' : 'Adjustments & add-ons';
   const draftPayload: OrderDraft = {
     step,
     destinationQuery,
@@ -331,8 +389,13 @@ export default function NewOrderPage() {
     serviceLevel,
     docCategory,
     documentType,
+    combineIntoOneNotarialSet,
+    combinedDocumentType1,
+    combinedDocumentType2,
+    combinedDocumentType3,
     documentQuantityInput,
     pagesInput,
+    submissionMethod,
     deliveryMethod,
     recipientName,
     phone,
@@ -396,8 +459,13 @@ export default function NewOrderPage() {
       if (draft.serviceLevel === 'standard' || draft.serviceLevel === 'express') setServiceLevel(draft.serviceLevel);
       if (draft.docCategory === 'personal' || draft.docCategory === 'company') setDocCategory(draft.docCategory);
       if (typeof draft.documentType === 'string') setDocumentType(draft.documentType);
+      if (typeof draft.combineIntoOneNotarialSet === 'boolean') setCombineIntoOneNotarialSet(draft.combineIntoOneNotarialSet);
+      if (typeof draft.combinedDocumentType1 === 'string') setCombinedDocumentType1(draft.combinedDocumentType1);
+      if (typeof draft.combinedDocumentType2 === 'string') setCombinedDocumentType2(draft.combinedDocumentType2);
+      if (typeof draft.combinedDocumentType3 === 'string') setCombinedDocumentType3(draft.combinedDocumentType3);
       if (typeof draft.documentQuantityInput === 'string') setDocumentQuantityInput(draft.documentQuantityInput);
       if (typeof draft.pagesInput === 'string') setPagesInput(draft.pagesInput);
+      if (draft.submissionMethod === 'upload' || draft.submissionMethod === 'mail_po_box') setSubmissionMethod(draft.submissionMethod);
       if (draft.deliveryMethod === 'domestic' || draft.deliveryMethod === 'intl_dhl') setDeliveryMethod(draft.deliveryMethod);
       if (typeof draft.recipientName === 'string') setRecipientName(draft.recipientName);
       if (typeof draft.phone === 'string') setPhone(draft.phone);
@@ -419,6 +487,46 @@ export default function NewOrderPage() {
   }, [draftStorageKey]);
 
   useEffect(() => {
+    if (!canCombineDocuments) {
+      setCombineIntoOneNotarialSet(false);
+      setCombinedDocumentType1('');
+      setCombinedDocumentType2('');
+      setCombinedDocumentType3('');
+    }
+  }, [canCombineDocuments]);
+
+  useEffect(() => {
+    const issuingPrefill = String(searchParams.get('issuingCountry') || '').trim();
+    const destinationCodePrefill = String(searchParams.get('destinationCode') || '').trim();
+    const destinationPrefill = String(searchParams.get('destinationCountry') || '').trim();
+    const documentTypePrefill = String(searchParams.get('documentType') || '').trim();
+
+    if (issuingPrefill) {
+      setIssuingCountry(issuingPrefill);
+    }
+
+    if (destinationCodePrefill) {
+      const matched = DESTINATIONS.find((item) => item.code === destinationCodePrefill.toUpperCase());
+      if (matched) {
+        setDestinationCode(matched.code);
+        setDestinationQuery(locale === 'zh' ? matched.zh : matched.en);
+      }
+    } else if (destinationPrefill) {
+      const matched = findDestinationMatch(destinationPrefill);
+      if (matched) {
+        setDestinationCode(matched.code);
+        setDestinationQuery(locale === 'zh' ? matched.zh : matched.en);
+      } else {
+        setDestinationQuery(destinationPrefill);
+      }
+    }
+
+    if (documentTypePrefill) {
+      setDocumentType(documentTypePrefill);
+    }
+  }, [locale, searchParams]);
+
+  useEffect(() => {
     persistDraftNow();
   }, [
     step,
@@ -431,6 +539,7 @@ export default function NewOrderPage() {
     documentType,
     documentQuantityInput,
     pagesInput,
+    submissionMethod,
     deliveryMethod,
     recipientName,
     phone,
@@ -577,15 +686,99 @@ export default function NewOrderPage() {
           {step === 3 ? (
             <div className="stack-sm">
               <label className="small-text">{t.order.labels.docType}</label>
-              <select className="select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
-                <option value="">{locale === 'zh' ? '请选择文件类型' : 'Select document type'}</option>
-                {documentType && !documentTypeOptions.includes(documentType) ? <option value={documentType}>{documentType}</option> : null}
-                {documentTypeOptions.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
+              <input
+                className="input"
+                list="intake-document-type-options"
+                placeholder={locale === 'zh' ? '搜索或输入文件类型' : 'Search or enter document type'}
+                value={documentType}
+                onChange={(e) => setDocumentType(e.target.value)}
+              />
+              <datalist id="intake-document-type-options">
+                {[...quickDocumentTypeSuggestions, ...documentTypeOptions].map((item) => (
+                  <option key={item} value={item} />
                 ))}
-              </select>
+              </datalist>
+              <p className="small-text">
+                {locale === 'zh'
+                  ? '先选最接近的文件类型即可，付款前我们会再核验实际办理路径。'
+                  : 'Choose the closest document type for now. The exact processing path is reviewed again before payment.'}
+              </p>
+              <div className="actions">
+                {visibleDocumentSuggestions.map((item) => (
+                  <button className="btn btn-ghost" key={item} onClick={() => setDocumentType(item)} type="button">
+                    {item}
+                  </button>
+                ))}
+              </div>
+              {quickDocumentTypeSuggestions.length > 8 ? (
+                <button
+                  className="btn btn-ghost"
+                  onClick={() => setShowAllDocSuggestions((value) => !value)}
+                  type="button"
+                >
+                  {showAllDocSuggestions
+                    ? (locale === 'zh' ? '收起常见文件类型' : 'Collapse document types')
+                    : (locale === 'zh' ? '展开更多常见文件类型' : 'Show more document types')}
+                </button>
+              ) : null}
+
+              {documentType && canCombineDocuments ? (
+                <div className="ui-card ui-card-muted stack-sm">
+                  <label className="small-text">
+                    <input
+                      checked={combineIntoOneNotarialSet}
+                      onChange={(e) => setCombineIntoOneNotarialSet(e.target.checked)}
+                      type="checkbox"
+                    />{' '}
+                    {locale === 'zh'
+                      ? '如允许，合并为同一份公证 / 认证文件组'
+                      : 'Where eligible, combine into one notarial / authentication set'}
+                  </label>
+                  <p className="small-text">{combinedSetHint}</p>
+                  {combineIntoOneNotarialSet ? (
+                    <>
+                      <label className="small-text">
+                        {locale === 'zh' ? '同组附加文件类型' : 'Additional documents in the same set'}
+                      </label>
+                      <input
+                        className="input"
+                        placeholder={
+                          locale === 'zh'
+                            ? 'Option 1，例如：Academic Transcript'
+                            : 'Option 1, for example: Academic Transcript'
+                        }
+                        value={combinedDocumentType1}
+                        onChange={(e) => setCombinedDocumentType1(e.target.value)}
+                      />
+                      <input
+                        className="input"
+                        placeholder={
+                          locale === 'zh'
+                            ? 'Option 2，例如：Enrollment Letter'
+                            : 'Option 2, for example: Enrollment Letter'
+                        }
+                        value={combinedDocumentType2}
+                        onChange={(e) => setCombinedDocumentType2(e.target.value)}
+                      />
+                      <input
+                        className="input"
+                        placeholder={
+                          locale === 'zh'
+                            ? 'Option 3，例如：Offer Letter'
+                            : 'Option 3, for example: Offer Letter'
+                        }
+                        value={combinedDocumentType3}
+                        onChange={(e) => setCombinedDocumentType3(e.target.value)}
+                      />
+                      <p className="small-text">
+                        {locale === 'zh'
+                          ? `当前附加文件数：${combinedDocumentCount}。每多一份 +A$150。`
+                          : `Current additional document count: ${combinedDocumentCount}. Each extra document adds A$150.`}
+                      </p>
+                    </>
+                  ) : null}
+                </div>
+              ) : null}
 
               <label className="small-text">{t.order.labels.docQty}</label>
               <input
@@ -629,6 +822,64 @@ export default function NewOrderPage() {
             <div className="stack-sm">
               <details className="ui-card ui-card-muted stack-sm" open={showChecklist} onToggle={(e) => setShowChecklist((e.target as HTMLDetailsElement).open)}>
                 <summary className="small-text">{t.order.labels.checklistToggle}</summary>
+                <div className="grid-2">
+                  <div className="ui-card stack-sm">
+                    <p className="small-text">
+                      <strong>{dynamicChecklist.title}</strong>
+                    </p>
+                    <p className="small-text">{dynamicChecklist.pricingNote}</p>
+                    <ul className="list-plain">
+                      {dynamicChecklist.requiredItems.map((item) => (
+                        <li className="small-text" key={item}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="ui-card stack-sm">
+                    <p className="small-text">
+                      <strong>{locale === 'zh' ? '处理提示' : 'Handling notes'}</strong>
+                    </p>
+                    <ul className="list-plain">
+                      {dynamicChecklist.handlingNotes.map((item) => (
+                        <li className="small-text" key={item}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="small-text">{dynamicChecklist.expedite}</p>
+                    {combineIntoOneNotarialSet && combinedDocumentNames.length ? (
+                      <p className="small-text">
+                        {locale === 'zh'
+                          ? `当前按同一套文件组估算：${documentType} + ${combinedDocumentNames.join(' + ')}`
+                          : `Currently estimated as one grouped set: ${documentType} + ${combinedDocumentNames.join(' + ')}`}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+                {certificateChecklist ? (
+                  <div className="grid-1">
+                    <div className="ui-card stack-sm">
+                      <p className="small-text">
+                        <strong>{certificateChecklist.title}</strong>
+                      </p>
+                      <ul className="list-plain">
+                        {certificateChecklist.requiredItems.map((item) => (
+                          <li className="small-text" key={item}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <ul className="list-plain">
+                        {certificateChecklist.notes.map((item) => (
+                          <li className="small-text" key={item}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : null}
                 <div className="grid-2">
                   <div className="ui-card stack-sm">
                     <p className="small-text">
@@ -702,6 +953,41 @@ export default function NewOrderPage() {
               </details>
 
               <div className="grid-2">
+                <div className="ui-card stack-sm">
+                  <h3>{locale === 'zh' ? '文件提交方式' : 'Document submission method'}</h3>
+                  <label className="small-text">{t.order.labels.submissionMethod}</label>
+                  <select
+                    className="select"
+                    value={submissionMethod}
+                    onChange={(e) => setSubmissionMethod(e.target.value as 'upload' | 'mail_po_box')}
+                  >
+                    <option value="upload">{t.order.options.submissionMethod.upload}</option>
+                    <option value="mail_po_box">{t.order.options.submissionMethod.mailPoBox}</option>
+                  </select>
+                  <p className="small-text">
+                    {submissionMethod === 'mail_po_box'
+                      ? (locale === 'zh'
+                        ? '可先完成 intake，再把文件寄到我们的 PO Box。包裹内建议附上姓名、邮箱、联系电话和订单参考。'
+                        : 'You can complete intake first and then mail the documents to our PO Box. Include your name, email, phone number, and order reference inside the package.')
+                      : (locale === 'zh'
+                        ? '默认方式为在线上传扫描件或照片。正式处理前我们会再确认是否仍需原件。'
+                        : 'Default method is secure upload of scans or photos. We will confirm later if originals are still required before processing.')}
+                  </p>
+                  {submissionMethod === 'mail_po_box' ? (
+                    <div className="ui-card ui-card-muted stack-sm">
+                      <p className="small-text"><strong>{locale === 'zh' ? 'PO Box 地址' : 'PO Box address'}</strong></p>
+                      <p className="small-text">Elite Global Solutions</p>
+                      <p className="small-text">PO Box 97, Edgecliff NSW 2027, Australia</p>
+                      <p className="small-text">1300 990 666</p>
+                      <p className="small-text">{locale === 'zh' ? '建议使用可追踪邮寄，并保留 tracking number。' : 'Tracked mail is recommended. Keep the tracking number for reference.'}</p>
+                      <p className="small-text">
+                        {locale === 'zh'
+                          ? '寄出后，请把 tracking number 发到 info@eliteglobalsolutions.co，或回到上传页补交 tracking 信息。'
+                          : 'After mailing, send the tracking number to info@eliteglobalsolutions.co or upload the tracking details on the upload page.'}
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
                 <div className="ui-card stack-sm">
                   <h3>{locale === 'zh' ? '主体文件上传' : 'Primary document upload'}</h3>
                   <label className="small-text">{t.order.labels.uploadDocs}</label>
@@ -795,6 +1081,22 @@ export default function NewOrderPage() {
                   </ul>
                 </div>
               ) : null}
+              {submissionMethod === 'mail_po_box' ? (
+                <div className="ui-card ui-card-muted stack-sm">
+                  <p className="small-text">
+                    <strong>{locale === 'zh' ? '已选择提交方式：' : 'Selected submission method:'}</strong>{' '}
+                    {locale === 'zh' ? '邮寄到 PO Box' : 'Mail documents to PO Box'}
+                  </p>
+                  <p className="small-text">Elite Global Solutions</p>
+                  <p className="small-text">PO Box 97, Edgecliff NSW 2027, Australia</p>
+                  <p className="small-text">1300 990 666</p>
+                  <p className="small-text">
+                    {locale === 'zh'
+                      ? '寄出后请保留 tracking number，并通过邮箱或上传页提交。'
+                      : 'Keep the tracking number after posting and submit it by email or through the upload page.'}
+                  </p>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -871,7 +1173,16 @@ export default function NewOrderPage() {
                 <InfoRow label={t.order.labels.service} value={routeText} />
                 <InfoRow label={t.order.labels.serviceLevel} value={serviceLevelText} />
                 <InfoRow label={t.order.labels.docCategory} value={DOC_CATEGORY.find((x) => x.key === docCategory)?.[locale] || docCategory} />
-                <InfoRow label={t.order.labels.docType} value={documentType || '-'} />
+                <InfoRow
+                  label={t.order.labels.docType}
+                  value={combineIntoOneNotarialSet && combinedDocumentNames.length ? `${documentType} + ${combinedDocumentNames.join(' + ')}` : (documentType || '-')}
+                />
+                <InfoRow
+                  label={t.order.labels.submissionMethod}
+                  value={submissionMethod === 'mail_po_box'
+                    ? (locale === 'zh' ? '邮寄到 PO Box' : 'Mail documents to PO Box')
+                    : (locale === 'zh' ? '在线上传' : 'Upload now')}
+                />
                 <InfoRow label={t.order.labels.docQty} value={String(documentQuantity || '-')} />
                 <InfoRow label={t.order.labels.pages} value={String(pages || '-')} />
                 <InfoRow label={t.order.labels.delivery} value={COURIER_OPTIONS.find((x) => x.key === deliveryMethod)?.[locale] || deliveryMethod} />
@@ -960,7 +1271,16 @@ export default function NewOrderPage() {
         <InfoRow label={t.order.labels.issuingCountry} value={issuingCountry || '-'} />
         <InfoRow label={t.order.labels.serviceLevel} value={serviceLevelText} />
         <InfoRow label={t.order.labels.docCategory} value={DOC_CATEGORY.find((x) => x.key === docCategory)?.[locale] || docCategory} />
-        <InfoRow label={t.order.labels.docType} value={documentType || '-'} />
+        <InfoRow
+          label={t.order.labels.docType}
+          value={combineIntoOneNotarialSet && combinedDocumentNames.length ? `${documentType} + ${combinedDocumentNames.join(' + ')}` : (documentType || '-')}
+        />
+        <InfoRow
+          label={t.order.labels.submissionMethod}
+          value={submissionMethod === 'mail_po_box'
+            ? (locale === 'zh' ? '邮寄到 PO Box' : 'Mail documents to PO Box')
+            : (locale === 'zh' ? '在线上传' : 'Upload now')}
+        />
         <InfoRow label={t.order.labels.docQty} value={String(documentQuantity || '-')} />
         <InfoRow label={t.order.labels.pages} value={String(pages || '-')} />
         <InfoRow label={t.order.labels.delivery} value={COURIER_OPTIONS.find((x) => x.key === deliveryMethod)?.[locale] || deliveryMethod} />

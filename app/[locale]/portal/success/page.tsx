@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Timeline } from '@/components/ui/Timeline';
@@ -18,6 +18,7 @@ export default function PortalSuccessPage() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState('');
+  const adsEventSent = useRef(false);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
@@ -55,6 +56,22 @@ export default function PortalSuccessPage() {
       cancelled = true;
     };
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!data || adsEventSent.current) return;
+    const gtag = (window as any).gtag;
+    if (typeof gtag !== 'function') return;
+
+    gtag('event', 'conversion', { send_to: 'AW-17994379586/F-OlCNmLlIMcEMLisYRD' });
+    gtag('event', 'ads_conversion___1', {
+      order_id: data.id || undefined,
+      order_no: data.order_no || undefined,
+      value: typeof data.amount_total === 'number' ? data.amount_total / 100 : undefined,
+      currency: (data.currency || 'AUD').toUpperCase(),
+    });
+
+    adsEventSent.current = true;
+  }, [data]);
 
   if (error) {
     return (

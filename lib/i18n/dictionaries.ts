@@ -75,6 +75,7 @@ export const copy = {
     landing: {
       nav: {
         wordmarkKicker: 'Global Document Compliance Gateway',
+        routes: 'Routes',
         services: 'Services',
         process: 'Process',
         pricing: 'Pricing',
@@ -663,6 +664,7 @@ export const copy = {
         state: 'State / Province',
         country: 'Country',
         delivery: 'Courier',
+        submissionMethod: 'Document Submission Method',
         uploadDocs: 'Upload Documents',
         uploadPassport: 'Upload Passport',
         uploadSupportingId: 'Upload Supporting ID',
@@ -702,6 +704,10 @@ export const copy = {
         shippingCountryCommonTitle: 'Supported shipping countries/regions',
         shippingCountrySearchHint: 'Search supported shipping country/region',
         poBoxEdgecliff: 'Use PO Box 97, Edgecliff NSW 2027',
+        submissionMethod: {
+          upload: 'Upload now',
+          mailPoBox: 'Mail documents to our PO Box',
+        },
         documentTypes: [
           'Certificates',
           'Letter',
@@ -809,7 +815,10 @@ export const copy = {
         },
         secondary: {
           title: 'Supporting identity',
-          rules: ['Provide at least one: Driver Licence / National ID / Medicare / Visa page.'],
+          rules: [
+            'Provide at least one supporting ID: Driver Licence / National ID / Medicare / Visa page.',
+            'For police-check or identity-sensitive files, an extra proof such as utility bill or bank statement may also be required.',
+          ],
         },
         scan: {
           title: 'Scan quality standards',
@@ -822,15 +831,17 @@ export const copy = {
         signature: {
           title: 'Signature and witnessing',
           rules: [
-            'If signing/sworn/witnessed content is involved, original handling may be required.',
+            'If signing / sworn / witnessed content is involved, original handling is often required.',
             'Witnessing method is determined independently by the notary.',
             'If already signed or witnessed by a JP / Legal Practitioner / Notary, no video verification is required and originals can be posted directly.',
+            'POA, statutory declaration, affidavit, and other execution-sensitive files should stay on the final text version before signing.',
           ],
         },
         originals: {
           title: 'Originals and shipping',
           rules: [
             'Include order reference and return details with originals.',
+            'Original documents may still be required depending on document type, issuing authority, destination, and receiving-side requirements.',
             'Insurance is recommended for original documents.',
             'Risk transfer and logistics terms follow the Terms of Service.',
           ],
@@ -918,19 +929,30 @@ export const copy = {
       noteTitle: 'Coordination option',
       noteBody: 'If you want EGS to coordinate the full workflow, start an order.',
       samples: {
-        title: 'Redacted Sample Library',
-        subtitle: 'Reference-only examples of redacted and watermarked documents.',
+        title: 'Document Sample Library',
+        subtitle: 'Redacted sample previews organised by document type, issuing country, and destination use.',
         disclaimer:
           'Samples are for format reference only and do not guarantee acceptance. Final requirements depend on issuing and receiving authorities.',
-        searchLabel: 'Search sample files',
-        searchPlaceholder: 'Search by country, document type, or keyword',
+        searchLabel: 'Search the library',
+        searchPlaceholder: 'Search by route, country, document type, or tag',
         filterLabel: 'Filter by country',
         allCountries: 'All countries',
         previewTitle: 'Sample preview',
-        openButton: 'View file',
+        openButton: 'Start similar intake',
         reviewedLabel: 'Reviewed',
         empty: 'No sample files matched your search.',
         totalLabel: 'Total samples',
+        documentTypeCountLabel: 'Document types',
+        issuingCountryCountLabel: 'Issuing countries',
+        destinationCountLabel: 'Destination uses',
+        groupDocumentType: 'By document type',
+        groupIssuingCountry: 'By issuing country',
+        groupDestinationUse: 'By destination use',
+        clearFilters: 'Clear filters',
+        detailCta: 'View sample detail',
+        previewCaptionLabel: 'Preview caption',
+        protectedLabel: 'Protected preview',
+        selectPrompt: 'Select a sample route from the library to load preview.',
       },
     },
   },
@@ -964,6 +986,7 @@ export const copy = {
     landing: {
       nav: {
         wordmarkKicker: '全球文件合规门户',
+        routes: '路线',
         services: '服务',
         process: '流程',
         pricing: '价格',
@@ -1529,6 +1552,7 @@ export const copy = {
         state: '州/省',
         country: '国家',
         delivery: '快递方式',
+        submissionMethod: '文件提交方式',
         uploadDocs: '上传文件',
         uploadPassport: '上传护照',
         uploadSupportingId: '上传辅助证件',
@@ -1568,6 +1592,10 @@ export const copy = {
         shippingCountryCommonTitle: '支持邮寄国家/地区',
         shippingCountrySearchHint: '搜索支持的邮寄国家/地区',
         poBoxEdgecliff: '使用 PO Box 97, Edgecliff NSW 2027',
+        submissionMethod: {
+          upload: '在线上传',
+          mailPoBox: '邮寄到我们的 PO Box',
+        },
         documentTypes: [
           '证书类（Certificates）',
           '信函类（Letter）',
@@ -1668,7 +1696,10 @@ export const copy = {
         },
         secondary: {
           title: '辅助证件',
-          rules: ['至少提供一项：驾照 / 身份证 / Medicare / 签证页。'],
+          rules: [
+            '至少提供一项辅助证件：驾照 / 身份证 / Medicare / 签证页。',
+            '如为无犯罪或身份敏感文件，还可能需要补充水电账单或银行账单。',
+          ],
         },
         scan: {
           title: '扫描规范',
@@ -1676,11 +1707,21 @@ export const copy = {
         },
         signature: {
           title: '签字与见证',
-          rules: ['如涉及签字/宣誓/见证，可能需要原件处理。', '见证方式由公证人独立决定。', '如文件已由 JP / Legal Practitioner / Notary 签字或见证，通常无需视频验证，可直接邮寄原件。'],
+          rules: [
+            '如涉及签字 / 宣誓 / 见证，通常会需要原件处理。',
+            '见证方式由公证人独立决定。',
+            '如文件已由 JP / Legal Practitioner / Notary 签字或见证，通常无需视频验证，可直接邮寄原件。',
+            'POA、法定声明、affidavit 等签署敏感文件，应先锁定最终文本再签字。',
+          ],
         },
         originals: {
           title: '原件与邮寄',
-          rules: ['寄送原件请标注订单号与回邮信息。', '建议为原件购买运输保险。', '风险转移及物流规则以服务条款为准。'],
+          rules: [
+            '寄送原件请标注订单号与回邮信息。',
+            '根据文件类型、签发机构、目的地及接收方要求，后续仍可能需要原件。',
+            '建议为原件购买运输保险。',
+            '风险转移及物流规则以服务条款为准。',
+          ],
         },
         overseas: {
           title: '海外使用提示',
@@ -1760,18 +1801,29 @@ export const copy = {
       noteTitle: '流程协调选项',
       noteBody: '如果你希望由 EGS 协调完整流程，可直接开始下单。',
       samples: {
-        title: '打码样本库',
-        subtitle: '仅用于版式参考的打码与水印样本文件。',
+        title: '样本文档库',
+        subtitle: '按文件类型、签发国家和用途路径整理的打码样本预览。',
         disclaimer: '样本仅供参考，不构成受理承诺。最终要求以签发机构和接收机构规则为准。',
-        searchLabel: '搜索样本文件',
-        searchPlaceholder: '按国家、文件类型或关键词搜索',
+        searchLabel: '搜索样本库',
+        searchPlaceholder: '按路线、国家、文件类型或标签搜索',
         filterLabel: '按国家筛选',
         allCountries: '全部国家',
         previewTitle: '样本预览',
-        openButton: '查看文件',
+        openButton: '开始类似 intake',
         reviewedLabel: '已复核',
         empty: '未找到匹配的样本文件。',
         totalLabel: '样本总数',
+        documentTypeCountLabel: '文件类型',
+        issuingCountryCountLabel: '签发国家',
+        destinationCountLabel: '目的地用途',
+        groupDocumentType: '按文件类型',
+        groupIssuingCountry: '按签发国家',
+        groupDestinationUse: '按目的地用途',
+        clearFilters: '清空筛选',
+        detailCta: '查看样本详情',
+        previewCaptionLabel: '预览说明',
+        protectedLabel: '受保护预览',
+        selectPrompt: '从左侧样本库选择一个路线样本以加载预览。',
       },
     },
   },

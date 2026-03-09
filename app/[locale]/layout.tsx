@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -47,32 +48,16 @@ export async function generateMetadata({
         ];
 
   return {
-    title,
-    description,
-    keywords,
-    alternates: {
-      canonical: `${siteUrl}/${locale}`,
-      languages: {
-        en: `${siteUrl}/en`,
-        zh: `${siteUrl}/zh`,
-      },
-    },
-    openGraph: {
+    ...buildPageMetadata({
+      locale,
+      path: '',
       title,
       description,
-      url: `${siteUrl}/${locale}`,
-      siteName: 'EGS Verification',
-      type: 'website',
-      locale: locale === 'zh' ? 'zh_CN' : 'en_AU',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    robots: {
-      index: true,
-      follow: true,
+      keywords,
+    }),
+    title: {
+      default: title,
+      template: `%s | ${t.brand.title}`,
     },
     metadataBase: new URL(siteUrl),
     other: {

@@ -12,6 +12,7 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
         </Link>
 
         <nav className="marketing-nav-links" aria-label="Section links">
+          <Link href={`/${locale}/routes`}>{t.landing.nav.routes}</Link>
           <Link href={`/${locale}#services`}>{t.landing.nav.services}</Link>
           <Link href={`/${locale}#process`}>{t.landing.nav.process}</Link>
           <Link href={`/${locale}#pricing`}>{t.landing.nav.pricing}</Link>
@@ -35,6 +36,7 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
         </div>
       </div>
       <nav className="marketing-nav-mobile-links" aria-label="Mobile section links">
+        <Link href={`/${locale}/routes`}>{t.landing.nav.routes}</Link>
         <Link href={`/${locale}#services`}>{t.landing.nav.services}</Link>
         <Link href={`/${locale}#process`}>{t.landing.nav.process}</Link>
         <Link href={`/${locale}#pricing`}>{t.landing.nav.pricing}</Link>

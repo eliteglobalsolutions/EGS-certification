@@ -1,16 +1,27 @@
 import { generateOrderNo } from './format';
 import { CERT_OPTIONS, findDestination, resolveRoute } from './catalog';
+import {
+  getOrderBasePrice,
+  getOrderEstimatedWindow,
+  inferOrderDocumentProfile,
+  isAustraliaIssuingCountry,
+} from './order-profile';
 
 export type CheckoutPayload = {
   locale: string;
   destinationCountry: string;
   destinationCode?: string;
+  issuingCountry?: string;
   routeOverride: 'auto' | 'hague' | 'non';
   serviceLevel: 'standard' | 'express';
   docCategory: 'personal' | 'company';
   documentType: string;
+  combineIntoOneNotarialSet?: boolean;
+  combinedDocumentNames?: string[];
+  combinedDocumentCount?: number;
   documentQuantity: number;
   pages: number;
+  submissionMethod?: 'upload' | 'mail_po_box';
   deliveryMethod: 'domestic' | 'intl_dhl';
   certificateType?: string;
   certificateQuantity?: number;
@@ -21,9 +32,25 @@ export function generateOrderCode(): string {
   return generateOrderNo();
 }
 
-function basePricePerDoc(route: 'hague' | 'non' | null, docCategory: 'personal' | 'company'): number {
-  // Fixed base pricing by route and document category (shipping included).
+function basePricePerDoc(
+  route: 'hague' | 'non' | null,
+  docCategory: 'personal' | 'company',
+  documentType: string,
+  issuingCountry?: string,
+  serviceLevel?: 'standard' | 'express',
+): number {
+  // Country-specific overrides are applied first where available.
   if (!route) return 0;
+  const profile = inferOrderDocumentProfile(docCategory, documentType);
+  const countrySpecific = getOrderBasePrice({
+    issuingCountry,
+    route,
+    profile,
+    serviceLevel,
+  });
+  if (countrySpecific) {
+    return countrySpecific;
+  }
   if (route === 'hague') return docCategory === 'company' ? 880 : 660;
   return docCategory === 'company' ? 980 : 880;
 }
@@ -43,6 +70,25 @@ function certificateUnitPrice(certificateType?: string): number {
   return matched ? matched.price : 0;
 }
 
+function combinedSetSurcharge(
+  combineIntoOneNotarialSet: boolean | undefined,
+  combinedDocumentCount: number | undefined,
+): number {
+  if (!combineIntoOneNotarialSet) return 0;
+  const extraCount = Math.max(0, combinedDocumentCount || 0);
+  return extraCount * 150;
+}
+
+function postageSurcharge(
+  issuingCountry: string | undefined,
+  deliveryMethod: 'domestic' | 'intl_dhl',
+): number {
+  if (issuingCountry && isAustraliaIssuingCountry(issuingCountry)) {
+    return 0;
+  }
+  return deliveryMethod === 'domestic' ? 15 : 88;
+}
+
 export function estimateOrder(payload: CheckoutPayload): {
   subtotal: number;
   serviceFee: number;
@@ -58,15 +104,18 @@ export function estimateOrder(payload: CheckoutPayload): {
   const destination = findDestination(payload.destinationCode || payload.destinationCountry);
   const route = resolveRoute(destination, payload.routeOverride);
 
-  const base = basePricePerDoc(route, payload.docCategory);
+  const base = basePricePerDoc(route, payload.docCategory, payload.documentType, payload.issuingCountry, payload.serviceLevel);
   // Page increase follows the original tiered pricing model.
   const pageExtra = pagesSurchargePerDoc(pageCount);
-  void certificateUnitPrice(payload.certificateType);
+  const certificateUnit = certificateUnitPrice(payload.certificateType);
+  const postageAud = postageSurcharge(payload.issuingCountry, payload.deliveryMethod);
+  const combinedSetAud = combinedSetSurcharge(payload.combineIntoOneNotarialSet, payload.combinedDocumentCount);
 
-  // Fixed base fee by route/category + page surcharge tiers. Shipping remains included.
-  const subtotalAud = base;
-  const serviceFeeAud = pageExtra;
-  void q;
+  // Base price is per document copy. Adjustments include page tiers and optional certificate support.
+  const subtotalAud = base * q;
+  const pageAdjustmentAud = pageExtra * q;
+  const certificateTotalAud = certificateUnit * Math.max(0, payload.certificateQuantity || 0);
+  const serviceFeeAud = pageAdjustmentAud + certificateTotalAud + postageAud + combinedSetAud;
   const totalAud = subtotalAud + serviceFeeAud;
 
   const hasCertificateApplication = (payload.certificateType && payload.certificateType !== 'none')
@@ -75,8 +124,15 @@ export function estimateOrder(payload: CheckoutPayload): {
   const hagueEta = isZh ? '3-7 个工作日（不含邮寄与节假日）' : '3-7 business days (excluding shipping and public holidays)';
   const nonHagueEta = isZh ? '10-20 个工作日' : '10-20 business days';
 
-  let estimatedDays = hagueEta;
-  if (route === 'non' || hasCertificateApplication) estimatedDays = nonHagueEta;
+  const countryEta =
+    getOrderEstimatedWindow({
+      issuingCountry: payload.issuingCountry,
+      route,
+      profile: inferOrderDocumentProfile(payload.docCategory, payload.documentType),
+      serviceLevel: payload.serviceLevel,
+    });
+  let estimatedDays = countryEta || (route === 'non' ? nonHagueEta : hagueEta);
+  if (hasCertificateApplication && !countryEta) estimatedDays = nonHagueEta;
 
   return {
     subtotal: subtotalAud * 100,

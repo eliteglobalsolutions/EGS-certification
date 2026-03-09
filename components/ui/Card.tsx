@@ -1,3 +1,11 @@
-export function Card({ children, muted = false }: { children: React.ReactNode; muted?: boolean }) {
-  return <div className={`ui-card ${muted ? 'ui-card-muted' : ''}`.trim()}>{children}</div>;
+export function Card({
+  children,
+  muted = false,
+  className = '',
+}: {
+  children: React.ReactNode;
+  muted?: boolean;
+  className?: string;
+}) {
+  return <div className={`ui-card ${muted ? 'ui-card-muted' : ''} ${className}`.trim()}>{children}</div>;
 }

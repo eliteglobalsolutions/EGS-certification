@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  transpilePackages: [
+    '@react-pdf/renderer',
+    '@react-pdf/layout',
+    '@react-pdf/pdfkit',
+    '@react-pdf/primitives',
+    '@react-pdf/textkit',
+    '@react-pdf/font',
+    '@react-pdf/fns',
+  ],
   async headers() {
     return [
       {

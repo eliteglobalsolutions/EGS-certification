@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
-import { SamplesGallery, type SampleRecord } from '@/components/SamplesGallery';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { SamplesGallery } from '@/components/SamplesGallery';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { loadSampleLibrary, toSampleDocumentPageSlug } from '@/lib/sample-library';
 
 export async function generateMetadata({
   params,
@@ -18,17 +17,17 @@ export async function generateMetadata({
 
   if (locale === 'zh') {
     return {
-      title: '样本库｜文件认证打码样本｜EGS Verification',
-      description: '浏览 EGS 文件认证打码样本库，按国家和文件类型筛选参考样本。',
-      keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', 'EGS 样本库'],
+      title: '样本文档库｜打码文件样本｜EGS Verification',
+      description: '浏览按文件类型、签发国家和使用目的整理的打码文件样本，查看更清晰的跨境文件路径示例。',
+      keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', '文件样本库', 'EGS 样本库'],
       alternates: { canonical: `${siteUrl}/zh/samples` },
     };
   }
 
   return {
-    title: 'Sample Library | Redacted Certification Samples | EGS Verification',
-    description: 'Browse EGS redacted sample library by country and document type for apostille and legalisation workflows.',
-    keywords: ['apostille sample', 'legalisation sample', 'redacted document sample', 'sample library EGS'],
+    title: 'Document Sample Library | Redacted Route Samples | EGS Verification',
+    description: 'Browse redacted document sample previews organised by document type, issuing country, and route context.',
+    keywords: ['document sample library', 'apostille sample', 'legalisation sample', 'redacted document sample', 'route sample EGS'],
     alternates: { canonical: `${siteUrl}/en/samples` },
   };
 }
@@ -38,23 +37,21 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
-  let items: SampleRecord[] = [];
-
-  try {
-    const indexPath = path.join(process.cwd(), 'public', 'samples', 'index.json');
-    const raw = await readFile(indexPath, 'utf8');
-    items = JSON.parse(raw) as SampleRecord[];
-  } catch {
-    items = [];
-  }
+  const items = await loadSampleLibrary();
+  const topDocumentTypes = Array.from(
+    items.reduce((map, item) => map.set(item.documentType, (map.get(item.documentType) || 0) + 1), new Map<string, number>())
+  )
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 6)
+    .map(([label]) => label);
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: locale === 'zh' ? 'EGS 样本库' : 'EGS Sample Library',
+    name: locale === 'zh' ? 'EGS 样本文档库' : 'EGS Document Sample Library',
     description: locale === 'zh'
-      ? '按国家和文件类型浏览已打码样本。'
-      : 'Browse redacted samples by country and document type.',
+      ? '按文件类型、签发国家和用途路径浏览打码样本。'
+      : 'Browse redacted samples by document type, issuing country, and route context.',
     url: `${siteUrl}/${locale}/samples`,
     inLanguage: locale,
     mainEntity: {
@@ -96,14 +93,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
         <div className="stack-sm">
           <h1 id="samples-heading">{t.resources.samples.title}</h1>
           <p className="body-text">{t.resources.samples.subtitle}</p>
-          <p className="small-text">{t.resources.samples.disclaimer}</p>
-          <p className="small-text">
-            {t.resources.samples.totalLabel}: {items.length}
-          </p>
           <div className="actions">
-            <Button href={`/${locale}`} variant="secondary">
-              {locale === 'zh' ? '返回首页' : 'Back to home'}
-            </Button>
             <Button href={`/${locale}/intake`} variant="primary">
               {locale === 'zh' ? '开始受理' : 'Begin intake'}
             </Button>
@@ -112,45 +102,32 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
       </div>
       <SamplesGallery
         items={items}
+        locale={locale}
         text={{
-          searchLabel: t.resources.samples.searchLabel,
-          searchPlaceholder: t.resources.samples.searchPlaceholder,
-          filterLabel: t.resources.samples.filterLabel,
-          allCountries: t.resources.samples.allCountries,
           empty: t.resources.samples.empty,
           previewTitle: t.resources.samples.previewTitle,
           openButton: t.resources.samples.openButton,
-          reviewedLabel: t.resources.samples.reviewedLabel,
+          groupDocumentType: t.resources.samples.groupDocumentType,
+          groupIssuingCountry: t.resources.samples.groupIssuingCountry,
+          clearFilters: t.resources.samples.clearFilters,
+          detailCta: t.resources.samples.detailCta,
+          previewCaptionLabel: t.resources.samples.previewCaptionLabel,
+          protectedLabel: t.resources.samples.protectedLabel,
+          selectPrompt: t.resources.samples.selectPrompt,
         }}
       />
-      <div className="section-card stack-sm" style={{ marginTop: '1rem' }}>
-        <p className="kicker">{locale === 'zh' ? '样本检索词' : 'Sample search terms'}</p>
-        {locale === 'zh' ? (
-          <>
-            <p className="small-text">
-              常见检索词：海牙认证样本、领馆认证样本、文件认证样本、打码样本、Apostille sample、legalisation sample。
-            </p>
-            <p className="small-text">
-              相关页面：
-              <Link className="inline-link" href={`/${locale}/services`}> 服务范围</Link> ·
-              <Link className="inline-link" href={`/${locale}/apostille-australia`}> 澳洲海牙认证</Link> ·
-              <Link className="inline-link" href={`/${locale}/consular-legalisation-australia`}> 澳洲领事认证</Link>
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="small-text">
-              Common search terms: apostille sample, legalisation sample, redacted certification sample, document authentication sample,
-              Australia apostille sample format.
-            </p>
-            <p className="small-text">
-              Related pages:
-              <Link className="inline-link" href={`/${locale}/services`}> Services</Link> ·
-              <Link className="inline-link" href={`/${locale}/apostille-australia`}> Apostille Australia</Link> ·
-              <Link className="inline-link" href={`/${locale}/consular-legalisation-australia`}> Consular Legalisation Australia</Link>
-            </p>
-          </>
-        )}
+      <div className="section-card stack-sm">
+        <p className="kicker">{locale === 'zh' ? '相关文件页' : 'Related document pages'}</p>
+        <div className="samples-inline-links">
+          {topDocumentTypes.map((label) => {
+            const slug = toSampleDocumentPageSlug(label);
+            return slug ? (
+              <Link className="inline-link" href={`/${locale}/documents/${slug}`} key={label}>
+                {label}
+              </Link>
+            ) : null;
+          })}
+        </div>
       </div>
     </section>
   );

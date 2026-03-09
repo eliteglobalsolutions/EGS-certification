@@ -4,6 +4,8 @@ import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
 import { resolveLocale } from '@/lib/i18n/locale';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
+import { AUSTRALIA_CITY_COVERAGE, AUSTRALIA_CITY_KEYWORDS } from '@/lib/australia-city-coverage';
 
 export async function generateMetadata({
   params,
@@ -12,25 +14,50 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '/document-authentication-sydney',
       title: '悉尼文件认证服务｜EGS Verification',
       description:
-        '悉尼文件认证协调服务：面向澳洲和海外签发文件，覆盖路径确认、受理、处理跟踪与寄送。',
-      keywords: ['悉尼 文件认证', 'document authentication sydney', '澳洲 文件 认证 服务', '公证 认证 悉尼'],
-      alternates: { canonical: `${siteUrl}/zh/document-authentication-sydney` },
-    };
+        '悉尼文件认证协调服务，面向澳洲和海外签发文件，覆盖路径确认、材料审核、处理跟踪与全球寄送。',
+      keywords: [
+        '悉尼 文件认证',
+        'document authentication sydney',
+        'document authentication melbourne',
+        'document authentication brisbane',
+        'document authentication perth',
+        'document authentication adelaide',
+        '澳洲 文件 认证 服务',
+        '公证 认证 悉尼',
+        'Sydney apostille service',
+        'Melbourne apostille service',
+        '悉尼 海牙认证 服务',
+        '悉尼 领事认证 服务',
+      ],
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/document-authentication-sydney',
     title: 'Document Authentication Sydney Service | EGS Verification',
     description:
-      'Document authentication coordination in Sydney for Australia-issued and overseas-issued documents, with route check and status tracking.',
-    keywords: ['document authentication Sydney', 'document certification Sydney', 'legalisation service Sydney'],
-    alternates: { canonical: `${siteUrl}/en/document-authentication-sydney` },
-  };
+      'Document authentication coordination in Sydney for Australia-issued and overseas-issued documents, with route confirmation, review, status tracking, and dispatch support.',
+    keywords: [
+      'document authentication Sydney',
+      ...AUSTRALIA_CITY_KEYWORDS,
+      'document certification Sydney',
+      'legalisation service Sydney',
+      'Sydney apostille service',
+      'Melbourne apostille service',
+      'Brisbane apostille service',
+      'Perth apostille service',
+      'Sydney document legalisation',
+      'notary and apostille Sydney',
+    ],
+  });
 }
 
 export default async function DocumentAuthenticationSydneyPage({
@@ -45,11 +72,13 @@ export default async function DocumentAuthenticationSydneyPage({
     ? [
         { q: '只受理澳洲文件吗？', a: '不是。支持澳洲签发与海外签发文件的跨境使用协调。' },
         { q: '总部在哪里？', a: '总部位于悉尼，服务覆盖全球受理与寄送场景。' },
+        { q: '人在墨尔本、布里斯班或其他澳洲城市，也可以办理吗？', a: '可以。悉尼总部统筹，墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市都可通过在线受理、邮寄和回寄方式处理。' },
         { q: '是否提供法律意见？', a: '不提供。EGS 为独立行政协调机构。' },
       ]
     : [
         { q: 'Do you only handle Australia-issued documents?', a: 'No. We coordinate cross-border use for both Australia-issued and overseas-issued documents.' },
         { q: 'Where is your headquarters?', a: 'EGS is headquartered in Sydney, with global intake and dispatch coverage.' },
+        { q: 'Can I still use the service if I am in Melbourne, Brisbane, or another Australian city?', a: 'Yes. Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can still proceed through online intake, tracked mail, and return dispatch.' },
         { q: 'Do you provide legal advice?', a: 'No. EGS operates as an independent administrative intermediary.' },
       ];
 
@@ -66,6 +95,39 @@ export default async function DocumentAuthenticationSydneyPage({
     })),
   };
 
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: isZh ? '悉尼文件认证协调服务' : 'Document authentication Sydney coordination service',
+    serviceType: isZh ? '文件认证协调' : 'Document authentication coordination',
+    provider: {
+      '@type': 'Organization',
+      name: 'EGS Verification',
+      url: `${siteUrl}/${locale}`,
+    },
+    areaServed: ['Australia', ...AUSTRALIA_CITY_COVERAGE],
+    url: `${siteUrl}/${locale}/document-authentication-sydney`,
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: isZh ? '首页' : 'Home',
+        item: `${siteUrl}/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: isZh ? '悉尼文件认证' : 'Document Authentication Sydney',
+        item: `${siteUrl}/${locale}/document-authentication-sydney`,
+      },
+    ],
+  };
+
   return (
     <Container>
       <Section>
@@ -73,14 +135,22 @@ export default async function DocumentAuthenticationSydneyPage({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
         <Card>
           <div className="stack-md">
             <p className="kicker">{isZh ? '服务页面' : 'Service page'}</p>
             <h1>{isZh ? '悉尼文件认证协调服务' : 'Document Authentication Sydney Coordination Service'}</h1>
             <p className="body-text">
               {isZh
-                ? '由悉尼总部统筹的文件认证协调服务，支持澳洲签发与海外签发文件的跨境使用场景。实际认证路径与处理时效以目的地和主管机构要求为准。'
-                : 'Sydney-coordinated document authentication service for cross-border use of Australia-issued and overseas-issued documents. Final pathway and timeline depend on destination and authority requirements.'}
+                ? '由悉尼总部统筹的文件认证协调服务，支持澳洲签发与海外签发文件的跨境使用场景。除悉尼外，墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市也可通过在线受理与邮寄方式办理。实际认证路径与处理时效以目的地和主管机构要求为准。'
+                : 'Sydney-coordinated document authentication service for cross-border use of Australia-issued and overseas-issued documents. Clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can also proceed through online intake and tracked mail. Final pathway and timeline still depend on destination and authority requirements.'}
             </p>
             <div className="actions">
               <Link className="btn btn-primary" href={`/${locale}/intake`}>
@@ -95,8 +165,18 @@ export default async function DocumentAuthenticationSydneyPage({
               <ul className="list-plain">
                 <li className="small-text">{isZh ? '悉尼总部统筹，支持全球用户在线受理' : 'Sydney HQ coordination with global online intake'}</li>
                 <li className="small-text">{isZh ? '支持澳洲签发与海外签发文件路径' : 'Supports both Australia-issued and overseas-issued document routes'}</li>
+                <li className="small-text">{isZh ? '墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市可通过邮寄与回寄方式处理' : 'Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can proceed by tracked mail and return dispatch'}</li>
                 <li className="small-text">{isZh ? '可按规则寄送至全球可达地址' : 'Dispatch to eligible international addresses where permitted'}</li>
               </ul>
+            </div>
+            <div className="stack-sm">
+              <h2>{isZh ? '澳洲城市覆盖' : 'Australia-wide city coverage'}</h2>
+              <p className="small-text">
+                {isZh
+                  ? '以下城市的客户通常都可在线提交 intake，再按要求邮寄或回寄文件。'
+                  : 'Clients in the following cities can usually complete intake online and proceed by mail or return dispatch as required.'}
+              </p>
+              <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             </div>
             <div className="footer-links">
               <Link href={`/${locale}/apostille-australia`}>

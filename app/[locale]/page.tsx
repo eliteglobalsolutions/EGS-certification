@@ -15,6 +15,7 @@ import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -23,10 +24,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '',
       title: 'EGS Verification｜澳洲海牙认证与领事认证｜国际文件协调',
       description:
         'EGS 提供澳洲与海外文件跨境认证协调：Apostille、领事认证、文件上传、订单追踪与合规流程管理。',
@@ -37,12 +39,15 @@ export async function generateMetadata({
         '悉尼文件认证',
         'apostille 澳洲',
         'legalisation 澳洲',
+        '澳洲文件认证服务',
+        'Sydney document authentication',
       ],
-      alternates: { canonical: `${siteUrl}/zh` },
-    };
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '',
     title: 'EGS Verification | Apostille & Legalisation Australia | Global Coordination',
     description:
       'Apostille and legalisation coordination for Australia-issued and overseas-issued documents. Route check, secure intake, and order tracking.',
@@ -53,17 +58,16 @@ export async function generateMetadata({
       'consular legalisation service',
       'cross border document coordination',
       'track apostille order',
+      'document legalisation Australia',
+      'Australia document authentication service',
     ],
-    alternates: { canonical: `${siteUrl}/en` },
-  };
+  });
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
-
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -114,6 +118,20 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <RouteChecker locale={locale} t={t} />
         <ProcessStepper locale={locale} t={t} />
         <PricingSection locale={locale} t={t} />
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '路线入口' : 'Route entry'}</p>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '如果你是从搜索进入，或想直接查看主营路线与副线入口，可进入路线总览页。'
+                : 'If you arrived from search or want a direct view of main and secondary route pages, use the route overview.'}
+            </p>
+            <div className="footer-links">
+              <Link href={`/${locale}/routes`}>{locale === 'zh' ? '查看全部路线页' : 'View all route pages'}</Link>
+              <Link href={`/${locale}/intake`}>{locale === 'zh' ? '直接进入受理' : 'Go to intake'}</Link>
+            </div>
+          </div>
+        </Card>
         <Card>
           <div className="stack-sm">
             <p className="kicker">{locale === 'zh' ? '相关服务页面' : 'Related services'}</p>
