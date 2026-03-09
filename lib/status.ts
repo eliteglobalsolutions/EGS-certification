@@ -38,7 +38,7 @@ export function mapInternalToClient(internalStatus: string): string {
 
 export function mapClientToLegacyStatus(clientStatus: string): string {
   const map: Record<string, string> = {
-    received: 'created',
+    received: 'pending',
     under_verification: 'paid',
     submitted_processing: 'processing',
     action_required: 'need_more_docs',

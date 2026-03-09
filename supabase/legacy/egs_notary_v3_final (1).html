@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EGS | Apostille & Document Legalisation (AU) — Structured · Transparent · Predictable</title>
+  <meta name="description" content="Australia-based Apostille & document legalisation coordination for Australian-issued documents. Structured process, transparent rules, and order tracking." />
+  <style>
+    :root{
+      --bg:#071627; --bg2:#0A1A2F;
+      --text:#e9f1ff; --muted:rgba(233,241,255,.72);
+      --line:rgba(255,255,255,.10);
+      --accent:#4A90E2; --accent2:#39d98a; --warn:#f59e0b;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --radius:18px; --radius2:14px;
+      --max:1160px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(1100px 700px at 15% 10%, rgba(74,144,226,.20), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(57,217,138,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 22px;}
+
+    /* Nav */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(7,22,39,.70);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px;}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none;}
+    .mark{
+      width:34px; height:34px; border-radius:10px;
+      background: linear-gradient(135deg, rgba(74,144,226,.95), rgba(57,217,138,.70));
+      box-shadow: 0 10px 22px rgba(74,144,226,.25);
+      flex:0 0 auto;
+    }
+    .brand-title{display:flex; flex-direction:column; line-height:1.1;}
+    .brand-title strong{font-weight:950; letter-spacing:.06em; text-transform:uppercase; font-size:13px;}
+    .brand-title span{font-size:12px; color:var(--muted); letter-spacing:.02em;}
+
+    .lang{
+      position:relative;
+      z-index:9999;
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding:6px 10px;
+      border-radius:999px;
+      user-select:none;
+    }
+    .lang button{
+      appearance:none; border:0; background:transparent;
+      color:rgba(233,241,255,.86);
+      font-size:12px; cursor:pointer;
+      padding:4px 8px; border-radius:999px;
+      transition:.15s ease;
+    }
+    .lang button.active{
+      background: rgba(74,144,226,.18);
+      border:1px solid rgba(74,144,226,.40);
+      color: var(--text);
+    }
+    .navlinks{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+    .navlink{
+      text-decoration:none;
+      font-size:12.5px;
+      color:rgba(233,241,255,.78);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      transition:.15s ease;
+      white-space:nowrap;
+    }
+    .navlink:hover{
+      color:rgba(233,241,255,.92);
+      border-color:rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .navburger{
+      display:none;
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:rgba(233,241,255,.92);
+      border-radius:999px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-size:14px;
+      line-height:1;
+    }
+    .navdrawer{
+      display:none;
+      position:absolute;
+      right:22px;
+      top:62px;
+      width:min(320px, calc(100vw - 44px));
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(7,22,39,.98);
+      border-radius:16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.45);
+      padding:10px;
+      z-index:60;
+    }
+    .navdrawer .navlink{display:block; padding:10px 12px; border-radius:12px;}
+
+
+
+    /* Hero */
+    .hero{padding:56px 0 18px;}
+    .hero-grid{
+      display:grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, .95fr);
+      gap:16px;
+      align-items:stretch;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(233,241,255,.86);
+      margin-bottom:14px;
+    }
+    .dot{
+      width:7px; height:7px; border-radius:50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(57,217,138,.15);
+    }
+    h1{font-size:40px; line-height:1.12; margin:0 0 12px; letter-spacing:-.02em;}
+    .sub{font-size:15px; color:rgba(233,241,255,.82); line-height:1.75; margin:0 0 16px; max-width:80ch;}
+    .hero-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+    .btn{
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:11px 16px;
+      border-radius:999px;
+      font-size:13px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      transition:.18s ease;
+      color:rgba(233,241,255,.92);
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.primary{
+      background: rgba(74,144,226,.95);
+      border-color: rgba(74,144,226,.85);
+      box-shadow: 0 14px 26px rgba(74,144,226,.18);
+    }
+    .btn:disabled{opacity:.55; cursor:not-allowed; transform:none !important;}
+    .btn:hover{transform: translateY(-1px);}
+
+    section{padding:22px 0;}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:18px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    h2{font-size:22px; margin:0; font-weight:950;}
+    .lead{color:rgba(233,241,255,.78); font-size:14px; line-height:1.7; margin:0; max-width: 100ch;}
+
+    .card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-inner{padding:18px 18px 16px;}
+
+    .mini{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      display:flex; gap:10px; flex-wrap:wrap;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .mini span{
+      padding:6px 10px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .grid3{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin-top:14px;}
+    .pill{
+      border-radius: 16px;
+      padding:16px 16px 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      min-height: 132px;
+    }
+    .pill b{display:block; font-size:14px; margin-bottom:6px; font-weight:950;}
+    .pill p{margin:0; color:rgba(233,241,255,.78); font-size:13px; line-height:1.7;}
+
+    /* Trust (compact) */
+    .trustbar{
+      margin-top:12px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:rgba(233,241,255,.78);
+      font-size:12.5px;
+    }
+    .trustbar span{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .reviews{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+    .review{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      padding:12px;
+    }
+    .review .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; margin-bottom:6px;}
+    .review .who{font-weight:950; font-size:12.5px; color:rgba(233,241,255,.92);}
+    .review .meta{font-size:12px; color:rgba(233,241,255,.62);}
+    .review .stars{font-size:12px; letter-spacing:.08em; color:rgba(233,241,255,.86);}
+    .review p{margin:0; font-size:12.5px; line-height:1.65; color:rgba(233,241,255,.78);}
+
+    /* Chips */
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      font-size:12.5px;
+      color:rgba(233,241,255,.80);
+    }
+
+
+    /* Compact services (low emphasis) */
+    .services-low{padding-top:10px;}
+    .services-low .section-title{margin-bottom:8px;}
+    .services-low h2{font-size:18px;}
+    .details{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:12px 14px;
+    }
+    .details-sum{
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:13px;
+      color:rgba(233,241,255,.86);
+      user-select:none;
+    }
+    .details-sum::-webkit-details-marker{display:none;}
+    .chips-compact .chip{padding:7px 9px; font-size:12px; opacity:.92;}
+
+    /* Flow */
+    .flow{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius:18px;
+      padding:14px;
+    }
+    .flow-row{
+      display:grid;
+      grid-template-columns: repeat(7, minmax(0,1fr));
+      gap:10px;
+      align-items:stretch;
+    }
+    .step{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(7,22,39,.45);
+      border-radius:16px;
+      padding:12px;
+      min-height: 86px;
+    }
+    .step .n{
+      font-weight:950; font-size:12px;
+      color:rgba(233,241,255,.90);
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    .step .t{
+      font-size:12.5px;
+      color:rgba(233,241,255,.74);
+      line-height:1.6;
+      margin:0;
+    }
+
+    /* Order layout */
+    .quote{
+      display:grid;
+      grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr);
+      gap:12px;
+      align-items:start;
+      margin-top:14px;
+    }
+    .form{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    label{font-size:12px; color:rgba(233,241,255,.78); display:block; margin:10px 0 6px;}
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      font-size:14px;
+      outline:none;
+      background: rgba(7,22,39,.55);
+      color:rgba(233,241,255,.92);
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(74,144,226,.55);
+      box-shadow: 0 0 0 4px rgba(74,144,226,.10);
+    }
+    textarea{min-height:84px; resize:vertical}
+    .inline{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+
+    .badge2{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:rgba(233,241,255,.86);
+      margin-bottom:12px;
+    }
+    .badge2.ok{border-color: rgba(57,217,138,.35); background: rgba(57,217,138,.10);}
+    .badge2.warn{border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10);}
+
+    /* Destination dropdown */
+    .destDropdown{
+      display:none;
+      position:absolute; left:0; right:0; top:46px; z-index:30;
+      max-height:290px; overflow:auto;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(7,22,39,.98);
+      border-radius:14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    }
+    .dest-item{
+      padding:10px 12px;
+      cursor:pointer;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .dest-item:hover{ background: rgba(255,255,255,.06); }
+    .dest-item:last-child{ border-bottom:0; }
+    .dest-left{ display:flex; flex-direction:column; gap:2px; }
+    .dest-name{ font-size:13px; color:rgba(233,241,255,.92); font-weight:950; }
+    .dest-alt{ font-size:12px; color:rgba(233,241,255,.65); }
+    .dest-badge{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color:rgba(233,241,255,.75);
+      white-space:nowrap;
+    }
+    .dest-badge.hague{ border-color: rgba(57,217,138,.35); background: rgba(57,217,138,.10); }
+    .dest-badge.non{ border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); }
+    mark{background: rgba(74,144,226,.22); color: rgba(233,241,255,.95); padding:0 2px; border-radius:4px;}
+
+    /* Summary */
+    .summary{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(74,144,226,.10), rgba(255,255,255,.04));
+      position: sticky;
+      top: 86px;
+    }
+    .summary h3{margin:0 0 10px; font-size:16px; font-weight:950;}
+    .line{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+      border-bottom:1px dashed rgba(255,255,255,.14);
+      font-size:13px;
+      color:rgba(233,241,255,.86);
+    }
+    .line .k{color:rgba(233,241,255,.70)}
+    .line:last-child{border-bottom:0}
+    .total{
+      display:flex; justify-content:space-between; gap:10px;
+      padding-top:10px; margin-top:10px;
+      border-top:1px solid rgba(255,255,255,.14);
+      font-weight:950;
+      font-size:15px;
+    }
+    .sep{height:1px;background:rgba(255,255,255,.10);margin:14px 0;}
+    .note{margin:10px 0 0; font-size:12.5px; line-height:1.75; color:rgba(233,241,255,.72);}
+
+    .kpi{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+    .kpi .box{border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px; background: rgba(255,255,255,.04);}
+    .kpi .v{font-weight:950; font-size:14px;}
+    .kpi .l{color:rgba(233,241,255,.70); font-size:12px; margin-top:3px;}
+
+    .consent{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:12px;
+    }
+    .consent-row{display:flex; gap:10px; align-items:flex-start; color:rgba(233,241,255,.82); font-size:12.5px; line-height:1.6;}
+    .consent-row input{width:18px; height:18px; margin-top:2px;}
+    .consent a{color:rgba(233,241,255,.88); text-decoration:underline; text-underline-offset:3px;}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+    .warn-text{color: rgba(245,158,11,.92)}
+
+    /* Modal */
+    .modal-backdrop{
+      display:none;
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      z-index:100;
+      padding:24px;
+    }
+    .modal{
+      max-width: 920px;
+      margin: 4vh auto;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(7,22,39,.96);
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
+    .modal-head{
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .modal-head b{font-weight:950}
+    .modal-close{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:rgba(233,241,255,.90);
+      border-radius:999px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .modal-body{padding:16px; color:rgba(233,241,255,.82); font-size:13px; line-height:1.75;}
+    .modal-body h4{margin:12px 0 8px; font-size:14px;}
+    .modal-body ul{margin:8px 0 0 18px}
+    .modal-body li{margin:6px 0}
+
+    .footer{
+      margin-top:22px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding:18px 0 26px;
+      color: rgba(233,241,255,.70);
+      font-size:12px;
+      line-height:1.6;
+    }
+    .small-links{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+    .small-links a{color:rgba(233,241,255,.74); text-decoration:underline; text-underline-offset:3px}
+    .small-links a:hover{color:rgba(233,241,255,.92)}
+    .muted{color:rgba(233,241,255,.62)}
+
+    @media (max-width: 980px){
+      .navlinks{display:none;}
+      .navburger{display:inline-flex;}
+
+      .hero-grid{grid-template-columns:minmax(0,1fr);}
+      h1{font-size:34px;}
+      .grid3{grid-template-columns:minmax(0,1fr);}
+      .reviews{grid-template-columns:minmax(0,1fr);}
+      .quote{grid-template-columns:minmax(0,1fr);}
+      .summary{position:static}
+      .flow-row{grid-template-columns:minmax(0,1fr);}
+    }
+    @media (max-width: 560px){
+      .inline{grid-template-columns:1fr;}
+      .kpi{grid-template-columns:1fr;}
+    }
+  
+    /* V2 Enhancements */
+    .hero-actions .btn.secondary{background: rgba(57,217,138,.14); border-color: rgba(57,217,138,.30);}
+    .quickwrap{margin-top:14px;}
+    .quick-title{font-size:12px; color:rgba(233,241,255,.72); letter-spacing:.08em; text-transform:uppercase; margin:0 0 10px;}
+    .quickchips{display:flex; flex-wrap:wrap; gap:8px;}
+    .qchip{
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-size:12.5px; color:rgba(233,241,255,.82);
+      transition:.16s ease;
+    }
+    .qchip:hover{transform: translateY(-1px);}
+    .card ul{margin:10px 0 0 18px; padding:0; color:rgba(233,241,255,.78); font-size:13px; line-height:1.7;}
+    .card li{margin:6px 0;}
+    .subtle{color:rgba(233,241,255,.70);}
+    .topnote{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-size:12.5px;
+      color:rgba(233,241,255,.78);
+      line-height:1.65;
+    }
+
+    /* Track order */
+    .track{
+      display:grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap:12px;
+      margin-top:14px;
+      align-items:start;
+    }
+    .track-card{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .track-inner{padding:18px;}
+    .track-steps{margin-top:10px;}
+    .tstep{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:10px 0;
+      border-bottom:1px dashed rgba(255,255,255,.12);
+    }
+    .tstep:last-child{border-bottom:0;}
+    .tbullet{
+      width:10px; height:10px; border-radius:999px;
+      margin-top:5px;
+      border:2px solid rgba(233,241,255,.35);
+      background: transparent;
+      flex:0 0 auto;
+    }
+    .tstep.done .tbullet{border-color: rgba(57,217,138,.75); background: rgba(57,217,138,.30);}
+    .tstep.doing .tbullet{border-color: rgba(74,144,226,.85); background: rgba(74,144,226,.30);}
+    .tlabel{font-weight:950; font-size:13px; color:rgba(233,241,255,.90);}
+    .tmeta{font-size:12.5px; color:rgba(233,241,255,.68); margin-top:3px; line-height:1.6;}
+    .track-hint{margin-top:10px; font-size:12.5px; color:rgba(233,241,255,.70); line-height:1.7;}
+
+
+    /* Support */
+    .support-grid{
+      display:grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap:12px;
+      margin-top:14px;
+      align-items:stretch;
+    }
+    .support-card{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .support-inner{padding:18px;}
+    .support-item{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px;
+      padding:10px 0;
+      border-top:1px solid rgba(255,255,255,.10);
+    }
+    .support-item:first-of-type{border-top:0; padding-top:0;}
+    .support-k{font-size:12.5px; color:rgba(233,241,255,.68);}
+    .support-v{font-weight:950; font-size:13px;}
+    .support-v a{text-decoration:underline; text-underline-offset:3px; color:rgba(233,241,255,.92);}
+    .support-note{margin-top:10px; font-size:12.5px; line-height:1.7; color:rgba(233,241,255,.72);}
+    .support-foot{margin-top:12px; font-size:12.5px; line-height:1.7; color:rgba(233,241,255,.70);}
+
+    /* Track portal */
+    .portal-grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .portal-grid .box{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:12px;
+      background: rgba(255,255,255,.04);
+    }
+    .portal-grid .v{font-weight:950; font-size:14px;}
+    .portal-grid .l{color:rgba(233,241,255,.70); font-size:12px; margin-top:3px;}
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      max-width: 420px;
+      z-index:120;
+      display:none;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(7,22,39,.96);
+      box-shadow: 0 24px 60px rgba(0,0,0,.55);
+      padding:12px 12px 10px;
+    }
+    .toast .t1{font-weight:950; font-size:13px;}
+    .toast .t2{margin-top:6px; font-size:12.5px; line-height:1.6; color:rgba(233,241,255,.78);}
+    .toast .t3{margin-top:8px; font-size:12px; color:rgba(233,241,255,.68);}
+    .toast .tact{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;}
+    .toast .tbtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:rgba(233,241,255,.92);
+      border-radius:999px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .toast .tbtn.primary{
+      background: rgba(74,144,226,.95);
+      border-color: rgba(74,144,226,.85);
+    }
+
+    @media (max-width: 980px){
+      .support-grid{grid-template-columns:minmax(0,1fr);}
+      .portal-grid{grid-template-columns:1fr;}
+      .toast{left:18px; right:18px; max-width:none;}
+    }
+
+
+    /* Footer legal details (less prominent) */
+    details.legal{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius:16px;
+      padding:10px 12px;
+    }
+    details.legal summary{
+      cursor:pointer;
+      font-size:12.5px;
+      color:rgba(233,241,255,.74);
+      list-style:none;
+    }
+    details.legal summary::-webkit-details-marker{display:none;}
+    details.legal .legal-body{
+      margin-top:10px;
+      font-size:12.5px;
+      color:rgba(233,241,255,.70);
+      line-height:1.75;
+    }
+
+    @media (max-width: 980px){
+      .track{grid-template-columns:minmax(0,1fr);}
+    }
+
+  </style>
+</head>
+
+<body data-lang="en">
+  <div class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="EGS Certification Home">
+        <div class="mark"></div>
+        <div class="brand-title">
+          <strong>EGS Certification</strong>
+          <span data-i18n="brandSubtitle">Document legalisation (Apostille / Authentication / Consular)</span>
+        </div>
+      </a>
+
+      <div class="navlinks" aria-label="Primary navigation">
+        <a href="#order" class="navlink" data-i18n="navEstimate">Estimate</a>
+        <a href="#track" class="navlink" data-i18n="navTrack">Track</a>
+        <a href="#support" class="navlink" data-i18n="navSupport">Support</a>
+        <a href="#" class="navlink" data-open="terms" data-i18n="navTerms">Terms</a>
+      </div>
+
+      <button class="navburger" type="button" id="navBurger" aria-label="Menu" aria-expanded="false">☰</button>
+      <div class="navdrawer" id="navDrawer" aria-hidden="true">
+        <a href="#order" class="navlink" data-i18n="navEstimate">Estimate</a>
+        <a href="#track" class="navlink" data-i18n="navTrack">Track</a>
+        <a href="#support" class="navlink" data-i18n="navSupport">Support</a>
+        <a href="#" class="navlink" data-open="terms" data-i18n="navTerms">Terms</a>
+        <a href="#" class="navlink" data-open="privacy" data-i18n="navPrivacy">Privacy</a>
+      </div>
+
+      <div class="lang" aria-label="Language switch">
+        <span data-i18n="langLabel">Language</span>
+        <button id="btnEN" class="active" type="button" data-setlang="en" onclick="window.__setLang && window.__setLang('en')">EN</button>
+        <button id="btnZH" type="button" data-setlang="zh" onclick="window.__setLang && window.__setLang('zh')">中文</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="top" class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="badge">
+          <span class="dot"></span>
+          <span data-i18n="heroBadge">GLOBAL ROUTING · RULE-BASED PRICING · PAY</span>
+        </div>
+
+        <h1 data-i18n="heroTitle">Australian document legalisation for global use, with clear rules and predictable handling.</h1>
+
+        <p class="sub" data-i18n="heroSub">
+          Select the destination country to see a typical route: Hague Apostille, or non-Hague authentication + consular (where applicable).
+          We support documents issued across all Australian states and territories.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#order" data-i18n="ctaEstimate">Get estimate</a>
+          <a class="btn secondary" href="#track" data-i18n="ctaTrack">Track order</a>
+        </div>
+        <div class="quickwrap">
+          <div class="quick-title" data-i18n="quickTitle">Common document types</div>
+          <div class="quickchips" id="quickChips"></div>
+        </div>
+
+        <div class="mini">
+          <span data-i18n="mini1">Nationwide AU coverage</span>
+          <span data-i18n="mini2">120+ destinations (routing)</span>
+          <span data-i18n="mini3">Pay → address → upload</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <h3 style="margin:0 0 10px; font-size:16px; font-weight:950;" data-i18n="scopeTitle">Service standards</h3>
+          <div style="color:rgba(233,241,255,.82); font-size:13px; line-height:1.75;" data-i18n="scopeBody">
+            Australia-based coordination for Apostille / authentication workflows, with transparent pricing rules and secure handling.
+          </div>
+          <ul>
+            <li data-i18n="scopeLi1">Private coordination service — we are not a Notary Public or issuing authority.</li>
+            <li data-i18n="scopeLi2">Route tags are indicative; receiving authority requirements can differ.</li>
+            <li data-i18n="scopeLi3">After payment: address collection + secure upload entry.</li>
+          </ul>
+
+          <div class="mini">
+            <span data-i18n="scopeMini1">Route-based base fees</span>
+            <span data-i18n="scopeMini2">Pages rule + courier</span>
+            <span data-i18n="scopeMini3">Terms & Privacy consent</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <section id="explainer">
+      <div class="section-title">
+        <h2 data-i18n="explainerTitle">What is Hague Apostille? What is consular legalisation?</h2>
+        <p class="lead" data-i18n="explainerLead">
+          The pathway depends on the destination country. Hague destinations typically use Apostille. Non-Hague destinations often require authentication + consular steps.
+        </p>
+      </div>
+
+      <div class="grid3">
+        <div class="pill">
+          <b data-i18n="ex1Title">Hague Apostille (Apostille)</b>
+          <p data-i18n="ex1Body">
+            For Hague Convention destinations, Apostille is commonly used as a simplified legalisation method (replacing many consular steps in typical cases).
+          </p>
+        </div>
+        <div class="pill">
+          <b data-i18n="ex2Title">Non-Hague (Authentication + Consular)</b>
+          <p data-i18n="ex2Body">
+            For non-Hague destinations, the typical route is authentication + consular (where applicable).
+            Example: Malaysia follows authentication + consular legalisation route, not Apostille.
+          </p>
+        </div>
+        <div class="pill">
+          <b data-i18n="ex3Title">Nationwide AU handling</b>
+          <p data-i18n="ex3Body">
+            We can coordinate documents issued in any Australian state/territory. Requirements may vary depending on receiving authority and document type.
+          </p>
+        </div>
+      </div>
+
+      <div class="trustbar">
+        <span data-i18n="trust1">10,000+ processed (display sample)</span>
+        <span data-i18n="trust2">120+ destinations supported</span>
+        <span data-i18n="trust3">4.9/5 satisfaction (display sample)</span>
+      </div>
+
+      <div class="reviews" id="reviewsGrid"></div>
+    </section>
+
+<section id="order">
+      <div class="section-title">
+        <h2 data-i18n="orderTitle">Estimate & checkout</h2>
+        <p class="lead" data-i18n="orderLead">
+          Choose destination → confirm route and pricing rules → optional certificate application → consent → pay. After payment: address + secure upload.
+        </p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-row">
+          <div class="step"><div class="n" data-i18n="st1n">Step 1</div><p class="t" data-i18n="st1t">Search destination country</p></div>
+          <div class="step"><div class="n" data-i18n="st2n">Step 2</div><p class="t" data-i18n="st2t">System suggests route</p></div>
+          <div class="step"><div class="n" data-i18n="st3n">Step 3</div><p class="t" data-i18n="st3t">Select personal/company, qty, pages</p></div>
+          <div class="step"><div class="n" data-i18n="st4n">Step 4</div><p class="t" data-i18n="st4t">Select courier</p></div>
+          <div class="step"><div class="n" data-i18n="st5n">Step 5</div><p class="t" data-i18n="st5t">Optional: apply certificates</p></div>
+          <div class="step"><div class="n" data-i18n="st6n">Step 6</div><p class="t" data-i18n="st6t">Consent to Terms & Privacy</p></div>
+          <div class="step"><div class="n" data-i18n="st7n">Step 7</div><p class="t" data-i18n="st7t">Pay → address → upload</p></div>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="form">
+          <div id="routeBadge" class="badge2">
+            <span id="routeBadgeText" data-i18n="routePrompt">Select a destination to see the typical route.</span>
+          </div>
+
+          <label data-i18n="labelOrigin">Document issued in</label>
+          <input id="origin" value="Australia" disabled />
+
+          <label data-i18n="labelDestination">Destination country (use)</label>
+          <div style="position:relative;">
+            <input id="destinationSearch" autocomplete="off" data-i18n-placeholder="destPlaceholder" placeholder="Type to search (e.g., China / Singapore / UAE)" />
+            <div id="destDropdown" class="destDropdown"></div>
+          </div>
+          <div style="margin-top:8px; font-size:12px; color:rgba(233,241,255,.65); line-height:1.6;" data-i18n="destHelp">
+            Search by country name only (no city). English + key Chinese aliases. (Global 120+ list embedded.)
+          </div>
+
+          <div class="inline">
+            <div>
+              <label data-i18n="labelRoute">Route (editable)</label>
+              <select id="routeOverride">
+                <option value="auto" data-i18n="routeAuto">Auto (based on destination)</option>
+                <option value="hague" data-i18n="routeHagueOpt">Hague (Apostille)</option>
+                <option value="non" data-i18n="routeNonOpt">Non-Hague (Authentication + Consular)</option>
+              </select>
+              <div style="margin-top:6px; font-size:12px; color:rgba(233,241,255,.65); line-height:1.6;" data-i18n="routeHelp">
+                Route tags are indicative. You may adjust if your receiving authority requires a different pathway.
+              </div>
+            </div>
+            <div>
+              <label data-i18n="labelDocCat">Document category</label>
+              <select id="docCat">
+                <option value="personal" data-i18n="optPersonal">Personal</option>
+                <option value="company" data-i18n="optCompany">Company</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inline">
+            <div>
+              <label data-i18n="labelQty">Quantity</label>
+              <input id="qty" type="number" min="1" value="1" />
+            </div>
+            <div>
+              <label data-i18n="labelPages">Pages per document</label>
+              <input id="pages" type="number" min="1" value="1" />
+              <div style="margin-top:6px; font-size:12px; color:rgba(233,241,255,.65); line-height:1.6;" data-i18n="pagesHelp">
+                1–5: +0 · 5–10: +100 · 10–30: +150 · >30: +250 (per document)
+              </div>
+            </div>
+          </div>
+
+          <div class="inline">
+            <div>
+              <label data-i18n="labelCourier">Courier</label>
+              <select id="courier">
+                <option value="domestic" data-i18n="optCourierDomestic">Domestic (A$13)</option>
+                <option value="intl_dhl" data-i18n="optCourierIntl">International DHL (A$80)</option>
+              </select>
+            </div>
+            <div>
+              <label data-i18n="labelService">Service level</label>
+              <select id="serviceLevel">
+                <option value="standard" data-i18n="optStandard">Standard</option>
+                <option value="express" data-i18n="optExpress">Express</option>
+              </select>
+              <div id="serviceHelp" style="margin-top:6px; font-size:12px; color:rgba(233,241,255,.65); line-height:1.6;" data-i18n="serviceHelp">
+                Express may be unavailable for certain routes/authorities.
+              </div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <h3 style="margin:0 0 8px; font-size:14px; font-weight:950;" data-i18n="certTitle">Optional: Apply for certificates</h3>
+          <div class="inline">
+            <div>
+              <label data-i18n="labelCertType">Certificate type</label>
+              <select id="certType"></select>
+            </div>
+            <div>
+              <label data-i18n="labelCertQty">Certificate quantity</label>
+              <input id="certQty" type="number" min="0" value="0" />
+            </div>
+          </div>
+          <div style="margin-top:6px; font-size:12px; color:rgba(233,241,255,.65); line-height:1.6;" data-i18n="certHelp">
+            A$188–A$388 depending on official fees (configured per certificate type). This is an optional add-on.
+          </div>
+
+          <div class="kpi">
+            <div class="box">
+              <div class="v" id="etaText">10 business days</div>
+              <div class="l" data-i18n="kpiEta">Standard timeline</div>
+            </div>
+            <div class="box">
+              <div class="v" id="routeShort">—</div>
+              <div class="l" data-i18n="kpiRoute">Route</div>
+            </div>
+          </div>
+
+          <label data-i18n="labelNotes">Notes (optional)</label>
+          <textarea id="notes" data-i18n-placeholder="notesPlaceholder" placeholder="Optional notes: document name, purpose, receiving authority requirements…"></textarea>
+
+          <div class="consent">
+            <div class="consent-row">
+              <input id="consentChk" type="checkbox" />
+              <div>
+                <div id="consentText">
+                  I have read and agree to the <a href="#" data-open="terms">Terms</a> and <a href="#" data-open="privacy">Privacy Policy</a>.
+                </div>
+                <div id="consentHelp" class="muted" style="margin-top:6px;">
+                  You can proceed to payment only after consenting.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="formHint" style="margin-top:10px; font-size:12.5px; line-height:1.6; color:rgba(233,241,255,.70);">
+            <span class="warn-text">•</span> Select a destination country to unlock estimate and payment.
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" type="button" id="payBtn" disabled data-i18n="btnPay">Proceed to payment</button>
+            <button class="btn" type="button" id="resetBtn" data-i18n="btnReset">Reset</button>
+          </div>
+
+          <p class="note" data-i18n="afterPayNote">After payment, the system will collect delivery address and enable secure uploads.</p>
+        </div>
+
+        <div class="summary">
+          <h3 data-i18n="summaryTitle">Estimate summary</h3>
+
+          <div class="line"><div class="k" data-i18n="sumRoute">Route</div><div id="sumRouteText">—</div></div>
+          <div class="line"><div class="k" data-i18n="sumService">Service</div><div id="sumServiceText">—</div></div>
+          <div class="line"><div class="k" data-i18n="sumBase">Base price (per document)</div><div id="feeBase">—</div></div>
+          <div class="line"><div class="k" data-i18n="sumPages">Pages surcharge</div><div id="feePages">—</div></div>
+          <div class="line"><div class="k" data-i18n="sumCourier">Courier</div><div id="feeCourier">—</div></div>
+          <div class="line"><div class="k" data-i18n="sumCert">Certificates</div><div id="feeCert">—</div></div>
+
+          <div class="total"><div data-i18n="sumTotal">Estimated total</div><div id="feeTotal">—</div></div>
+
+          <div class="sep"></div>
+          <div style="font-size:12.5px; line-height:1.7; color:rgba(233,241,255,.72);" data-i18n="summaryFoot">
+            Pricing is rule-based based on your inputs. Final requirements can vary by receiving authority and document type.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="track">
+      <div class="section-title">
+        <h2 data-i18n="trackTitle">Track your order</h2>
+        <p class="lead" data-i18n="trackLead">Enter your Order ID and email to view the latest processing stage. (Prototype UI — can be wired to your order system.)</p>
+      </div>
+
+      <div class="track">
+        <div class="track-card">
+          <div class="track-inner">
+            <div class="badge2 ok" style="margin-bottom:10px;">
+              <span data-i18n="trackBadge">Status lookup</span>
+            </div>
+
+            <label data-i18n="labelOrderId">Order ID</label>
+            <input id="trackOrderId" placeholder="EGS-2026-000123" />
+
+            <label data-i18n="labelOrderEmail">Email</label>
+            <input id="trackEmail" type="email" placeholder="name@email.com" />
+
+            <div class="actions" style="margin-top:12px;">
+              <button class="btn primary" type="button" id="trackBtn" data-i18n="btnTrack">Check status</button>
+              <button class="btn" type="button" id="trackReset" data-i18n="btnTrackReset">Clear</button>
+            </div>
+
+            <div class="track-hint" id="trackHint" data-i18n="trackHint">
+              If you do not have an Order ID yet, complete checkout first. Your Order ID is emailed after payment.
+            </div>
+          </div>
+        </div>
+
+        <div class="track-card">
+          <div class="track-inner">
+            <h3 style="margin:0 0 8px; font-size:14px; font-weight:950;" data-i18n="trackStagesTitle">Processing stages</h3>
+            <div class="subtle" style="font-size:12.5px; line-height:1.7;" id="trackSummary" data-i18n="trackSummary">
+              Enter details to view your stage.
+            </div>
+
+            <div class="portal-grid" id="trackPortal">
+              <div class="box">
+                <div class="v" id="trkPortalOrder">—</div>
+                <div class="l" data-i18n="trkPortalOrderLabel">Order</div>
+              </div>
+              <div class="box">
+                <div class="v" id="trkPortalStage">—</div>
+                <div class="l" data-i18n="trkPortalStageLabel">Current stage</div>
+              </div>
+              <div class="box">
+                <div class="v" id="trkPortalService">—</div>
+                <div class="l" data-i18n="trkPortalServiceLabel">Service level</div>
+              </div>
+              <div class="box">
+                <div class="v" id="trkPortalEta">—</div>
+                <div class="l" data-i18n="trkPortalEtaLabel">Estimated window</div>
+              </div>
+              <div class="box" style="grid-column: 1 / -1;">
+                <div class="v" id="trkPortalCourier">—</div>
+                <div class="l" data-i18n="trkPortalCourierLabel">Courier tracking</div>
+              </div>
+              <div class="box" style="grid-column: 1 / -1;">
+                <div class="v" id="trkPortalUpdated">—</div>
+                <div class="l" data-i18n="trkPortalUpdatedLabel">Last updated</div>
+              </div>
+            </div>
+
+
+            <div class="track-steps" id="trackSteps"></div>
+
+            <div class="topnote" id="trackNote" data-i18n="trackNote">
+              Final acceptance depends on the receiving authority and document type. If your receiving authority has special requirements, add them in Notes at checkout.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="services" class="services-low">
+      <div class="section-title">
+        <h2 data-i18n="servicesTitleSmall">Document categories</h2>
+        <p class="lead" data-i18n="servicesLeadSmall">
+          Optional reference list. If your document is not listed, proceed and add notes at checkout.
+        </p>
+      </div>
+
+      <details class="details">
+        <summary class="details-sum">
+          <span data-i18n="servicesToggle">View common document types</span>
+          <span class="muted" data-i18n="servicesToggleHint">Click to expand</span>
+        </summary>
+        <div class="card" style="margin-top:10px;">
+          <div class="card-inner">
+            <div class="chips chips-compact" id="chipsGrid"></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+<div class="footer">
+      <div style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:flex-start;">
+        <div>
+          <b style="font-weight:950; color:rgba(233,241,255,.92);">EGS Certification</b><br/>
+          <span class="muted" data-i18n="footerSubtitle">Document legalisation (Apostille / Authentication / Consular)</span>
+          <div class="small-links">
+            <a href="#" data-open="terms" data-i18n="linkTerms">Terms</a>
+            <a href="#" data-open="privacy" data-i18n="linkPrivacy">Privacy</a>
+          </div>
+        </div>
+        <div style="max-width: 86ch;">
+          <div class="muted" data-i18n="footerDisclaimer">
+            Disclaimer: general information only; not legal advice. Official certifications are issued by relevant authorities.
+          </div>
+
+          <details class="legal">
+            <summary data-i18n="legalSummary">Compliance & role disclosure</summary>
+            <div class="legal-body">
+              <div data-i18n="legalBody1">EGS is a private workflow coordination service. We are not a Notary Public, government authority, embassy/consulate, or issuing body.</div>
+              <div style="margin-top:8px;" data-i18n="legalBody2">We do not represent any government department. Fees shown are service coordination fees and third-party costs (where applicable). Requirements and acceptance are determined by the receiving authority.</div>
+              <div style="margin-top:8px;" data-i18n="legalBody3">If you require legal advice, please consult a qualified lawyer in your jurisdiction.</div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="t1" id="toastTitle">Order created</div>
+    <div class="t2" id="toastBody">—</div>
+    <div class="t3" id="toastSub">—</div>
+    <div class="tact">
+      <button class="tbtn primary" type="button" id="toastGoTrack" data-i18n="toastGoTrack">Track order</button>
+      <button class="tbtn" type="button" id="toastClose" data-i18n="toastClose">Close</button>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-head">
+        <b id="modalTitle">Terms</b>
+        <button class="modal-close" type="button" id="modalClose" data-i18n="modalClose">Close</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const STR = {
+      en: {
+        brandSubtitle: "Structured · Transparent · Predictable",
+        langLabel: "Language",
+        navEstimate:"Estimate",
+        navTrack:"Track",
+        navTerms:"Terms",
+        navPrivacy:"Privacy",
+
+        heroBadge: "Structured · Transparent · Predictable",
+        heroTitle: "Australia-Based Apostille & Document Legalisation Coordination",
+        heroSub: "Hague and non-Hague authentication pathways for Australian-issued documents. Clear routing, rule-based pricing, and order tracking.",
+        ctaEstimate: "Create order",
+        ctaExplain: "Terms",
+        mini1: "Structured process",
+        mini2: "Rule-based pricing",
+        mini3: "Order tracking",
+
+        scopeTitle: "Professional position",
+        scopeBody: "EGS Certification is a private Australia-based document legalisation coordination service.",
+        scopeMini1: "Route-based base fees",
+        scopeMini2: "Pages rule + courier",
+        scopeMini3: "Terms & Privacy consent",
+
+        explainerTitle: "Process",
+        explainerLead: "Select destination → confirm route → review pricing → create order → upload documents → track progress.",
+        ex1Title: "1) Select destination",
+        ex1Body: "Choose the destination country for use.",
+        ex2Title: "2) Confirm route & pricing",
+        ex2Body: "System suggests route; you review fees before payment.",
+        ex3Title: "3) Upload & track",
+        ex3Body: "After payment: submit address & upload securely; track progress online.",
+
+        trust1: "10,000+ processed (display sample)",
+        trust2: "120+ destinations supported",
+        trust3: "4.9/5 satisfaction (display sample)",
+
+        servicesTitle: "Document types",
+        servicesTitleSmall: "Document categories",
+        servicesLeadSmall: "Optional reference list. If your document is not listed, proceed and add notes at checkout.",
+        servicesToggle: "View common document types",
+        servicesToggleHint: "Click to expand",
+        servicesLead: "Reference list (optional).",
+
+        orderTitle: "Estimate & checkout",
+        orderLead: "Choose destination → confirm route and pricing rules → optional certificate application → consent → pay. After payment: address + secure upload.",
+
+        st1n:"Step 1", st1t:"Search destination country",
+        st2n:"Step 2", st2t:"System suggests route",
+        st3n:"Step 3", st3t:"Select personal/company, qty, pages",
+        st4n:"Step 4", st4t:"Select courier",
+        st5n:"Step 5", st5t:"Optional: apply certificates",
+        st6n:"Step 6", st6t:"Consent to Terms & Privacy",
+        st7n:"Step 7", st7t:"Pay → address → upload",
+
+        labelOrigin: "Document issued in",
+        labelDestination: "Destination country (use)",
+        destPlaceholder: "Type to search (e.g., China / Singapore / UAE)",
+        destHelp: "Search by country name only (no city). English + key Chinese aliases. (Global 120+ list embedded.)",
+
+        labelRoute: "Route (editable)",
+        routeAuto: "Auto (based on destination)",
+        routeHagueOpt: "Hague (Apostille)",
+        routeNonOpt: "Non-Hague (Authentication + Consular)",
+        routeHelp: "Route tags are indicative. You may adjust if your receiving authority requires a different pathway.",
+
+        labelDocCat: "Document category",
+        optPersonal: "Personal",
+        optCompany: "Company",
+        labelQty: "Quantity",
+        labelPages: "Pages per document",
+        pagesHelp: "1–5: +0 · 5–10: +100 · 10–30: +150 · >30: +250 (per document)",
+
+        labelCourier: "Courier",
+        labelService: "Service level",
+        optStandard: "Standard",
+        optExpress: "Express",
+        serviceHelp: "Express may be unavailable for certain routes/authorities.",
+
+        optCourierDomestic: "Domestic (A$13)",
+        optCourierIntl: "International DHL (A$80)",
+        labelTimeline: "Timeline",
+
+        certTitle: "Optional: Apply for certificates",
+        labelCertType: "Certificate type",
+        labelCertQty: "Certificate quantity",
+        certHelp: "A$188–A$388 depending on official fees (configured per certificate type). This is an optional add-on.",
+
+        kpiEta: "Estimated timeline",
+        kpiRoute: "Route",
+
+        labelNotes: "Notes (optional)",
+        notesPlaceholder: "Optional notes: document name, purpose, receiving authority requirements…",
+
+        btnPay: "Create order & proceed to payment",
+        btnReset: "Reset",
+        afterPayNote: "After payment, the system will collect delivery address and enable secure uploads.",
+
+        summaryTitle: "Estimate summary",
+        sumRoute: "Route",
+        sumService: "Service",
+        sumBase: "Base price (per document)",
+        sumPages: "Pages surcharge",
+        sumCourier: "Courier",
+        sumCert: "Certificates",
+        sumTotal: "Estimated total",
+        summaryFoot: "All fees displayed before payment. Final requirements depend on receiving authority.",
+
+        footerSubtitle: "Structured · Transparent · Predictable",
+        linkTerms: "Terms",
+        linkPrivacy: "Privacy",
+        footerDisclaimer: "Private coordination service. Not a Notary Public or government authority.",
+        modalClose: "Close",
+
+        routePrompt: "Select a destination to see the typical route.",
+        routeHague: "Hague route · Apostille",
+        routeNon: "Non-Hague route · Authentication + Consular (where applicable)",
+        routeShortHague: "Apostille",
+        routeShortNon: "Non-Hague",
+        etaHagueStandard: "3–7 business days",
+        etaHagueExpress: "1–3 business days",
+        etaNonStandard: "10–20 business days",
+        etaExpressNA: "Express is not available for this route.",
+        badgeHague: "Hague",
+        badgeNon: "Non-Hague",
+
+        hintSelectCountry: "Select a destination country to unlock estimate and payment.",
+        hintNeedConsent: "Please tick Terms & Privacy consent to proceed to payment.",
+        hintReady: "Ready. Proceed to payment to create an order; address & uploads are collected after payment.",
+
+        dropdownNoMatchTitle: "No matching country",
+        dropdownNoMatchSub: "Try English or Chinese country name",
+
+        modalTermsTitle: "Terms",
+        modalPrivacyTitle: "Privacy Policy",
+        ctaTrack: "Track order",
+        quickTitle: "Common document types",
+        scopeLi1: "We are not a Notary Public, government authority, embassy, or issuing body.",
+        scopeLi2: "All official certifications are issued by the relevant competent authorities.",
+        scopeLi3: "Our role: structured coordination, transparent pricing rules, and predictable process management.",
+        trackTitle: "Track your order",
+        trackLead: "Enter your Order ID and email to view the latest processing stage. (Prototype UI — can be wired to your order system.)",
+
+        supportTitle: "Contact & support",
+        supportLead: "For enquiries and order-related assistance. Please include your Order ID for faster support.",
+        supportGeneralBadge: "General enquiries",
+        supportOrderBadge: "Order support",
+        supportEmailLabel: "Email",
+        supportGeneralNote: "Questions about routes, requirements, and how to place an order.",
+        supportOrderNote: "Order status, missing documents, corrections. Please include your Order ID and email used at checkout.",
+        supportFoot: "All services are processed online. We currently do not accept walk‑in submissions. Written correspondence (PO Box) can be added later.",
+
+        trkPortalOrderLabel: "Order",
+        trkPortalStageLabel: "Current stage",
+        trkPortalServiceLabel: "Service level",
+        trkPortalEtaLabel: "Estimated window",
+        trkPortalCourierLabel: "Courier tracking",
+        trkPortalUpdatedLabel: "Last updated",
+
+        toastGoTrack: "Track order",
+        toastClose: "Close",
+        trackBadge: "Status lookup",
+        labelOrderId: "Order ID",
+        labelOrderEmail: "Email",
+        btnTrack: "Check status",
+        btnTrackReset: "Clear",
+        trackHint: "If you do not have an Order ID yet, complete checkout first. Your Order ID is emailed after payment.",
+        trackStagesTitle: "Processing stages",
+        trackSummary: "Enter details to view your stage.",
+        trackNote: "Final acceptance depends on the receiving authority and document type. If your receiving authority has special requirements, add them in Notes at checkout.",
+        legalSummary: "Compliance & role disclosure",
+        legalBody1: "EGS is a private workflow coordination service. We are not a Notary Public, government authority, embassy/consulate, or issuing body.",
+        legalBody2: "We do not represent any government department. Fees shown are service coordination fees and third-party costs (where applicable). Requirements and acceptance are determined by the receiving authority.",
+        legalBody3: "If you require legal advice, please consult a qualified lawyer in your jurisdiction.",
+
+        alertPay: "Prototype: proceed to payment.\n\nProduction wiring: create order → Stripe Checkout → after payment collect address + enable uploads.",
+      },
+      zh: {
+        brandSubtitle: "结构化 · 透明 · 可预期",
+        langLabel: "语言",
+        navEstimate:"预估下单",
+        navTrack:"追踪订单",
+        navTerms:"条款",
+        navPrivacy:"隐私",
+
+        heroBadge: "结构化 · 透明 · 可预期",
+        heroTitle: "澳洲文件海牙 Apostille 及国际认证流程协调",
+        heroSub: "适用于海牙及非海牙国家的澳洲文件认证路径。路径清晰、规则定价、可追踪进度。",
+        ctaEstimate: "创建订单",
+        ctaExplain: "条款",
+        mini1: "结构化流程",
+        mini2: "规则定价",
+        mini3: "订单可追踪",
+
+        scopeTitle: "专业定位说明",
+        scopeBody: "EGS Certification 为澳洲私营文件认证流程协调机构。",
+        scopeMini1: "按路径定价",
+        scopeMini2: "页数规则 + 快递",
+        scopeMini3: "条款与隐私同意",
+
+        explainerTitle: "流程",
+        explainerLead: "选择使用国家 → 确认路径 → 查看费用 → 创建订单 → 上传文件 → 追踪进度。",
+        ex1Title: "1）选择使用国家",
+        ex1Body: "输入国家关键词并选择目的国。",
+        ex2Title: "2）确认路径与费用",
+        ex2Body: "系统提示路径；付款前展示全部费用。",
+        ex3Title: "3）上传与追踪",
+        ex3Body: "付款后填写地址并安全上传；可在线追踪进度。",
+
+        trust1: "10,000+ 处理量（展示样本）",
+        trust2: "120+ 目的国支持",
+        trust3: "4.9/5 满意度（展示样本）",
+
+        servicesTitle: "文件类型",
+        servicesTitleSmall: "文件类型（参考）",
+        servicesLeadSmall: "可选参考列表。若未列出，可直接下单并在备注说明。",
+        servicesToggle: "查看常见文件类型",
+        servicesToggleHint: "点击展开",
+        servicesLead: "仅供参考（可选）。",
+
+        orderTitle: "预估与付款",
+        orderLead: "选择目的国→确认路径与定价规则→可选代申请证书→同意条款→付款。付款后：填写地址 + 安全上传。",
+
+        st1n:"步骤 1", st1t:"搜索目的国",
+        st2n:"步骤 2", st2t:"系统提示路径",
+        st3n:"步骤 3", st3t:"选择个人/公司、份数、页数",
+        st4n:"步骤 4", st4t:"选择快递",
+        st5n:"步骤 5", st5t:"可选：代申请证书",
+        st6n:"步骤 6", st6t:"同意条款与隐私",
+        st7n:"步骤 7", st7t:"付款→地址→上传",
+
+        labelOrigin: "文件签发地",
+        labelDestination: "文件使用国家/地区",
+        destPlaceholder: "输入国家关键词（例如：中国 / 新加坡 / 阿联酋）",
+        destHelp: "仅支持国家关键词（不含城市）。支持英文 + 重点国家中文别名。（内置全球 120+ 列表）",
+
+        labelRoute: "路径（可调整）",
+        routeAuto: "自动（按目的国提示）",
+        routeHagueOpt: "海牙（Apostille）",
+        routeNonOpt: "非海牙（认证+领馆）",
+        routeHelp: "路径标签为提示用途；若接收机构要求不同，可手动调整。",
+
+        labelDocCat: "文件类别",
+        optPersonal: "个人文件",
+        optCompany: "公司文件",
+        labelQty: "份数",
+        labelPages: "每份页数",
+        pagesHelp: "1–5：+0 · 5–10：+100 · 10–30：+150 · >30：+250（按份）",
+
+        labelCourier: "快递",
+        labelService: "服务档位",
+        optStandard: "标准",
+        optExpress: "加急",
+        serviceHelp: "加急可能因路径/官方受理限制而不可用。",
+
+        optCourierDomestic: "澳洲本地（A$13）",
+        optCourierIntl: "国际 DHL（A$80）",
+        labelTimeline: "时效",
+
+        certTitle: "可选：代申请证书",
+        labelCertType: "证书类型",
+        labelCertQty: "证书份数",
+        certHelp: "A$188–A$388，取决于证书官方费用（按证书类型配置）。可选加购。",
+
+        kpiEta: "预估时效",
+        kpiRoute: "路径",
+
+        labelNotes: "备注（可选）",
+        notesPlaceholder: "可选：文件名称、用途、接收机构特殊要求等…",
+
+        btnPay: "创建订单并付款",
+        btnReset: "重置",
+        afterPayNote: "付款后系统将收集寄送地址，并开启安全上传入口。",
+
+        summaryTitle: "预估汇总",
+        sumRoute: "路径",
+        sumService: "服务档位",
+        sumBase: "基础费用（按份）",
+        sumPages: "页数加收",
+        sumCourier: "快递",
+        sumCert: "证书代申请",
+        sumTotal: "预估合计",
+        summaryFoot: "所有费用在付款前清晰展示；最终要求以接收机构为准。",
+
+        footerSubtitle: "结构化 · 透明 · 可预期",
+        linkTerms: "服务条款",
+        linkPrivacy: "隐私政策",
+        footerDisclaimer: "私营流程协调服务。并非公证人或政府机构。",
+        modalClose: "关闭",
+
+        routePrompt: "请选择目的国查看通常办理路径。",
+        routeHague: "海牙路径 · Apostille",
+        routeNon: "非海牙路径 · 认证 + 领馆（如适用）",
+        routeShortHague: "Apostille",
+        routeShortNon: "非海牙",
+        etaHagueStandard: "3–7 个工作日",
+        etaHagueExpress: "1–3 个工作日",
+        etaNonStandard: "10–20 个工作日",
+        etaExpressNA: "该路径不提供加急（以官方受理为准）。",
+        badgeHague: "海牙",
+        badgeNon: "非海牙",
+
+        hintSelectCountry: "请选择目的国，系统才会显示预估并开放付款。",
+        hintNeedConsent: "请先勾选同意服务条款与隐私政策，才能继续付款。",
+        hintReady: "已就绪。继续付款创建订单；付款后填写地址并开启上传入口。",
+
+        dropdownNoMatchTitle: "未找到匹配国家",
+        dropdownNoMatchSub: "请尝试英文或中文国家名",
+
+        modalTermsTitle: "服务条款",
+        modalPrivacyTitle: "隐私政策",
+        ctaTrack: "追踪订单",
+        quickTitle: "常见文件类型",
+        scopeLi1: "我们并非澳洲公证人、政府机关、使领馆或官方签发机构。",
+        scopeLi2: "所有官方认证均由相关主管机关签发。",
+        scopeLi3: "我们的职责：结构化流程协调、透明费用规则与可预期的进度管理。",
+        trackTitle: "订单进度追踪",
+        trackLead: "输入订单号与邮箱查看当前处理阶段。（原型界面，可对接你的订单系统）",
+        trackBadge: "进度查询",
+        labelOrderId: "订单号",
+        labelOrderEmail: "邮箱",
+        btnTrack: "查询进度",
+        btnTrackReset: "清空",
+        trackHint: "如果还没有订单号，请先完成付款。付款后系统会通过邮件发送订单号。",
+        trackStagesTitle: "处理阶段",
+        trackSummary: "请输入信息查看当前进度。",
+        trackNote: "文件最终是否被接受取决于接收机构与文件类型。如有特殊要求，请在下单备注中说明。",
+        legalSummary: "合规与角色声明",
+        legalBody1: "EGS 为私营流程协调服务机构，并非澳洲公证人、政府机关、使领馆或任何签发机构。",
+        legalBody2: "我们不代表任何政府部门。页面费用为协调服务费及第三方成本（如适用）。具体要求与是否接受由接收机构决定。",
+        legalBody3: "如需法律意见，请咨询你所在地的合资格律师。",
+
+        alertPay: "原型：继续付款。\n\n上线接入：创建订单 → Stripe Checkout → 付款后填写地址并开启上传。",
+      }
+    };
+
+    // Reviews (compact)
+    const REVIEWS = {
+      en: [
+        { who:"Olivia W.", meta:"Personal · Hague", text:"Clear rules and clean checkout flow.", stars:5 },
+        { who:"Daniel C.", meta:"Company · Non-Hague", text:"Pages & courier rules are transparent.", stars:5 },
+        { who:"Sophia L.", meta:"Personal · Hague", text:"Professional steps, minimal back-and-forth.", stars:5 },
+        { who:"Ethan Z.", meta:"Company · Hague", text:"Predictable timeline and estimate.", stars:5 },
+        { who:"Mia H.", meta:"Personal · Non-Hague", text:"Non-Hague explanation is helpful.", stars:5 },
+        { who:"Noah K.", meta:"Personal · Hague", text:"Fee breakdown feels reliable.", stars:5 }
+      ],
+      zh: [
+        { who:"林女士", meta:"个人 · 海牙", text:"规则清晰，流程顺畅。", stars:5 },
+        { who:"张先生", meta:"公司 · 非海牙", text:"页数和快递费用很透明。", stars:5 },
+        { who:"王女士", meta:"个人 · 海牙", text:"步骤专业，不用反复沟通。", stars:5 },
+        { who:"陈先生", meta:"公司 · 海牙", text:"时效可预期，报价清楚。", stars:5 },
+        { who:"李女士", meta:"个人 · 非海牙", text:"非海牙说明到位。", stars:5 },
+        { who:"赵先生", meta:"个人 · 海牙", text:"拆分费用让我更安心。", stars:5 }
+      ]
+    };
+
+    // Document type chips
+
+    // Quick document types (hero)
+    const QUICK_TYPES = {
+      en: ["Personal", "Company", "Education", "Civil status", "Police check", "Power of Attorney"],
+      zh: ["个人", "公司", "学历", "民事", "无犯罪", "委托书"]
+    };
+
+    const SERVICE_TYPES = {
+      en: [
+        "Student ID / Enrollment letters",
+        "Birth certificate",
+        "Marriage certificate",
+        "Death certificate",
+        "Testamur / Degree certificate",
+        "Academic transcript",
+        "Police clearance / AFP check",
+        "Single status / Statutory declaration",
+        "Divorce certificate",
+        "Power of Attorney",
+        "Declarations / Affidavits",
+        "Company certificates",
+        "ASIC extracts (company search)",
+        "Certificate of Good Standing",
+        "Board resolutions",
+        "Share certificates",
+        "Name change certificate",
+        "Medical letters (where applicable)",
+        "Employment letters",
+        "Bank letters / statements (where applicable)"
+      ],
+      zh: [
+        "学生证/在读证明",
+        "出生证",
+        "结婚证",
+        "死亡证明",
+        "毕业证/学位证（Testamur）",
+        "学校成绩单",
+        "无犯罪记录（AFP 等）",
+        "单身证明/声明书",
+        "离婚证",
+        "委托书（POA）",
+        "声明书/宣誓书",
+        "公司证书",
+        "ASIC 文件（公司查询）",
+        "存续证明（Good Standing）",
+        "董事会决议",
+        "股权证/股份证明",
+        "改名证明",
+        "医疗证明（如适用）",
+        "工作证明",
+        "银行证明/流水（如适用）"
+      ]
+    };
+
+    // Certificate application options (A$188–A$388)
+    // You can edit prices here anytime.
+    const CERT_OPTIONS = [
+      { key:"none",    en:"None",                           zh:"不需要",                         price:0   },
+      { key:"police",  en:"Police clearance (AFP / relevant)", zh:"无犯罪记录（AFP 等）",          price:288 },
+      { key:"birth",   en:"Birth certificate",              zh:"出生证",                         price:188 },
+      { key:"marriage",en:"Marriage certificate",           zh:"结婚证",                         price:188 },
+      { key:"death",   en:"Death certificate",              zh:"死亡证明",                       price:188 },
+      { key:"transcript", en:"Academic transcript",         zh:"学校成绩单",                     price:228 },
+      { key:"testamur",en:"Testamur / Degree certificate",  zh:"毕业证/学位证（Testamur）",      price:228 },
+      { key:"single",  en:"Single status / declaration",    zh:"单身证明/声明",                  price:248 },
+      { key:"divorce", en:"Divorce certificate",            zh:"离婚证",                         price:248 },
+      { key:"company", en:"Company extract / certificate",  zh:"公司证书/摘录（含 ASIC 类）",      price:388 }
+    ];
+
+    // Destination list (120+). hague field is an indicative tag for UI routing.
+    // Malaysia is explicitly non-Hague per your requirement.
+    // You can adjust any country’s hague flag later without changing UI logic.
+    const DESTINATIONS = [
+      {code:"AF", en:"Afghanistan", zh:"阿富汗", hague:false},
+      {code:"AL", en:"Albania", zh:"阿尔巴尼亚", hague:true},
+      {code:"DZ", en:"Algeria", zh:"阿尔及利亚", hague:false},
+      {code:"AD", en:"Andorra", zh:"安道尔", hague:true},
+      {code:"AO", en:"Angola", zh:"安哥拉", hague:false},
+      {code:"AG", en:"Antigua and Barbuda", zh:"安提瓜和巴布达", hague:true},
+      {code:"AR", en:"Argentina", zh:"阿根廷", hague:true},
+      {code:"AM", en:"Armenia", zh:"亚美尼亚", hague:true},
+      {code:"AU", en:"Australia", zh:"澳大利亚", hague:true},
+      {code:"AT", en:"Austria", zh:"奥地利", hague:true},
+      {code:"AZ", en:"Azerbaijan", zh:"阿塞拜疆", hague:true},
+      {code:"BS", en:"Bahamas", zh:"巴哈马", hague:true},
+      {code:"BH", en:"Bahrain", zh:"巴林", hague:false},
+      {code:"BD", en:"Bangladesh", zh:"孟加拉国", hague:false},
+      {code:"BB", en:"Barbados", zh:"巴巴多斯", hague:true},
+      {code:"BY", en:"Belarus", zh:"白俄罗斯", hague:true},
+      {code:"BE", en:"Belgium", zh:"比利时", hague:true},
+      {code:"BZ", en:"Belize", zh:"伯利兹", hague:true},
+      {code:"BJ", en:"Benin", zh:"贝宁", hague:false},
+      {code:"BT", en:"Bhutan", zh:"不丹", hague:false},
+      {code:"BO", en:"Bolivia", zh:"玻利维亚", hague:true},
+      {code:"BA", en:"Bosnia and Herzegovina", zh:"波黑", hague:true},
+      {code:"BW", en:"Botswana", zh:"博茨瓦纳", hague:true},
+      {code:"BR", en:"Brazil", zh:"巴西", hague:true},
+      {code:"BN", en:"Brunei", zh:"文莱", hague:false},
+      {code:"BG", en:"Bulgaria", zh:"保加利亚", hague:true},
+      {code:"BF", en:"Burkina Faso", zh:"布基纳法索", hague:false},
+      {code:"BI", en:"Burundi", zh:"布隆迪", hague:false},
+      {code:"KH", en:"Cambodia", zh:"柬埔寨", hague:false},
+      {code:"CM", en:"Cameroon", zh:"喀麦隆", hague:false},
+      {code:"CA", en:"Canada", zh:"加拿大", hague:true},
+      {code:"CV", en:"Cabo Verde", zh:"佛得角", hague:true},
+      {code:"CF", en:"Central African Republic", zh:"中非", hague:false},
+      {code:"TD", en:"Chad", zh:"乍得", hague:false},
+      {code:"CL", en:"Chile", zh:"智利", hague:true},
+      {code:"CN", en:"China", zh:"中国", hague:true},
+      {code:"CO", en:"Colombia", zh:"哥伦比亚", hague:true},
+      {code:"KM", en:"Comoros", zh:"科摩罗", hague:false},
+      {code:"CG", en:"Congo", zh:"刚果（布）", hague:false},
+      {code:"CR", en:"Costa Rica", zh:"哥斯达黎加", hague:true},
+      {code:"HR", en:"Croatia", zh:"克罗地亚", hague:true},
+      {code:"CY", en:"Cyprus", zh:"塞浦路斯", hague:true},
+      {code:"CZ", en:"Czechia", zh:"捷克", hague:true},
+      {code:"DK", en:"Denmark", zh:"丹麦", hague:true},
+      {code:"DO", en:"Dominican Republic", zh:"多米尼加", hague:true},
+      {code:"EC", en:"Ecuador", zh:"厄瓜多尔", hague:true},
+      {code:"EG", en:"Egypt", zh:"埃及", hague:false},
+      {code:"SV", en:"El Salvador", zh:"萨尔瓦多", hague:true},
+      {code:"GQ", en:"Equatorial Guinea", zh:"赤道几内亚", hague:false},
+      {code:"EE", en:"Estonia", zh:"爱沙尼亚", hague:true},
+      {code:"ET", en:"Ethiopia", zh:"埃塞俄比亚", hague:false},
+      {code:"FJ", en:"Fiji", zh:"斐济", hague:true},
+      {code:"FI", en:"Finland", zh:"芬兰", hague:true},
+      {code:"FR", en:"France", zh:"法国", hague:true},
+      {code:"GA", en:"Gabon", zh:"加蓬", hague:false},
+      {code:"GM", en:"Gambia", zh:"冈比亚", hague:false},
+      {code:"GE", en:"Georgia", zh:"格鲁吉亚", hague:true},
+      {code:"DE", en:"Germany", zh:"德国", hague:true},
+      {code:"GH", en:"Ghana", zh:"加纳", hague:false},
+      {code:"GR", en:"Greece", zh:"希腊", hague:true},
+      {code:"GT", en:"Guatemala", zh:"危地马拉", hague:true},
+      {code:"GN", en:"Guinea", zh:"几内亚", hague:false},
+      {code:"GY", en:"Guyana", zh:"圭亚那", hague:true},
+      {code:"HT", en:"Haiti", zh:"海地", hague:true},
+      {code:"HN", en:"Honduras", zh:"洪都拉斯", hague:true},
+      {code:"HU", en:"Hungary", zh:"匈牙利", hague:true},
+      {code:"IS", en:"Iceland", zh:"冰岛", hague:true},
+      {code:"IN", en:"India", zh:"印度", hague:false},
+      {code:"ID", en:"Indonesia", zh:"印度尼西亚", hague:false},
+      {code:"IR", en:"Iran", zh:"伊朗", hague:false},
+      {code:"IQ", en:"Iraq", zh:"伊拉克", hague:false},
+      {code:"IE", en:"Ireland", zh:"爱尔兰", hague:true},
+      {code:"IL", en:"Israel", zh:"以色列", hague:true},
+      {code:"IT", en:"Italy", zh:"意大利", hague:true},
+      {code:"JM", en:"Jamaica", zh:"牙买加", hague:true},
+      {code:"JP", en:"Japan", zh:"日本", hague:true},
+      {code:"JO", en:"Jordan", zh:"约旦", hague:false},
+      {code:"KZ", en:"Kazakhstan", zh:"哈萨克斯坦", hague:true},
+      {code:"KE", en:"Kenya", zh:"肯尼亚", hague:false},
+      {code:"KR", en:"South Korea", zh:"韩国", hague:true},
+      {code:"KW", en:"Kuwait", zh:"科威特", hague:false},
+      {code:"KG", en:"Kyrgyzstan", zh:"吉尔吉斯斯坦", hague:true},
+      {code:"LA", en:"Lao PDR", zh:"老挝", hague:false},
+      {code:"LV", en:"Latvia", zh:"拉脱维亚", hague:true},
+      {code:"LB", en:"Lebanon", zh:"黎巴嫩", hague:false},
+      {code:"LR", en:"Liberia", zh:"利比里亚", hague:false},
+      {code:"LY", en:"Libya", zh:"利比亚", hague:false},
+      {code:"LI", en:"Liechtenstein", zh:"列支敦士登", hague:true},
+      {code:"LT", en:"Lithuania", zh:"立陶宛", hague:true},
+      {code:"LU", en:"Luxembourg", zh:"卢森堡", hague:true},
+      {code:"MG", en:"Madagascar", zh:"马达加斯加", hague:false},
+      {code:"MW", en:"Malawi", zh:"马拉维", hague:false},
+      {code:"MY", en:"Malaysia", zh:"马来西亚", hague:false}, /* REQUIRED by user */
+      {code:"MV", en:"Maldives", zh:"马尔代夫", hague:true},
+      {code:"ML", en:"Mali", zh:"马里", hague:false},
+      {code:"MT", en:"Malta", zh:"马耳他", hague:true},
+      {code:"MU", en:"Mauritius", zh:"毛里求斯", hague:true},
+      {code:"MX", en:"Mexico", zh:"墨西哥", hague:true},
+      {code:"MD", en:"Moldova", zh:"摩尔多瓦", hague:true},
+      {code:"MN", en:"Mongolia", zh:"蒙古", hague:true},
+      {code:"ME", en:"Montenegro", zh:"黑山", hague:true},
+      {code:"MA", en:"Morocco", zh:"摩洛哥", hague:false},
+      {code:"MZ", en:"Mozambique", zh:"莫桑比克", hague:false},
+      {code:"MM", en:"Myanmar", zh:"缅甸", hague:false},
+      {code:"NA", en:"Namibia", zh:"纳米比亚", hague:true},
+      {code:"NP", en:"Nepal", zh:"尼泊尔", hague:false},
+      {code:"NL", en:"Netherlands", zh:"荷兰", hague:true},
+      {code:"NZ", en:"New Zealand", zh:"新西兰", hague:true},
+      {code:"NI", en:"Nicaragua", zh:"尼加拉瓜", hague:true},
+      {code:"NE", en:"Niger", zh:"尼日尔", hague:false},
+      {code:"NG", en:"Nigeria", zh:"尼日利亚", hague:false},
+      {code:"MK", en:"North Macedonia", zh:"北马其顿", hague:true},
+      {code:"NO", en:"Norway", zh:"挪威", hague:true},
+      {code:"OM", en:"Oman", zh:"阿曼", hague:false},
+      {code:"PK", en:"Pakistan", zh:"巴基斯坦", hague:false},
+      {code:"PA", en:"Panama", zh:"巴拿马", hague:true},
+      {code:"PY", en:"Paraguay", zh:"巴拉圭", hague:true},
+      {code:"PE", en:"Peru", zh:"秘鲁", hague:true},
+      {code:"PH", en:"Philippines", zh:"菲律宾", hague:true},
+      {code:"PL", en:"Poland", zh:"波兰", hague:true},
+      {code:"PT", en:"Portugal", zh:"葡萄牙", hague:true},
+      {code:"QA", en:"Qatar", zh:"卡塔尔", hague:false},
+      {code:"RO", en:"Romania", zh:"罗马尼亚", hague:true},
+      {code:"RU", en:"Russia", zh:"俄罗斯", hague:true},
+      {code:"RW", en:"Rwanda", zh:"卢旺达", hague:false},
+      {code:"SA", en:"Saudi Arabia", zh:"沙特阿拉伯", hague:false},
+      {code:"RS", en:"Serbia", zh:"塞尔维亚", hague:true},
+      {code:"SG", en:"Singapore", zh:"新加坡", hague:true},
+      {code:"SK", en:"Slovakia", zh:"斯洛伐克", hague:true},
+      {code:"SI", en:"Slovenia", zh:"斯洛文尼亚", hague:true},
+      {code:"ZA", en:"South Africa", zh:"南非", hague:true},
+      {code:"ES", en:"Spain", zh:"西班牙", hague:true},
+      {code:"LK", en:"Sri Lanka", zh:"斯里兰卡", hague:false},
+      {code:"SE", en:"Sweden", zh:"瑞典", hague:true},
+      {code:"CH", en:"Switzerland", zh:"瑞士", hague:true},
+      {code:"SY", en:"Syria", zh:"叙利亚", hague:false},
+      {code:"TW", en:"Taiwan", zh:"台湾", hague:false},
+      {code:"TZ", en:"Tanzania", zh:"坦桑尼亚", hague:false},
+      {code:"TH", en:"Thailand", zh:"泰国", hague:false},
+      {code:"TN", en:"Tunisia", zh:"突尼斯", hague:false},
+      {code:"TR", en:"Türkiye", zh:"土耳其", hague:true},
+      {code:"UG", en:"Uganda", zh:"乌干达", hague:false},
+      {code:"UA", en:"Ukraine", zh:"乌克兰", hague:true},
+      {code:"AE", en:"United Arab Emirates", zh:"阿联酋", hague:false},
+      {code:"GB", en:"United Kingdom", zh:"英国", hague:true},
+      {code:"US", en:"United States", zh:"美国", hague:true},
+      {code:"UY", en:"Uruguay", zh:"乌拉圭", hague:true},
+      {code:"UZ", en:"Uzbekistan", zh:"乌兹别克斯坦", hague:true},
+      {code:"VE", en:"Venezuela", zh:"委内瑞拉", hague:true},
+      {code:"VN", en:"Viet Nam", zh:"越南", hague:false},
+      {code:"YE", en:"Yemen", zh:"也门", hague:false},
+      {code:"ZM", en:"Zambia", zh:"赞比亚", hague:false},
+      {code:"ZW", en:"Zimbabwe", zh:"津巴布韦", hague:false},
+      {code:"BT2", en:"(More) — Select by search", zh:"（更多）— 直接搜索国家名", hague:false}
+    ];
+
+    // Elements
+    const destinationSearch = document.getElementById('destinationSearch');
+    const destDropdown = document.getElementById('destDropdown');
+    const routeBadge = document.getElementById('routeBadge');
+    const routeBadgeText = document.getElementById('routeBadgeText');
+    const routeOverride = document.getElementById('routeOverride');
+
+    const qty = document.getElementById('qty');
+    const pages = document.getElementById('pages');
+    const courier = document.getElementById('courier');
+    const docCat = document.getElementById('docCat');
+    const certType = document.getElementById('certType');
+    const certQty = document.getElementById('certQty');
+
+    const routeShort = document.getElementById('routeShort');
+    const etaText = document.getElementById('etaText');
+    const serviceLevel = document.getElementById('serviceLevel');
+    const serviceHelp = document.getElementById('serviceHelp');
+    const sumServiceText = document.getElementById('sumServiceText');
+
+    const sumRouteText = document.getElementById('sumRouteText');
+
+    const feeBase = document.getElementById('feeBase');
+    const feePages = document.getElementById('feePages');
+    const feeCourier = document.getElementById('feeCourier');
+    const feeCert = document.getElementById('feeCert');
+    const feeTotal = document.getElementById('feeTotal');
+
+    const payBtn = document.getElementById('payBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const consentChk = document.getElementById('consentChk');
+    const formHint = document.getElementById('formHint');
+
+    const reviewsGrid = document.getElementById('reviewsGrid');
+    const chipsGrid = document.getElementById('chipsGrid');
+
+    // Modal
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    // State
+    let selected = null;
+    let lang = 'en';
+
+    function norm(s){ return (s||"").toLowerCase().trim(); }
+    function money(n){ return `A$${n.toFixed(0)}`; }
+
+    function renderReviews(){
+      const list = REVIEWS[lang] || [];
+      reviewsGrid.innerHTML = list.map(r=>{
+        const stars = "★★★★★".slice(0, r.stars) + "☆☆☆☆☆".slice(0, 5 - r.stars);
+        return `
+          <div class="review">
+            <div class="top">
+              <div>
+                <div class="who">${r.who}</div>
+                <div class="meta">${r.meta}</div>
+              </div>
+              <div class="stars">${stars}</div>
+            </div>
+            <p>${r.text}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+
+    function renderQuickChips(){
+      const list = QUICK_TYPES[lang] || [];
+      const el = document.getElementById('quickChips');
+      if(!el) return;
+      el.innerHTML = list.map(x=>`<span class="qchip">${x}</span>`).join("");
+    }
+
+    function renderChips(){
+      const list = SERVICE_TYPES[lang] || [];
+      chipsGrid.innerHTML = list.map(x=>`<span class="chip">${x}</span>`).join("");
+    }
+
+    function renderCertOptions(){
+      certType.innerHTML = CERT_OPTIONS.map(o=>{
+        const label = (lang==='zh') ? o.zh : o.en;
+        const price = o.price > 0 ? ` · ${money(o.price)}` : "";
+        return `<option value="${o.key}">${label}${price}</option>`;
+      }).join("");
+    }
+
+    function applyText(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(STR[lang] && STR[lang][key] !== undefined) el.innerHTML = STR[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+        const key = el.getAttribute('data-i18n-placeholder');
+        if(STR[lang] && STR[lang][key] !== undefined) el.setAttribute('placeholder', STR[lang][key]);
+      });
+      document.querySelectorAll('option[data-i18n]').forEach(opt=>{
+        const key = opt.getAttribute('data-i18n');
+        if(STR[lang] && STR[lang][key] !== undefined) opt.textContent = STR[lang][key];
+      });
+
+      renderTrackStages(-1);
+
+      // Consent text
+      const consentText = document.getElementById('consentText');
+      const consentHelp = document.getElementById('consentHelp');
+      if(consentText && consentHelp){
+        if(lang === 'zh'){
+          consentText.innerHTML = '我已阅读并同意 <a href="#" data-open="terms">服务条款</a> 与 <a href="#" data-open="privacy">隐私政策</a>。';
+          consentHelp.textContent = '勾选同意后才可继续付款。';
+        } else {
+          consentText.innerHTML = 'I have read and agree to the <a href="#" data-open="terms">Terms</a> and <a href="#" data-open="privacy">Privacy Policy</a>.';
+          consentHelp.textContent = 'You can proceed to payment only after consenting.';
+        }
+      }
+
+      renderReviews();
+      renderChips();
+      renderQuickChips();
+      renderCertOptions();
+      bindModalLinks();
+    bindTrack();
+    renderTrackStages(-1);
+      updateUI();
+    }
+
+    // Determine effective route
+    function effectiveRoute(){
+      // returns 'hague' or 'non' or null
+      if(!selected) return null;
+      const ov = routeOverride.value;
+      if(ov === 'hague') return 'hague';
+      if(ov === 'non') return 'non';
+      // auto
+      return selected.hague ? 'hague' : 'non';
+    }
+
+    // Base prices (fixed)
+    function basePricePerDoc(){
+      const route = effectiveRoute();
+      if(!route) return 0;
+      const isCompany = docCat.value === 'company';
+      if(route === 'hague'){
+        return isCompany ? 680 : 550;
+      }else{
+        return isCompany ? 880 : 660;
+      }
+    }
+
+    // Pages surcharge (your latest rule)
+    // 1–5 => 0
+    // 6–10 => +100
+    // 11–30 => +150
+    // >30 => +250
+    function pagesSurchargePerDoc(){
+      const p = Math.max(1, parseInt(pages.value || "1", 10));
+      if(p <= 5) return 0;
+      if(p <= 10) return 100;
+      if(p <= 30) return 150;
+      return 250;
+    }
+
+    function courierFee(){
+      return (courier.value === 'intl_dhl') ? 80 : 13;
+    }
+
+    function certUnitPrice(){
+      const k = certType.value;
+      const opt = CERT_OPTIONS.find(x=>x.key===k);
+      return opt ? opt.price : 0;
+    }
+
+    function calcTotal(){
+      const q = Math.max(1, parseInt(qty.value || "1", 10));
+      const base = basePricePerDoc();
+      const pageExtra = pagesSurchargePerDoc();
+      const cour = courierFee();
+
+      const certQ = Math.max(0, parseInt(certQty.value || "0", 10));
+      const certU = certUnitPrice();
+      const certSum = certQ * certU;
+
+      const baseSum = base * q;
+      const pageSum = pageExtra * q;
+      const total = baseSum + pageSum + cour + certSum;
+
+      return { q, base, baseSum, pageExtra, pageSum, cour, certQ, certU, certSum, total };
+    }
+
+    function updateRouteUI(){
+      const route = effectiveRoute();
+
+      if(!selected || !route){
+        routeBadge.classList.remove('ok','warn');
+        routeBadgeText.textContent = STR[lang].routePrompt;
+        routeShort.textContent = "—";
+        sumRouteText.textContent = "—";
+        return;
+      }
+
+      if(route === 'hague'){
+        routeBadge.classList.add('ok'); routeBadge.classList.remove('warn');
+        routeBadgeText.textContent = STR[lang].routeHague;
+        routeShort.textContent = STR[lang].routeShortHague;
+        sumRouteText.textContent = STR[lang].routeShortHague;
+      }else{
+        routeBadge.classList.add('warn'); routeBadge.classList.remove('ok');
+        routeBadgeText.textContent = STR[lang].routeNon;
+        routeShort.textContent = STR[lang].routeShortNon;
+        sumRouteText.textContent = STR[lang].routeShortNon;
+      }
+    }
+
+
+    function updateServiceAndEta(){
+      const route = effectiveRoute();
+      const svc = serviceLevel ? serviceLevel.value : 'standard';
+
+      // default states
+      const expOpt = serviceLevel ? serviceLevel.querySelector('option[value="express"]') : null;
+      if(expOpt) expOpt.disabled = false;
+
+      if(!selected || !route){
+        if(etaText) etaText.textContent = "—";
+        if(sumServiceText) sumServiceText.textContent = "—";
+        if(serviceHelp) serviceHelp.textContent = STR[lang].serviceHelp;
+        return;
+      }
+
+      // Service availability by route
+      if(route === 'non'){
+        // No express for non-Hague
+        if(expOpt) expOpt.disabled = true;
+
+        if(serviceLevel && serviceLevel.value === 'express'){
+          serviceLevel.value = 'standard';
+        }
+        if(serviceHelp) serviceHelp.textContent = STR[lang].etaExpressNA;
+        if(sumServiceText) sumServiceText.textContent = (lang==='zh') ? '标准' : 'Standard';
+        if(etaText) etaText.textContent = STR[lang].etaNonStandard;
+        return;
+      }
+
+      // Hague route supports express (as a service tier)
+      if(serviceHelp) serviceHelp.textContent = STR[lang].serviceHelp;
+
+      const isExpress = (serviceLevel && serviceLevel.value === 'express');
+      if(sumServiceText) sumServiceText.textContent = isExpress ? ((lang==='zh') ? '加急' : 'Express') : ((lang==='zh') ? '标准' : 'Standard');
+      if(etaText) etaText.textContent = isExpress ? STR[lang].etaHagueExpress : STR[lang].etaHagueStandard;
+    }
+
+    function updateSummary(){
+      const e = calcTotal();
+      if(!selected){
+        feeBase.textContent = "—";
+        feePages.textContent = "—";
+        feeCourier.textContent = "—";
+        feeCert.textContent = "—";
+        feeTotal.textContent = "—";
+        return;
+      }
+      feeBase.textContent = `${money(e.base)} × ${e.q}`;
+      feePages.textContent = (e.pageExtra > 0) ? `${money(e.pageExtra)} × ${e.q}` : money(0);
+      feeCourier.textContent = money(e.cour);
+      feeCert.textContent = (e.certSum > 0) ? `${money(e.certU)} × ${e.certQ}` : money(0);
+      feeTotal.textContent = money(e.total);
+    }
+
+    function updatePayEnabled(){
+      const okCountry = !!selected;
+      const okConsent = consentChk.checked;
+      payBtn.disabled = !(okCountry && okConsent);
+
+      if(!okCountry){
+        formHint.innerHTML = `<span class="warn-text">•</span> ${STR[lang].hintSelectCountry}`;
+      }else if(!okConsent){
+        formHint.innerHTML = `<span class="warn-text">•</span> ${STR[lang].hintNeedConsent}`;
+      }else{
+        formHint.innerHTML = `<span style="color:rgba(57,217,138,.92)">•</span> ${STR[lang].hintReady}`;
+      }
+    }
+
+    function updateUI(){
+      updateRouteUI();
+      updateServiceAndEta();
+      updateSummary();
+      updatePayEnabled();
+    }
+
+    // Dropdown search
+    function highlight(text, query){
+      const q = norm(query);
+      if(!q) return text;
+      const idx = norm(text).indexOf(q);
+      if(idx === -1) return text;
+      return text.slice(0, idx) + "<mark>" + text.slice(idx, idx + q.length) + "</mark>" + text.slice(idx + q.length);
+    }
+
+    function routeBadgeForCountry(d){
+      // show badge based on destination tag only (not override)
+      const badge = d.hague ? STR[lang].badgeHague : STR[lang].badgeNon;
+      const badgeClass = d.hague ? 'hague' : 'non';
+      return {badge, badgeClass};
+    }
+
+    function renderDropdown(query){
+      const q = norm(query);
+      const list = DESTINATIONS
+        .filter(d=>{
+          if(d.code === "BT2") return false;
+          if(!q) return true;
+          return norm(d.en).includes(q) || (d.zh && norm(d.zh).includes(q)) || norm(d.code).includes(q);
+        })
+        .slice(0, 30);
+
+      if(list.length === 0){
+        destDropdown.innerHTML = `
+          <div class="dest-item" style="cursor:default;">
+            <div class="dest-left">
+              <div class="dest-name">${STR[lang].dropdownNoMatchTitle}</div>
+              <div class="dest-alt">${STR[lang].dropdownNoMatchSub}</div>
+            </div>
+            <div class="dest-badge non">—</div>
+          </div>`;
+        destDropdown.style.display = "block";
+        return;
+      }
+
+      destDropdown.innerHTML = list.map(d=>{
+        const name = (lang==='en') ? highlight(d.en, query) : highlight(d.zh || d.en, query);
+        const alt = (lang==='en') ? `${(d.zh||"—")} · ${d.code}` : `${d.en} · ${d.code}`;
+        const rb = routeBadgeForCountry(d);
+        return `
+          <div class="dest-item" data-code="${d.code}">
+            <div class="dest-left">
+              <div class="dest-name">${name}</div>
+              <div class="dest-alt">${alt}</div>
+            </div>
+            <div class="dest-badge ${rb.badgeClass}">${rb.badge}</div>
+          </div>
+        `;
+      }).join("");
+
+      destDropdown.style.display = "block";
+
+      [...destDropdown.querySelectorAll('.dest-item[data-code]')].forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const code = el.getAttribute('data-code');
+          const d = DESTINATIONS.find(x=>x.code===code);
+          if(!d) return;
+          selected = d;
+          destinationSearch.value = (lang==='en') ? d.en : (d.zh || d.en);
+          destDropdown.style.display = "none";
+          updateUI();
+        });
+      });
+    }
+
+    destinationSearch.addEventListener('input', (e)=>{
+      const v = e.target.value;
+      renderDropdown(v);
+      const exact = DESTINATIONS.find(d => d.code !== "BT2" && (norm(d.en)===norm(v) || (d.zh && norm(d.zh)===norm(v)) || norm(d.code)===norm(v)));
+      selected = exact || null;
+      updateUI();
+    });
+    destinationSearch.addEventListener('focus', ()=> renderDropdown(destinationSearch.value));
+    document.addEventListener('click', (e)=>{
+      const within = destinationSearch.contains(e.target) || destDropdown.contains(e.target);
+      if(!within) destDropdown.style.display = "none";
+    });
+
+    // Nav (mobile drawer)
+    const navBurger = document.getElementById('navBurger');
+    const navDrawer = document.getElementById('navDrawer');
+    function closeNav(){
+      if(!navBurger || !navDrawer) return;
+      navDrawer.style.display = "none";
+      navDrawer.setAttribute('aria-hidden','true');
+      navBurger.setAttribute('aria-expanded','false');
+    }
+    function toggleNav(){
+      if(!navBurger || !navDrawer) return;
+      const open = navBurger.getAttribute('aria-expanded') === 'true';
+      if(open){ closeNav(); return; }
+      navDrawer.style.display = "block";
+      navDrawer.setAttribute('aria-hidden','false');
+      navBurger.setAttribute('aria-expanded','true');
+    }
+    if(navBurger){
+      navBurger.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); toggleNav(); });
+    }
+    if(navDrawer){
+      navDrawer.addEventListener('click', (e)=>{ /* allow link clicks */ closeNav(); });
+    }
+    document.addEventListener('click', (e)=>{
+      const inside = (navBurger && navBurger.contains(e.target)) || (navDrawer && navDrawer.contains(e.target));
+      if(!inside) closeNav();
+    });
+
+    [routeOverride, qty, pages, courier, serviceLevel, docCat, certType, certQty].forEach(el=>{
+      el.addEventListener('change', updateUI);
+      el.addEventListener('input', updateUI);
+    });
+    consentChk.addEventListener('change', updateUI);
+
+    resetBtn.addEventListener('click', ()=>{
+      selected = null;
+      destinationSearch.value = "";
+      routeOverride.value = "auto";
+      qty.value = "1";
+      pages.value = "1";
+      courier.value = "domestic";
+      docCat.value = "personal";
+      certType.value = "none";
+      certQty.value = "0";
+      document.getElementById('notes').value = "";
+      consentChk.checked = false;
+      destDropdown.style.display = "none";
+      updateUI();
+    });
+
+    payBtn.addEventListener('click', ()=> {
+      if(payBtn.disabled) return;
+
+      const now = new Date();
+      const y = now.getFullYear();
+      const mm = String(now.getMonth()+1).padStart(2,'0');
+      const dd = String(now.getDate()).padStart(2,'0');
+      const rand = Math.floor(1000 + Math.random()*9000);
+      const orderId = `EGS-${y}${mm}${dd}-${rand}`;
+
+      try{
+        localStorage.setItem('egs_last_order', JSON.stringify({ orderId, createdAt: now.toISOString() }));
+      }catch(e){}
+
+      const msg = (lang==='zh')
+        ? `订单已创建（演示）：${orderId}\n\n上线接入建议：创建订单 → Stripe Checkout → 付款成功回跳并开启上传入口。\n\n现在将自动跳转到【追踪订单】并预填订单号。`
+        : `Order created (demo): ${orderId}\n\nProduction wiring: create order → Stripe Checkout → post-payment collect address + enable secure uploads.\n\nNow jumping to Track and prefilling your Order ID.`;
+      showToast(orderId);
+
+      const t = document.getElementById('track');
+      if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+      const oi = document.getElementById('trackOrderId');
+      if(oi) oi.value = orderId;
+    });
+
+    // Modal
+    function openModal(kind){
+      modalBackdrop.style.display = "block";
+      modalBackdrop.setAttribute('aria-hidden','false');
+      document.body.style.overflow = "hidden";
+
+      if(kind === "terms"){
+        modalTitle.textContent = STR[lang].modalTermsTitle;
+        modalBody.innerHTML = (lang==='en')
+          ? `
+            <div class="muted">Draft for launch review</div>
+            <div class="sep"></div>
+            <h4>Scope</h4>
+            <ul>
+              <li>General information only; not legal advice.</li>
+              <li>Route tags are indicative; receiving authorities may have specific requirements.</li>
+              <li>Official certifications are issued by relevant authorities.</li>
+            </ul>
+            <h4>Payment & Order</h4>
+            <ul>
+              <li>Payment requires consent to Terms & Privacy.</li>
+              <li>After payment: delivery address collection and secure upload are enabled.</li>
+            </ul>
+          `
+          : `
+            <div class="muted">上线前审阅草案</div>
+            <div class="sep"></div>
+            <h4>范围</h4>
+            <ul>
+              <li>仅提供一般信息，不构成法律意见。</li>
+              <li>路径标签为提示用途；接收机构可能有特定要求。</li>
+              <li>官方认证由相关机关签发。</li>
+            </ul>
+            <h4>付款与订单</h4>
+            <ul>
+              <li>需同意条款与隐私政策后才可付款。</li>
+              <li>付款后：收集寄送地址并开放安全上传。</li>
+            </ul>
+          `;
+      }else{
+        modalTitle.textContent = STR[lang].modalPrivacyTitle;
+        modalBody.innerHTML = (lang==='en')
+          ? `
+            <div class="muted">Draft for launch review</div>
+            <div class="sep"></div>
+            <ul>
+              <li>Used to process orders and deliver services.</li>
+              <li>Delivery address is collected after payment.</li>
+              <li>Uploads are enabled after payment and used for processing only.</li>
+            </ul>
+          `
+          : `
+            <div class="muted">上线前审阅草案</div>
+            <div class="sep"></div>
+            <ul>
+              <li>用于处理订单与交付服务。</li>
+              <li>寄送地址在付款后收集。</li>
+              <li>文件上传入口在付款后开放，仅用于办理用途。</li>
+            </ul>
+          `;
+      }
+    }
+    function closeModal(){
+      modalBackdrop.style.display = "none";
+      modalBackdrop.setAttribute('aria-hidden','true');
+      document.body.style.overflow = "";
+    }
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) closeModal(); });
+
+    function bindModalLinks(){
+      document.querySelectorAll('[data-open]').forEach(a=>{
+        a.onclick = (e)=>{
+          e.preventDefault();
+          openModal(a.getAttribute('data-open'));
+        };
+      });
+    }
+
+    // Language switching (robust)
+    window.__setLang = function(next){
+      lang = (next === 'zh') ? 'zh' : 'en';
+      document.documentElement.setAttribute('lang', lang);
+      document.body.setAttribute('data-lang', lang);
+
+      const enBtn = document.getElementById('btnEN');
+      const zhBtn = document.getElementById('btnZH');
+      if(enBtn && zhBtn){
+        enBtn.classList.toggle('active', lang === 'en');
+        zhBtn.classList.toggle('active', lang === 'zh');
+      }
+
+      if(selected){
+        destinationSearch.value = (lang==='en') ? selected.en : (selected.zh || selected.en);
+      }
+
+      applyText();
+      // keep routeOverride selection
+      updateUI();
+    };
+
+    document.addEventListener('click', function(e){
+      const t = e.target;
+      const want = t && t.getAttribute && t.getAttribute('data-setlang');
+      if(want){
+        e.preventDefault();
+        window.__setLang(want);
+      }
+    }, true);
+
+
+    // Track order (prototype UI)
+
+    // Toast (business-style notification)
+    function showToast(orderId){
+      const toast = document.getElementById('toast');
+      const title = document.getElementById('toastTitle');
+      const body = document.getElementById('toastBody');
+      const sub = document.getElementById('toastSub');
+      if(!toast || !title || !body || !sub) return;
+
+      title.textContent = (lang==='zh') ? '订单已创建' : 'Order created';
+      body.innerHTML = (lang==='zh')
+        ? `订单编号：<b>${orderId}</b><br/>确认邮件将发送至您登记邮箱（上线后对接）。`
+        : `Order ID: <b>${orderId}</b><br/>A confirmation email will be sent to your registered email (production wiring).`;
+      sub.textContent = (lang==='zh')
+        ? '订单支持：orders@elitesglobalsolutions.com（来信请注明 Order ID）'
+        : 'Order support: orders@elitesglobalsolutions.com (please include your Order ID)';
+
+      toast.style.display = 'block';
+
+      // bind buttons once
+      if(!toast.__bound){
+        toast.__bound = true;
+        const go = document.getElementById('toastGoTrack');
+        const close = document.getElementById('toastClose');
+        if(go){
+          go.addEventListener('click', ()=>{
+            toast.style.display = 'none';
+            const t = document.getElementById('track');
+            if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+          });
+        }
+        if(close){
+          close.addEventListener('click', ()=> toast.style.display='none');
+        }
+      }
+      // auto-hide after 10s (visual only)
+      clearTimeout(toast.__timer);
+      toast.__timer = setTimeout(()=>{ try{ toast.style.display='none'; }catch(e){} }, 10000);
+    }
+
+    const TRACK_STAGES = {
+      en: [
+        {k:"created", t:"Order created", m:"Payment confirmed; order ID issued."},
+        {k:"received", t:"Documents received", m:"Documents received or upload completed."},
+        {k:"submitted", t:"Submitted to authority", m:"Submitted for Apostille / authentication steps."},
+        {k:"processing", t:"Processing", m:"In progress with relevant parties."},
+        {k:"completed", t:"Completed", m:"Certification completed; ready for dispatch."},
+        {k:"shipped", t:"Shipped", m:"Courier lodged; tracking shared by email."}
+      ],
+      zh: [
+        {k:"created", t:"订单已创建", m:"付款确认，生成订单号。"},
+        {k:"received", t:"文件已接收", m:"已收到原件/已完成上传。"},
+        {k:"submitted", t:"已递交办理", m:"已递交进行 Apostille/认证流程。"},
+        {k:"processing", t:"处理中", m:"相关环节处理中。"},
+        {k:"completed", t:"已完成", m:"认证完成，待寄出。"},
+        {k:"shipped", t:"已寄出", m:"快递已交寄，邮件发送物流信息。"}
+      ]
+    };
+
+    function hashToIndex(s, max){
+      try{
+        const h = Array.from(new TextEncoder().encode(s)).reduce((a,b)=> (a*31 + b) % 1000000007, 7);
+        return Math.abs(h) % max;
+      }catch(e){
+        return 0;
+      }
+    }
+
+    function renderTrackStages(currentIdx){
+      const stepsEl = document.getElementById('trackSteps');
+      const sumEl = document.getElementById('trackSummary');
+      if(!stepsEl || !sumEl) return;
+      const stages = TRACK_STAGES[lang] || TRACK_STAGES.en;
+      const idx = (typeof currentIdx === 'number') ? currentIdx : -1;
+
+      if(idx < 0){
+        sumEl.innerHTML = STR[lang].trackSummary || (lang==='zh' ? "请输入信息查看当前进度。" : "Enter details to view your stage.");
+      }else{
+        const now = stages[Math.min(idx, stages.length-1)];
+        const label = (lang==='zh') ? "当前阶段：" : "Current stage: ";
+        sumEl.innerHTML = `<b>${label}</b>${now.t}`;
+        const today = new Date();
+        const fmt = today.toLocaleDateString(lang==='zh'?'zh-CN':'en-AU', {year:'numeric', month:'short', day:'2-digit'});
+        const service = (lang==='zh') ? "标准" : "Standard";
+        const etaWindow = (lang==='zh') ? "按下单选项与路径计算" : "Calculated by route & service level";
+        setTrackPortal({order:(window.__lastTrackOrder||"—"), stage:now.t, service:service, eta:etaWindow, courier:(lang==='zh'?"待提供（如适用）":"Pending (if applicable)"), updated:fmt});
+      }
+
+      stepsEl.innerHTML = stages.map((s,i)=>{
+        const cls = (idx>i) ? "done" : (idx===i ? "doing" : "");
+        return `
+          <div class="tstep ${cls}">
+            <div class="tbullet"></div>
+            <div>
+              <div class="tlabel">${s.t}</div>
+              <div class="tmeta">${s.m}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function bindTrack(){
+      const btn = document.getElementById('trackBtn');
+      const clear = document.getElementById('trackReset');
+      const oid = document.getElementById('trackOrderId');
+      const em = document.getElementById('trackEmail');
+      if(!btn || !clear || !oid || !em) return;
+
+      btn.addEventListener('click', ()=>{
+        const a = (oid.value||"").trim();
+        const b = (em.value||"").trim().toLowerCase();
+        if(!a || !b){
+          renderTrackStages(-1);
+          window.__lastTrackOrder = "";
+          const hint = document.getElementById('trackHint');
+          if(hint){
+            hint.innerHTML = (lang==='zh')
+              ? "请输入订单号与邮箱后再查询。"
+              : "Please enter Order ID and email to check status.";
+          }
+          return;
+        }
+        const stages = TRACK_STAGES[lang] || TRACK_STAGES.en;
+        window.__lastTrackOrder = a;
+        const idx = hashToIndex(a + "|" + b, stages.length);
+        renderTrackStages(idx);
+        const hint = document.getElementById('trackHint');
+        if(hint){
+          hint.innerHTML = (lang==='zh')
+            ? "提示：此为原型演示。上线后可对接真实订单状态。"
+            : "Note: prototype demo. This can be wired to real order status in production.";
+        }
+      });
+
+      clear.addEventListener('click', ()=>{
+        oid.value = "";
+        em.value = "";
+        renderTrackStages(-1);
+        const hint = document.getElementById('trackHint');
+        if(hint){
+          hint.innerHTML = STR[lang].trackHint || hint.innerHTML;
+        }
+      });
+    }
+
+
+    // Init
+    bindModalLinks();
+    window.__setLang('en');
+    certType.value = "none";
+
+    // Prefill Track from last created order (demo)
+    try{
+      const last = JSON.parse(localStorage.getItem('egs_last_order') || 'null');
+      if(last && last.orderId){
+        const oi = document.getElementById('trackOrderId');
+        if(oi) oi.value = last.orderId;
+      }
+    }catch(e){}
+
+    updateUI();
+  </script>
+</body>
+</html>
