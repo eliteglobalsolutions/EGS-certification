@@ -56,6 +56,8 @@ export async function POST(req: Request) {
         document_type: order.document_type,
         document_quantity: order.document_quantity,
         delivery_method: order.delivery_method,
+        latest_scanned_copy_deadline: order.latest_scanned_copy_deadline,
+        estimated_days: order.estimated_days,
         amount_total: order.amount_total,
         currency: order.currency,
         invoice_url: order.invoice_pdf_url || order.invoice_url,

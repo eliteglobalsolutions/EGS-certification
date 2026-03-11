@@ -117,6 +117,7 @@ export default function AdminOrderDetailPage({ params }: { params: { orderId: st
         <p className="small-text">client: {data.order.client_status || '-'}</p>
         <p className="small-text">internal: {data.order.internal_status || '-'}</p>
         <p className="small-text">email: {data.order.customer_email || '-'}</p>
+        <p className="small-text">deadline: {data.order.latest_scanned_copy_deadline || '-'}</p>
         <p className="small-text">stripe_session_id: {data.order.stripe_session_id || '-'}</p>
         <button className="btn btn-secondary" disabled={replaying} onClick={replayStripe} type="button">
           {replaying ? 'Replaying...' : 'Replay Stripe Payment'}

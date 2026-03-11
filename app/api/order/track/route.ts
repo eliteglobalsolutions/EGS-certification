@@ -85,6 +85,7 @@ export async function POST(req: Request) {
         service_type: order.service_type,
         document_quantity: order.document_quantity,
         delivery_method: order.delivery_method,
+        latest_scanned_copy_deadline: order.latest_scanned_copy_deadline,
         estimated_days: order.estimated_days,
       },
       history: history ?? [],

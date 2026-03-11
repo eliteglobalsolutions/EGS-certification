@@ -23,6 +23,7 @@ export type CheckoutPayload = {
   pages: number;
   submissionMethod?: 'upload' | 'mail_po_box';
   deliveryMethod: 'domestic' | 'intl_dhl';
+  latestScannedCopyDeadline?: string;
   certificateType?: string;
   certificateQuantity?: number;
   email: string;

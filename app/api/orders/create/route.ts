@@ -31,10 +31,12 @@ export async function POST(req: Request) {
     const serviceLevel = String(body.serviceLevel || '');
     const docCategory = String(body.docCategory || '');
     const issuedIn = String(body.issuedIn || '');
+    const issuingCountry = String(body.issuingCountry || '');
     const destinationCountry = String(body.destinationCountry || '');
     const documentType = String(body.documentType || '');
     const submissionMethod = String(body.submissionMethod || '');
     const deliveryMethod = String(body.deliveryMethod || '');
+    const latestScannedCopyDeadline = String(body.latestScannedCopyDeadline || '');
     const estimatedDays = String(body.estimatedDays || '');
     const tosAccepted = body.tosAccepted === true;
     const privacyAccepted = body.privacyAccepted === true;
@@ -61,12 +63,28 @@ export async function POST(req: Request) {
         internal_status: 'received',
         client_status: 'received',
         customer_email: email || null,
+        customer_phone: phone || null,
         locale,
         destination_country: destinationCountry || null,
+        issuing_country: issuingCountry || null,
         service_type: [routeOverride, serviceLevel].filter(Boolean).join('_') || serviceLevel || null,
+        speed: serviceLevel || null,
         document_type: documentType || null,
         document_quantity: Math.max(1, documentQuantity || 1),
         delivery_method: deliveryMethod || 'domestic',
+        delivery_address: {
+          recipient_name: recipientName || null,
+          phone: phone || null,
+          email: email || null,
+          postcode: postcode || null,
+          address_line1: addressLine1 || null,
+          address_line2: addressLine2 || null,
+          city: city || null,
+          state_province: stateProvince || null,
+          country: country || null,
+          mailing_address: mailingAddress || null,
+        },
+        latest_scanned_copy_deadline: latestScannedCopyDeadline || null,
         estimated_days: estimatedDays || null,
         currency: 'aud',
         subtotal_amount: Math.max(0, subtotalAmount || 0),
@@ -117,6 +135,7 @@ export async function POST(req: Request) {
           doc_category: docCategory || null,
           issued_in: issuedIn || null,
           submission_method: submissionMethod || null,
+          latest_scanned_copy_deadline: latestScannedCopyDeadline || null,
         },
     });
     if (createdEventError) throw createdEventError;

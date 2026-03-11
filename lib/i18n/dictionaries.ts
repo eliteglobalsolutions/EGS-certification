@@ -75,6 +75,7 @@ export const copy = {
     landing: {
       nav: {
         wordmarkKicker: 'Global Document Compliance Gateway',
+        guides: 'Guides',
         routes: 'Routes',
         services: 'Services',
         process: 'Process',
@@ -657,6 +658,7 @@ export const copy = {
         certificate: 'Certificate Application (Optional)',
         certificateQty: 'Certificate Quantity',
         mailingAddress: 'Mailing Address',
+        deadlineDate: 'Latest date to receive scanned copy (Optional)',
         recipientName: 'Recipient Full Name',
         phone: 'Phone Number',
         postcode: 'Postcode',
@@ -988,6 +990,7 @@ export const copy = {
     landing: {
       nav: {
         wordmarkKicker: '全球文件合规门户',
+        guides: '指南',
         routes: '路线',
         services: '服务',
         process: '流程',
@@ -1547,6 +1550,7 @@ export const copy = {
         certificate: '证书申请（可选）',
         certificateQty: '证书份数',
         mailingAddress: '邮寄地址',
+        deadlineDate: '最晚收到扫描件日期（可选）',
         recipientName: '收件人姓名',
         phone: '联系电话',
         postcode: '邮编',

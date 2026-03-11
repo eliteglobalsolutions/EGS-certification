@@ -92,6 +92,7 @@ export default function PortalOrderPage() {
                 <InfoRow label={t.order.labels.docType} value={data.order.document_type || '-'} />
                 <InfoRow label={t.order.labels.docQty} value={String(data.order.document_quantity || '-')} />
                 <InfoRow label={t.order.labels.delivery} value={data.order.delivery_method || '-'} />
+                <InfoRow label={t.order.labels.deadlineDate} value={data.order.latest_scanned_copy_deadline || '-'} />
                 <InfoRow label={t.order.summary.eta} value={data.order.estimated_days || '-'} />
                 <InfoRow label={t.common.invoice} value={data.order.invoice_url || '-'} />
               </div>

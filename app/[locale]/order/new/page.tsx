@@ -51,6 +51,7 @@ type OrderDraft = {
   pagesInput: string;
   submissionMethod: 'upload' | 'mail_po_box';
   deliveryMethod: 'domestic' | 'intl_dhl';
+  deadlineDate: string;
   recipientName: string;
   phone: string;
   postcode: string;
@@ -89,6 +90,7 @@ export default function NewOrderPage() {
   const [pagesInput, setPagesInput] = useState('1');
   const [submissionMethod, setSubmissionMethod] = useState<'upload' | 'mail_po_box'>('upload');
   const [deliveryMethod, setDeliveryMethod] = useState<'domestic' | 'intl_dhl'>('domestic');
+  const [deadlineDate, setDeadlineDate] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const [phone, setPhone] = useState('');
   const [postcode, setPostcode] = useState('');
@@ -162,6 +164,7 @@ export default function NewOrderPage() {
         documentQuantity,
         pages,
         deliveryMethod,
+        latestScannedCopyDeadline: deadlineDate,
         certificateType,
         certificateQuantity,
         email,
@@ -397,6 +400,7 @@ export default function NewOrderPage() {
     pagesInput,
     submissionMethod,
     deliveryMethod,
+    deadlineDate,
     recipientName,
     phone,
     postcode,
@@ -467,6 +471,7 @@ export default function NewOrderPage() {
       if (typeof draft.pagesInput === 'string') setPagesInput(draft.pagesInput);
       if (draft.submissionMethod === 'upload' || draft.submissionMethod === 'mail_po_box') setSubmissionMethod(draft.submissionMethod);
       if (draft.deliveryMethod === 'domestic' || draft.deliveryMethod === 'intl_dhl') setDeliveryMethod(draft.deliveryMethod);
+      if (typeof draft.deadlineDate === 'string') setDeadlineDate(draft.deadlineDate);
       if (typeof draft.recipientName === 'string') setRecipientName(draft.recipientName);
       if (typeof draft.phone === 'string') setPhone(draft.phone);
       if (typeof draft.postcode === 'string') setPostcode(draft.postcode);
@@ -541,6 +546,7 @@ export default function NewOrderPage() {
     pagesInput,
     submissionMethod,
     deliveryMethod,
+    deadlineDate,
     recipientName,
     phone,
     postcode,
@@ -1112,6 +1118,13 @@ export default function NewOrderPage() {
               </select>
               {issuedIn === 'OVERSEAS' ? <p className="small-text">{t.order.errors.overseasDeliveryOnly}</p> : null}
               {deliveryMethod === 'domestic' && !domesticCountryValid ? <p className="warn-text">{t.order.errors.domesticAustraliaOnly}</p> : null}
+              <label className="small-text">{t.order.labels.deadlineDate}</label>
+              <input className="input" type="date" value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
+              <p className="small-text">
+                {locale === 'zh'
+                  ? '可选。告诉我们你最晚需要收到 apostille / authenticated 文件扫描件的日期。'
+                  : 'Optional. Tell us the latest date by which you need the scanned copy of the apostille/authenticated document.'}
+              </p>
               <label className="small-text">{t.order.labels.recipientName}</label>
               <input className="input" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} />
               <label className="small-text">{t.order.labels.phone}</label>
@@ -1186,6 +1199,7 @@ export default function NewOrderPage() {
                 <InfoRow label={t.order.labels.docQty} value={String(documentQuantity || '-')} />
                 <InfoRow label={t.order.labels.pages} value={String(pages || '-')} />
                 <InfoRow label={t.order.labels.delivery} value={COURIER_OPTIONS.find((x) => x.key === deliveryMethod)?.[locale] || deliveryMethod} />
+                <InfoRow label={t.order.labels.deadlineDate} value={deadlineDate || '-'} />
                 <InfoRow label={t.order.summary.eta} value={summary.estimatedDays} />
               </div>
             </div>
@@ -1284,6 +1298,7 @@ export default function NewOrderPage() {
         <InfoRow label={t.order.labels.docQty} value={String(documentQuantity || '-')} />
         <InfoRow label={t.order.labels.pages} value={String(pages || '-')} />
         <InfoRow label={t.order.labels.delivery} value={COURIER_OPTIONS.find((x) => x.key === deliveryMethod)?.[locale] || deliveryMethod} />
+        <InfoRow label={t.order.labels.deadlineDate} value={deadlineDate || '-'} />
         <InfoRow label={t.order.labels.recipientName} value={recipientName || '-'} />
         <InfoRow label={t.order.labels.phone} value={phone || '-'} />
         <InfoRow label={t.order.labels.email} value={email || '-'} />

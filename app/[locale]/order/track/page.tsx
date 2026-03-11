@@ -90,6 +90,7 @@ export default function TrackPage() {
                 <InfoRow label={t.order.labels.service} value={data.order.service_type || '-'} />
                 <InfoRow label={t.order.labels.docQty} value={String(data.order.document_quantity || '-')} />
                 <InfoRow label={t.order.labels.delivery} value={data.order.delivery_method || '-'} />
+                <InfoRow label={t.order.labels.deadlineDate} value={data.order.latest_scanned_copy_deadline || '-'} />
                 <InfoRow label={t.order.summary.eta} value={data.order.estimated_days || '-'} />
               </div>
 

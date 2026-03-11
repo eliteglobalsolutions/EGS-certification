@@ -2435,6 +2435,26 @@ p {
   border-color: #0f1b2d;
 }
 
+.hero-quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 2px;
+}
+
+.hero-quick-links a {
+  font-size: 14px;
+  font-weight: 600;
+  color: #51606f;
+  text-decoration: none;
+}
+
+.hero-quick-links a:hover,
+.hero-quick-links a:focus-visible {
+  color: #162234;
+  text-decoration: underline;
+}
+
 .landing-hero .actions .btn-primary:hover {
   background: #16263d;
   border-color: #16263d;
@@ -4038,7 +4058,7 @@ p {
 
   .marketing-nav-mobile-links {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -4049,8 +4069,8 @@ p {
     -ms-overflow-style: none;
     padding-left: 12px;
     padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--border-subtle);
     background: rgba(249, 250, 249, 0.94);
     overflow-y: hidden;
@@ -4062,11 +4082,20 @@ p {
 
   .marketing-nav-mobile-links a {
     font-size: 13px;
-    color: #606872;
-    border: 1px solid rgba(23, 31, 42, 0.14);
+    font-weight: 600;
+    color: #566170;
+    border: 1px solid rgba(23, 31, 42, 0.1);
     border-radius: 999px;
-    padding: 6px 11px;
-    background: #fff;
+    padding: 7px 13px;
+    background: #f8f9fb;
+    text-decoration: none;
+  }
+
+  .marketing-nav-mobile-links a:hover,
+  .marketing-nav-mobile-links a:focus-visible {
+    color: #162234;
+    border-color: rgba(23, 31, 42, 0.16);
+    background: #ffffff;
   }
 
   .marketing-nav-inner {
@@ -4512,6 +4541,10 @@ p {
 
   .landing-hero .actions .btn {
     width: 100%;
+  }
+
+  .hero-quick-links {
+    gap: 12px;
   }
 
   .hero-visual {

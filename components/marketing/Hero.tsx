@@ -73,6 +73,10 @@ export function Hero({ locale, t }: { locale: string; t: AppCopy }) {
               <span className="cta-label-short">{t.landing.hero.ctaTertiaryShort}</span>
             </Button>
           </div>
+          <div className="hero-quick-links" aria-label={locale === 'zh' ? '快捷入口' : 'Quick links'}>
+            <a href={`/${locale}/guides`}>{locale === 'zh' ? 'Browse guides' : 'Browse guides'}</a>
+            <a href={`/${locale}/faq`}>{locale === 'zh' ? 'FAQ hub' : 'FAQ hub'}</a>
+          </div>
           <TrustBadges t={t} />
         </div>
         <aside className="hero-support" aria-label={locale === 'zh' ? '辅助信息' : 'Supporting information'}>
