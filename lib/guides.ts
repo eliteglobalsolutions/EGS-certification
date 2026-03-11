@@ -408,21 +408,9 @@ function universityGuide(seed: UniversitySeed): Guide {
       issuingSlug: 'australia',
       documentSlug: 'academic-transcript',
     },
-    heroImage: seed.heroImage ?? '/samples/australia/australia-academic-transcript-reference/source.png',
-    heroImageWatermarked: seed.heroImageWatermarked ?? true,
-    heroPdf: seed.heroPdf ?? {
-      src: '/samples/australia/australia-academic-transcript-reference/protected.svg',
-      pages: 6,
-      previewImages: [
-        '/samples/australia/australia-academic-transcript-reference/page-1.png',
-        '/samples/australia/australia-academic-transcript-reference/page-2.png',
-        '/samples/australia/australia-academic-transcript-reference/page-3.png',
-        '/samples/australia/australia-academic-transcript-reference/page-4.png',
-        '/samples/australia/australia-academic-transcript-reference/page-5.png',
-        '/samples/australia/australia-academic-transcript-reference/page-6.png',
-      ],
-      watermarked: true,
-    },
+    heroImage: seed.heroImage,
+    heroImageWatermarked: seed.heroImageWatermarked,
+    heroPdf: seed.heroPdf,
   };
 }
 

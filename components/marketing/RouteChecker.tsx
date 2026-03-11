@@ -121,25 +121,18 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.documentType}</label>
-                <input
-                  className="input"
-                  list="route-document-type-options"
-                  placeholder={locale === 'zh' ? '例如：毕业证、成绩单、在读证明、法定声明' : 'For example: Degree Certificate, Transcript, Enrollment Letter, Statutory Declaration'}
-                  value={documentType}
-                  onChange={(e) => setDocumentType(e.target.value)}
-                />
+              <input
+                className="input"
+                list="route-document-type-options"
+                placeholder={locale === 'zh' ? '例如：毕业证、成绩单、在读证明、法定声明' : 'For example: Degree Certificate, Transcript, Enrollment Letter, Statutory Declaration'}
+                value={documentType}
+                onChange={(e) => setDocumentType(e.target.value)}
+              />
               <datalist id="route-document-type-options">
                 {documentTypeSuggestions.map((item) => (
                   <option key={item} value={item} />
                 ))}
               </datalist>
-              <div className="actions">
-                {documentTypeSuggestions.slice(0, 8).map((item) => (
-                  <button className="btn btn-ghost" key={item} onClick={() => setDocumentType(item)} type="button">
-                    {item}
-                  </button>
-                ))}
-              </div>
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.quantity}</label>

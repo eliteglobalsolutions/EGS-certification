@@ -105,7 +105,6 @@ export default function NewOrderPage() {
   const [passportDocs, setPassportDocs] = useState<File[]>([]);
   const [supportingIdDocs, setSupportingIdDocs] = useState<File[]>([]);
   const [showChecklist, setShowChecklist] = useState(false);
-  const [showAllDocSuggestions, setShowAllDocSuggestions] = useState(false);
   const [email, setEmail] = useState('');
   const [tosAccepted, setTosAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
@@ -129,14 +128,7 @@ export default function NewOrderPage() {
     [locale]
   );
   const documentTypeOptions = useMemo(() => t.order.options.documentTypes, [t]);
-  const quickDocumentTypeSuggestions = useMemo(
-    () => DOCUMENT_TYPE_SUGGESTIONS[locale],
-    [locale],
-  );
-  const visibleDocumentSuggestions = useMemo(
-    () => (showAllDocSuggestions ? quickDocumentTypeSuggestions : quickDocumentTypeSuggestions.slice(0, 8)),
-    [quickDocumentTypeSuggestions, showAllDocSuggestions],
-  );
+  const documentTypeSuggestions = useMemo(() => DOCUMENT_TYPE_SUGGESTIONS[locale], [locale]);
   const destinationCountry = destination ? (locale === 'zh' ? destination.zh : destination.en) : '';
   const combinedDocumentNames = useMemo(
     () => [combinedDocumentType1, combinedDocumentType2, combinedDocumentType3].map((item) => item.trim()).filter(Boolean),
@@ -700,7 +692,7 @@ export default function NewOrderPage() {
                 onChange={(e) => setDocumentType(e.target.value)}
               />
               <datalist id="intake-document-type-options">
-                {[...quickDocumentTypeSuggestions, ...documentTypeOptions].map((item) => (
+                {[...documentTypeSuggestions, ...documentTypeOptions.filter((item) => !documentTypeSuggestions.includes(item))].map((item) => (
                   <option key={item} value={item} />
                 ))}
               </datalist>
@@ -709,25 +701,6 @@ export default function NewOrderPage() {
                   ? '先选最接近的文件类型即可，付款前我们会再核验实际办理路径。'
                   : 'Choose the closest document type for now. The exact processing path is reviewed again before payment.'}
               </p>
-              <div className="actions">
-                {visibleDocumentSuggestions.map((item) => (
-                  <button className="btn btn-ghost" key={item} onClick={() => setDocumentType(item)} type="button">
-                    {item}
-                  </button>
-                ))}
-              </div>
-              {quickDocumentTypeSuggestions.length > 8 ? (
-                <button
-                  className="btn btn-ghost"
-                  onClick={() => setShowAllDocSuggestions((value) => !value)}
-                  type="button"
-                >
-                  {showAllDocSuggestions
-                    ? (locale === 'zh' ? '收起常见文件类型' : 'Collapse document types')
-                    : (locale === 'zh' ? '展开更多常见文件类型' : 'Show more document types')}
-                </button>
-              ) : null}
-
               {documentType && canCombineDocuments ? (
                 <div className="ui-card ui-card-muted stack-sm">
                   <label className="small-text">

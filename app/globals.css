@@ -613,10 +613,17 @@ main {
 }
 
 .guides-index-hero h1 {
-  font-size: clamp(44px, 5.4vw, 64px);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-  max-width: 16ch;
+  font-size: clamp(32px, 3.9vw, 46px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.025em;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.guides-index-hero .body-text {
+  max-width: 68ch;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .guides-lead-title {
@@ -1163,10 +1170,10 @@ main {
 }
 
 .guides-detail-head h1 {
-  font-size: clamp(34px, 4vw, 52px);
-  line-height: 1.04;
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.1;
   letter-spacing: -0.035em;
-  max-width: 12ch;
+  max-width: 14ch;
 }
 
 .guides-detail-hero-image {
@@ -2033,6 +2040,13 @@ p {
   background: #fff;
 }
 
+.routes-overview-hero h1 {
+  font-size: clamp(34px, 4vw, 50px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  max-width: 12ch;
+}
+
 .search-entry-scope {
   display: grid;
   gap: 6px;
@@ -2557,13 +2571,13 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  min-height: 28px;
-  padding: 4px 8px;
+  min-width: 34px;
+  min-height: 24px;
+  padding: 3px 8px;
   border-radius: 999px;
   background: #f1f5f8;
   border: 1px solid rgba(23, 31, 42, 0.08);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
   color: #4f5b69;
@@ -4557,7 +4571,7 @@ p {
   }
 
   .hero-support-head h2 {
-    font-size: 26px;
+    font-size: 20px;
     max-width: none;
   }
 
@@ -4584,11 +4598,11 @@ p {
   }
 
   .hero-timing-table td {
-    padding: 8px 0;
+    padding: 6px 0;
   }
 
   .hero-timing-table tbody tr {
-    padding: 12px 16px;
+    padding: 10px 12px;
   }
 
   .hero-support-note-row {
@@ -4597,7 +4611,21 @@ p {
   }
 
   .hero-timing-value {
-    font-size: 24px;
+    font-size: 16px;
+    line-height: 1.08;
+  }
+
+  .hero-timing-country {
+    min-width: 30px;
+    min-height: 22px;
+    padding: 2px 7px;
+    font-size: 10px;
+  }
+
+  .hero-timing-route {
+    min-height: 20px;
+    padding: 2px 7px;
+    font-size: 9px;
   }
 
   .hero-visual-frame {
@@ -4627,6 +4655,40 @@ p {
   .sample-rail {
     grid-auto-columns: minmax(200px, 200px);
   }
+
+  .guides-index-hero h1 {
+    font-size: clamp(24px, 6.8vw, 34px) !important;
+    line-height: 1.12 !important;
+    max-width: 11ch;
+  }
+
+  .guides-detail-head h1 {
+    font-size: clamp(18px, 5.6vw, 24px);
+    line-height: 1.14;
+    max-width: 16ch;
+  }
+
+  .guides-index-hero .body-text {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .guides-filter-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .search-entry-card {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .routes-overview-hero h1 {
+    font-size: clamp(28px, 9vw, 40px);
+    line-height: 1.08;
+    max-width: 10ch;
+  }
+
 }
 
 @media (max-width: 920px) {

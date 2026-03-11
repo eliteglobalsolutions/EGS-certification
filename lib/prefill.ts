@@ -45,6 +45,13 @@ const documentAliases: Record<string, { en: string; zh: string }> = {
 
 export const DOCUMENT_TYPE_SUGGESTIONS: Record<Locale, string[]> = {
   en: [
+    'Signature documents',
+    'Declaration documents',
+    'Certificates',
+    'Letters',
+    'Receipts',
+    'Banking documents',
+    'Other documents',
     'AFP National Police Certificate',
     'Academic Transcript',
     'Academic Documents',
@@ -96,6 +103,13 @@ export const DOCUMENT_TYPE_SUGGESTIONS: Record<Locale, string[]> = {
     'Written Reference',
   ],
   zh: [
+    '签名类文件',
+    '声明类文件',
+    '证书类文件',
+    '信函类文件',
+    '收据类文件',
+    '银行类文件',
+    '其他文件',
     'AFP 无犯罪记录',
     'ABN 摘录',
     'ASIC 商业名称摘录',

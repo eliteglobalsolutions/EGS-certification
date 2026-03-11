@@ -103,7 +103,9 @@ export function Hero({ locale, t }: { locale: string; t: AppCopy }) {
                   <tbody>
                     {laneCards.map((item) => (
                       <tr key={item.country}>
-                        <td className="hero-timing-country">{item.country}</td>
+                        <td>
+                          <span className="hero-timing-country">{item.country}</span>
+                        </td>
                         <td className="hero-timing-value">{item.eta}</td>
                         <td>
                           <span className="hero-timing-route">{item.type}</span>

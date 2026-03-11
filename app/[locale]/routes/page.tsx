@@ -90,13 +90,14 @@ export default async function RoutesOverviewPage({
       description: getEntryText(entry.intro, locale),
     })),
   ];
+  const hasDocumentSpecificRoutes = documentPriorityRoutes.length > 0 || getKnowledgeRouteSlugs().length > 0;
 
   return (
     <Container>
       <Section>
         <SiteNav locale={locale} t={t} />
 
-        <Card>
+        <Card className="routes-overview-hero">
           <div className="stack-md">
             <p className="kicker">{locale === 'zh' ? '路线总览' : 'Route overview'}</p>
             <h1>{locale === 'zh' ? 'Main Routes 与 Secondary Routes' : 'Main Routes and Secondary Routes'}</h1>
@@ -105,6 +106,11 @@ export default async function RoutesOverviewPage({
                 ? '这里集中放主营路线和副线入口。主线优先承接核心搜索流量，副线继续补充签发地、目的地和文件类型搜索页。'
                 : 'This page groups the core commercial routes and the supporting secondary route-entry pages. Main routes take priority; secondary routes expand issuing-country, destination-country, and document-type coverage.'}
             </p>
+            <div className="actions">
+              <Link className="btn btn-primary" href={`/${locale}#route-checker`}>
+                {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
+              </Link>
+            </div>
             <div className="footer-links">
               <Link href={`/${locale}/faq`}>{locale === 'zh' ? 'FAQ Hub' : 'FAQ Hub'}</Link>
               <Link href={`/${locale}/guides`}>{locale === 'zh' ? 'Guides' : 'Guides'}</Link>
@@ -151,49 +157,22 @@ export default async function RoutesOverviewPage({
           </div>
         </Card>
 
-        <Card muted>
-          <div className="stack-md">
-            <div className="page-header">
-              <div className="stack-sm">
-                <p className="kicker">Document-specific Route Guides</p>
-                <h2>{locale === 'zh' ? '文件级 route guides' : 'Document-specific route guides'}</h2>
+        {hasDocumentSpecificRoutes ? (
+          <Card muted>
+            <div className="stack-md">
+              <div className="page-header">
+                <div className="stack-sm">
+                  <p className="kicker">Document-specific Route Guides</p>
+                  <h2>{locale === 'zh' ? '文件级 route guides' : 'Document-specific route guides'}</h2>
+                </div>
               </div>
-            </div>
-            <div className="search-entry-grid">
-              {documentPriorityRoutes.map((route) => (
-                <article className="search-entry-card" key={route.slug}>
-                  <div className="stack-sm">
-                    <h3>{getDocumentCopyText(route.title, locale)}</h3>
-                    <p className="small-text">{getDocumentCopyText(route.subheading, locale)}</p>
-                    <p className="small-text">{getDocumentCopyText(route.whoUsesThis, locale)}</p>
-                  </div>
-                  <div className="actions">
-                    <Link
-                      className="btn btn-ghost"
-                      href={getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`}
-                    >
-                      {locale === 'zh' ? 'Open guide' : 'Open guide'}
-                    </Link>
-                    <Link
-                      className="search-entry-intake-link"
-                      href={buildPrefillHref(locale, '/intake', {
-                        locale,
-                        documentSlug: route.documentSlug,
-                      })}
-                    >
-                      {locale === 'zh' ? 'Start intake' : 'Start intake'}
-                    </Link>
-                  </div>
-                </article>
-              ))}
-              {getKnowledgeRouteSlugs().map((slug) => {
-                const route = getKnowledgeRoute(slug)!;
-                return (
+              <div className="search-entry-grid">
+                {documentPriorityRoutes.map((route) => (
                   <article className="search-entry-card" key={route.slug}>
                     <div className="stack-sm">
-                      <h3>{getRouteCopy(locale, route.title)}</h3>
-                      <p className="small-text">{getRouteCopy(locale, route.subheading)}</p>
-                      <p className="small-text">{getRouteCopy(locale, route.whoUsesThis)}</p>
+                      <h3>{getDocumentCopyText(route.title, locale)}</h3>
+                      <p className="small-text">{getDocumentCopyText(route.subheading, locale)}</p>
+                      <p className="small-text">{getDocumentCopyText(route.whoUsesThis, locale)}</p>
                     </div>
                     <div className="actions">
                       <Link
@@ -206,20 +185,49 @@ export default async function RoutesOverviewPage({
                         className="search-entry-intake-link"
                         href={buildPrefillHref(locale, '/intake', {
                           locale,
-                          issuingSlug: route.prefill?.issuingSlug,
-                          destinationSlug: route.prefill?.destinationSlug,
-                          documentSlug: route.prefill?.documentSlug,
+                          documentSlug: route.documentSlug,
                         })}
                       >
                         {locale === 'zh' ? 'Start intake' : 'Start intake'}
                       </Link>
                     </div>
                   </article>
-                );
-              })}
+                ))}
+                {getKnowledgeRouteSlugs().map((slug) => {
+                  const route = getKnowledgeRoute(slug)!;
+                  return (
+                    <article className="search-entry-card" key={route.slug}>
+                      <div className="stack-sm">
+                        <h3>{getRouteCopy(locale, route.title)}</h3>
+                        <p className="small-text">{getRouteCopy(locale, route.subheading)}</p>
+                        <p className="small-text">{getRouteCopy(locale, route.whoUsesThis)}</p>
+                      </div>
+                      <div className="actions">
+                        <Link
+                          className="btn btn-ghost"
+                          href={getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`}
+                        >
+                          {locale === 'zh' ? 'Open guide' : 'Open guide'}
+                        </Link>
+                        <Link
+                          className="search-entry-intake-link"
+                          href={buildPrefillHref(locale, '/intake', {
+                            locale,
+                            issuingSlug: route.prefill?.issuingSlug,
+                            destinationSlug: route.prefill?.destinationSlug,
+                            documentSlug: route.prefill?.documentSlug,
+                          })}
+                        >
+                          {locale === 'zh' ? 'Start intake' : 'Start intake'}
+                        </Link>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : null}
 
         <Card>
           <div className="stack-md">

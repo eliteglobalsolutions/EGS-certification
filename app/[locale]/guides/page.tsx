@@ -112,6 +112,25 @@ function buildThematicSections(allGuides: Guide[]) {
   }>;
 }
 
+function buildCountrySections(allGuides: Guide[]) {
+  const orderedCountries = ['Australia', 'Singapore', 'United States', 'United Kingdom'];
+  const mapped = orderedCountries
+    .map((country) => ({
+      id: `country-${country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+      title: country,
+      guides: uniqueBySlug(allGuides.filter((guide) => guide.issuingCountry === country)).slice(0, 4),
+    }))
+    .filter((section) => section.guides.length > 0);
+  const known = new Set(orderedCountries);
+  const otherGuides = uniqueBySlug(
+    allGuides.filter((guide) => guide.issuingCountry && !known.has(guide.issuingCountry)),
+  ).slice(0, 4);
+
+  return otherGuides.length
+    ? [...mapped, { id: 'country-others', title: 'Others', guides: otherGuides }]
+    : mapped;
+}
+
 export default async function GuidesIndexPage({
   params,
 }: {
@@ -139,10 +158,11 @@ export default async function GuidesIndexPage({
     { label: 'Personal', href: '#personal-documents' },
     { label: 'Company', href: '#company-documents' },
   ];
-  const routeNav = [
-    { label: 'Inbound', href: '#overseas-issued' },
-    { label: 'Route questions', href: '#route-questions' },
-  ];
+  const countrySections = buildCountrySections(allGuides.filter((guide) => !hiddenSlugs.has(guide.slug)));
+  const countryNav = countrySections.map((section) => ({
+    label: section.title,
+    href: `#${section.id}`,
+  }));
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
@@ -166,9 +186,9 @@ export default async function GuidesIndexPage({
           <Card className="card-main guides-index-hero">
             <div className="stack-md">
               <p className="kicker">Guides</p>
-              <h1>Curated route guides for document use, review, and intake</h1>
+              <h1>Apostille and authentication guides for document use and route review</h1>
               <p className="body-text">
-                Practical guides grouped by scenario, not dumped as a flat database. Browse featured routes, document families, and review-path topics before moving into route check or intake.
+                Practical guides grouped by scenario, document family, and issuing country before you move into route check or intake.
               </p>
               <div className="guides-nav-stack">
                 <nav className="guides-anchor-row" aria-label="Primary guides navigation">
@@ -188,16 +208,18 @@ export default async function GuidesIndexPage({
                     ))}
                   </div>
                 </div>
-                <div className="guides-filter-row" aria-label="Browse guides by route type">
-                  <span className="guides-filter-label">By route</span>
-                  <div className="guides-anchor-row">
-                    {routeNav.map((item) => (
-                      <Link className="guides-anchor-pill" href={item.href} key={item.label}>
-                        {item.label}
-                      </Link>
-                    ))}
+                {countryNav.length ? (
+                  <div className="guides-filter-row" aria-label="Browse guides by country">
+                    <span className="guides-filter-label">By country</span>
+                    <div className="guides-anchor-row">
+                      {countryNav.map((item) => (
+                        <Link className="guides-anchor-pill" href={item.href} key={item.label}>
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </Card>
@@ -294,6 +316,37 @@ export default async function GuidesIndexPage({
               ))}
             </div>
           </section>
+
+          {countrySections.length ? (
+            <section className="guides-index-section" aria-labelledby="browse-guides-country-heading">
+              <div className="guides-section-head">
+                <div className="stack-xs">
+                  <p className="kicker">Browse</p>
+                  <h2 id="browse-guides-country-heading">Browse guides by country</h2>
+                </div>
+                <p className="small-text">Grouped by issuing country so the route context is easier to scan.</p>
+              </div>
+              <div className="guides-bucket-grid">
+                {countrySections.map((section) => (
+                  <div id={section.id} key={section.id}>
+                    <Card className="card-main guides-bucket-card">
+                      <div className="stack-md">
+                        <div className="stack-xs">
+                          <p className="kicker">Country</p>
+                          <h3>{section.title}</h3>
+                        </div>
+                        <div className="guide-card-list">
+                          {section.guides.slice(0, 3).map((guide) => (
+                            <GuideCard compact guide={guide} key={guide.slug} locale={locale} />
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           <Card className="card-main guides-index-cta">
             <div className="guides-cta-grid">
