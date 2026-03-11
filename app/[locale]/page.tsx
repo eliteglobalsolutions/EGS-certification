@@ -13,8 +13,6 @@ import { MarketingFAQ } from '@/components/marketing/FAQ';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
-import Link from 'next/link';
-import { Card } from '@/components/ui/Card';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
@@ -78,10 +76,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     address: {
       '@type': 'PostalAddress',
       postOfficeBoxNumber: 'PO Box 97',
-      streetAddress: '185-187 Liverpool Street',
-      addressLocality: 'Sydney',
+      addressLocality: 'Edgecliff',
       addressRegion: 'NSW',
-      postalCode: '2000',
+      postalCode: '2027',
       addressCountry: 'AU',
     },
     areaServed: 'Worldwide',
@@ -118,36 +115,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <RouteChecker locale={locale} t={t} />
         <ProcessStepper locale={locale} t={t} />
         <PricingSection locale={locale} t={t} />
-        <Card muted>
-          <div className="stack-sm">
-            <p className="kicker">{locale === 'zh' ? '路线入口' : 'Route entry'}</p>
-            <p className="small-text">
-              {locale === 'zh'
-                ? '如果你是从搜索进入，或想直接查看主营路线与副线入口，可进入路线总览页。'
-                : 'If you arrived from search or want a direct view of main and secondary route pages, use the route overview.'}
-            </p>
-            <div className="footer-links">
-              <Link href={`/${locale}/routes`}>{locale === 'zh' ? '查看全部路线页' : 'View all route pages'}</Link>
-              <Link href={`/${locale}/intake`}>{locale === 'zh' ? '直接进入受理' : 'Go to intake'}</Link>
-            </div>
-          </div>
-        </Card>
-        <Card>
-          <div className="stack-sm">
-            <p className="kicker">{locale === 'zh' ? '相关服务页面' : 'Related services'}</p>
-            <div className="footer-links">
-              <Link href={`/${locale}/apostille-australia`}>
-                {locale === 'zh' ? '澳洲海牙认证服务' : 'Apostille Australia'}
-              </Link>
-              <Link href={`/${locale}/consular-legalisation-australia`}>
-                {locale === 'zh' ? '澳洲领事认证服务' : 'Consular Legalisation Australia'}
-              </Link>
-              <Link href={`/${locale}/document-authentication-sydney`}>
-                {locale === 'zh' ? '悉尼文件认证服务' : 'Document Authentication Sydney'}
-              </Link>
-            </div>
-          </div>
-        </Card>
         <MarketingFAQ t={t} />
         <Testimonials locale={locale} t={t} />
         <SiteFooter locale={locale} t={t} />

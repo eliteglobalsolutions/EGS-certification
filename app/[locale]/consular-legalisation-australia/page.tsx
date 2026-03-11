@@ -170,6 +170,9 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
               <Link href={`/${locale}/document-authentication-sydney`}>
                 {isZh ? '查看悉尼文件认证服务' : 'View Document Authentication Sydney'}
               </Link>
+              <Link href={`/${locale}/cities/melbourne/consular-authentication`}>
+                {isZh ? '查看城市型领事认证页面' : 'View city-based consular pages'}
+              </Link>
             </div>
           </div>
         </Card>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595" height="841" viewBox="0 0 595 841" role="img" aria-labelledby="title desc">
+  <title id="title">EGS Verification protected Australian power of attorney reference</title>
+  <desc id="desc">Protected reference visual with repeated EGS Verification watermark.</desc>
+  <rect width="595" height="841" fill="#ffffff"/>
+  <image href="/samples/australia/australia-power-of-attorney-reference/source.png" x="0" y="0" width="595" height="841" preserveAspectRatio="xMidYMid meet"/>
+  <g transform="rotate(-31 297.5 420.5)" fill="rgba(15,32,67,0.12)" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="1.5">
+    <text x="-90" y="180">EGS Verification</text>
+    <text x="130" y="180">EGS Verification</text>
+    <text x="350" y="180">EGS Verification</text>
+    <text x="-140" y="360">EGS Verification</text>
+    <text x="80" y="360">EGS Verification</text>
+    <text x="300" y="360">EGS Verification</text>
+    <text x="-190" y="540">EGS Verification</text>
+    <text x="30" y="540">EGS Verification</text>
+    <text x="250" y="540">EGS Verification</text>
+    <text x="-240" y="720">EGS Verification</text>
+    <text x="-20" y="720">EGS Verification</text>
+    <text x="200" y="720">EGS Verification</text>
+  </g>
+</svg>

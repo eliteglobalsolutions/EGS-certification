@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792" role="img" aria-labelledby="title desc">
+  <title id="title">EGS Verification protected FBI Identity History Summary reference</title>
+  <desc id="desc">Protected reference visual with repeated EGS Verification watermark.</desc>
+  <rect width="612" height="792" fill="#ffffff"/>
+  <image href="/samples/usa/fbi-identity-history-summary-reference/source.png" x="0" y="0" width="612" height="792" preserveAspectRatio="xMidYMid meet"/>
+  <g transform="rotate(-31 306 396)" fill="rgba(15,32,67,0.12)" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="1.5">
+    <text x="-90" y="170">EGS Verification</text>
+    <text x="130" y="170">EGS Verification</text>
+    <text x="350" y="170">EGS Verification</text>
+    <text x="-140" y="340">EGS Verification</text>
+    <text x="80" y="340">EGS Verification</text>
+    <text x="300" y="340">EGS Verification</text>
+    <text x="-190" y="510">EGS Verification</text>
+    <text x="30" y="510">EGS Verification</text>
+    <text x="250" y="510">EGS Verification</text>
+    <text x="-240" y="680">EGS Verification</text>
+    <text x="-20" y="680">EGS Verification</text>
+    <text x="200" y="680">EGS Verification</text>
+  </g>
+</svg>

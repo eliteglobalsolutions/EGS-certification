@@ -25,7 +25,7 @@ export type PriorityRoute = {
   destinationCountrySlug: string;
 };
 
-export const priorityRoutes: PriorityRoute[] = [
+const allPriorityRoutes: PriorityRoute[] = [
   {
     slug: 'australian-documents-for-use-in-china',
     title: {
@@ -807,6 +807,22 @@ export const priorityRoutes: PriorityRoute[] = [
     destinationCountrySlug: 'vietnam',
   },
 ];
+
+const activePriorityRouteSlugs = new Set<string>([
+  'australian-documents-for-use-in-china',
+  'australian-documents-for-use-in-singapore',
+  'australian-documents-for-use-in-united-kingdom',
+  'australian-documents-for-use-in-united-states',
+  'australian-consular-legalisation-for-use-in-uae',
+  'australian-consular-legalisation-for-use-in-saudi-arabia',
+  'australian-consular-legalisation-for-use-in-kuwait',
+  'australian-consular-legalisation-for-use-in-malaysia',
+  'australian-consular-legalisation-for-use-in-vietnam',
+]);
+
+export const priorityRoutes: PriorityRoute[] = allPriorityRoutes.filter((route) =>
+  activePriorityRouteSlugs.has(route.slug),
+);
 
 export function getPriorityRoute(slug: string) {
   return priorityRoutes.find((route) => route.slug === slug);

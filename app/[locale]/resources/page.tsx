@@ -176,6 +176,13 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
               ? '先看官方入口，再按目的地国家进入对应路线页和受理页。资源页负责快速判断，不再只做一层通用链接堆叠。'
               : 'Start from official reference points, then move into the destination-country route page and intake. This page is now structured for fast route triage rather than generic link dumping.'}
           </p>
+          <p className="small-text">
+            <Link className="inline-link" href={`/${locale}/guides`}>
+              {locale === 'zh'
+                ? '查看围绕 Apostille、DFAT、Sydney document authentication 建立的专题指南页'
+                : 'Browse the dedicated guide pages built around apostille, DFAT, and Sydney document authentication queries'}
+            </Link>
+          </p>
         </div>
       </div>
 

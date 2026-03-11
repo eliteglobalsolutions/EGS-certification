@@ -207,6 +207,18 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 : 'Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can usually proceed through online intake, tracked mail, and return dispatch.'}
             </p>
             <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
+            <div className="footer-links">
+              <Link href={`/${locale}/cities/melbourne`}>{locale === 'zh' ? '墨尔本页面' : 'Melbourne page'}</Link>
+              <Link href={`/${locale}/cities/brisbane`}>{locale === 'zh' ? '布里斯班页面' : 'Brisbane page'}</Link>
+              <Link href={`/${locale}/cities/adelaide`}>{locale === 'zh' ? '阿德莱德页面' : 'Adelaide page'}</Link>
+              <Link href={`/${locale}/cities/canberra`}>{locale === 'zh' ? '堪培拉页面' : 'Canberra page'}</Link>
+            </div>
+            <div className="footer-links">
+              <Link href={`/${locale}/cities/melbourne/consular-authentication`}>{locale === 'zh' ? '墨尔本领事认证页' : 'Melbourne consular page'}</Link>
+              <Link href={`/${locale}/cities/brisbane/consular-authentication`}>{locale === 'zh' ? '布里斯班领事认证页' : 'Brisbane consular page'}</Link>
+              <Link href={`/${locale}/cities/adelaide/consular-authentication`}>{locale === 'zh' ? '阿德莱德领事认证页' : 'Adelaide consular page'}</Link>
+              <Link href={`/${locale}/cities/canberra/consular-authentication`}>{locale === 'zh' ? '堪培拉领事认证页' : 'Canberra consular page'}</Link>
+            </div>
           </div>
         </Card>
 

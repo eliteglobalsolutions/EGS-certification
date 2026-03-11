@@ -100,6 +100,8 @@ export const copy = {
         ctaPrimaryShort: 'Route',
         ctaSecondary: 'Begin Intake',
         ctaSecondaryShort: 'Intake',
+        ctaTertiary: 'Post your document to us',
+        ctaTertiaryShort: 'Post',
         complianceNote:
           'Independent administrative intermediary only. Not a law firm, not a public notary, and not a government authority.',
         badgesLabel: 'Trust indicators',
@@ -1011,6 +1013,8 @@ export const copy = {
         ctaPrimaryShort: '确认路径',
         ctaSecondary: '开始受理',
         ctaSecondaryShort: '开始受理',
+        ctaTertiary: '邮寄文件给我们',
+        ctaTertiaryShort: '邮寄办理',
         complianceNote: '仅提供独立行政协调服务。不是律师事务所、不是公证人、也不是政府机构。',
         badgesLabel: '可信特征',
         badges: ['先确认路径', '阶段里程碑可见', '文件受理安全'],

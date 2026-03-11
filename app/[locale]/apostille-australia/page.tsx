@@ -68,12 +68,20 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
         { q: '多久可以完成？', a: '为预估时效，具体取决于目的地与机构排队情况。' },
         { q: '可以先做路径确认吗？', a: '可以。建议先做路径确认，再进入正式受理。' },
         { q: '人在墨尔本、布里斯班或其他澳洲城市，也可以办理海牙认证吗？', a: '可以。由悉尼总部统筹，但墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市的客户，通常都可以通过在线受理、邮寄和回寄方式办理。' },
+        { q: '哪些文件最常见会进入 apostille 路径？', a: '常见类别包括出生证、结婚证、学历文件、无犯罪记录，以及某些已经完成公证准备的私人文件或公司文件。真正是否适合 apostille，仍取决于文件类别、当前格式和目的地要求。' },
+        { q: '如果我有很多份文件，是否一定每份都要单独处理？', a: '不一定。是否可以合并处理，要看目的地接受标准、文件之间是否属于同一组，以及最终需要的是单独证明还是组合式处理。' },
+        { q: '海外签发的学历或证书能直接在澳洲做 apostille 吗？', a: '通常不能直接按澳洲签发文件处理。若文件并非澳洲机构签发，通常应先确认签发国的主管机关和 legalisation 路径。' },
+        { q: '公司文件是不是天然就能直接进 DFAT？', a: '不是。很多公司文件需要先完成适当的签署、认证或公证结构，之后才能进入后续 legalisation 环节。' },
       ]
     : [
         { q: 'Do you guarantee acceptance?', a: 'No. Final acceptance and validity are determined by competent authorities.' },
         { q: 'How long does it take?', a: 'Timelines are estimates and depend on destination requirements and authority queues.' },
         { q: 'Can route be confirmed first?', a: 'Yes. Route confirmation is recommended before formal intake.' },
         { q: 'Can clients in Melbourne, Brisbane, or other Australian cities still arrange apostille?', a: 'Yes. Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can usually proceed through online intake, tracked mail, and return dispatch.' },
+        { q: 'What kinds of documents most commonly move into an apostille pathway?', a: 'Common categories include birth and marriage certificates, academic records, police checks, and some private or company documents once they are in the correct form. The real answer still depends on document class, current format, and destination-side requirements.' },
+        { q: 'If I have multiple documents, do they always need separate apostille handling?', a: 'Not always. Whether documents can be handled together depends on destination acceptance, whether they belong in the same file set, and whether separate certifications are required.' },
+        { q: 'Can overseas-issued academic documents be apostilled in Australia?', a: 'Usually not through the same Australian-issued document pathway. If the document was issued outside Australia, the issuing country’s own legalisation chain usually needs to be checked first.' },
+        { q: 'Do company documents automatically go straight to DFAT?', a: 'No. Many company documents need the right signing, certification, or notarial structure before they are ready for the legalisation stage.' },
       ];
 
   const faqJsonLd = {
@@ -160,6 +168,15 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
               </ul>
             </div>
             <div className="stack-sm">
+              <h2>{isZh ? '正式受理前常见复核点' : 'Common pre-intake review points'}</h2>
+              <ul className="list-plain">
+                <li className="small-text">{isZh ? '文件是否为登记机构原件、官方原始签发件，或已经完成合格公证的版本' : 'Whether the file is a registry original, official original issue, or a properly notarised version'}</li>
+                <li className="small-text">{isZh ? '目的地机构要的是 apostille、authentication，还是更长的领馆链路' : 'Whether the receiving side actually needs apostille, authentication, or a longer consular chain'}</li>
+                <li className="small-text">{isZh ? '多份文件能否并组，还是需要分别出具证明' : 'Whether multiple documents can travel as one set or need separate certifications'}</li>
+                <li className="small-text">{isZh ? '学历、商业和私人签署文件是否还缺前置步骤' : 'Whether academic, commercial, or privately signed files still need an upstream step before submission'}</li>
+              </ul>
+            </div>
+            <div className="stack-sm">
               <h2>{isZh ? '澳洲城市覆盖' : 'Australia-wide coverage'}</h2>
               <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             </div>
@@ -169,6 +186,9 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
               </Link>
               <Link href={`/${locale}/document-authentication-sydney`}>
                 {isZh ? '查看悉尼文件认证服务' : 'View Document Authentication Sydney'}
+              </Link>
+              <Link href={`/${locale}/guides`}>
+                {isZh ? '查看搜索型指南库' : 'View search-intent guides'}
               </Link>
             </div>
           </div>

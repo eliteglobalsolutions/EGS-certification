@@ -1,7 +1,8 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { RoutePriorityPage } from '@/components/marketing/RoutePriorityPage';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { buildPrefillHref } from '@/lib/prefill';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { getEntryText, getSearchEntry } from '@/lib/search-entry-data';
 import { getCopyText, getPriorityRoute, priorityRoutes } from '@/lib/priority-routes-data';
 import {
@@ -10,6 +11,9 @@ import {
   getCopyText as getDocumentCopyText,
   findDocumentRouteByParentAndDocument,
 } from '@/lib/document-priority-routes-data';
+import { getKnowledgeRoute, getKnowledgeRouteSlugs, getRouteCopy } from '@/lib/knowledge-routes';
+import { getFaqBySlug } from '@/lib/knowledge-faqs';
+import { getGuideBySlug, getGuideCopy } from '@/lib/guides';
 
 function softenSubheading(text: string, locale: 'en' | 'zh') {
   if (locale === 'zh') {
@@ -63,10 +67,44 @@ function softenReviewText(text: string, locale: 'en' | 'zh') {
 }
 
 export function generateStaticParams() {
-  return [...priorityRoutes, ...documentPriorityRoutes].flatMap((route) => [
+  return [...priorityRoutes, ...documentPriorityRoutes, ...getKnowledgeRouteSlugs().map((slug) => ({ slug }))].flatMap((route) => [
     { locale: 'en', route: route.slug },
     { locale: 'zh', route: route.slug },
   ]);
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; route: string }>;
+}) {
+  const { locale: localeParam, route } = await params;
+  const locale = resolveLocale(localeParam);
+  const customRoute = getKnowledgeRoute(route);
+  const priorityRoute = customRoute ? null : getPriorityRoute(route);
+  const documentRoute = customRoute || priorityRoute ? null : getDocumentPriorityRoute(route);
+
+  if (!customRoute && !priorityRoute && !documentRoute) return {};
+
+  const title = customRoute
+    ? getRouteCopy(locale, customRoute.title)
+    : priorityRoute
+      ? getCopyText(priorityRoute.title, locale)
+      : getDocumentCopyText(documentRoute!.title, locale);
+  const description = customRoute
+    ? getRouteCopy(locale, customRoute.subheading)
+    : priorityRoute
+      ? getCopyText(priorityRoute.subheading, locale)
+      : getDocumentCopyText(documentRoute!.subheading, locale);
+
+  return buildPageMetadata({
+    locale,
+    path: `/routes/${route}`,
+    title: `${title} | EGS Routes`,
+    description,
+    keywords: [title.toLowerCase(), route.replace(/-/g, ' ')],
+    type: 'article',
+  });
 }
 
 export default async function PriorityRoutePage({
@@ -76,11 +114,95 @@ export default async function PriorityRoutePage({
 }) {
   const { locale: localeParam, route } = await params;
   const locale = resolveLocale(localeParam);
+  const matchingGuide = getGuideBySlug(route);
+  const customRoute = getKnowledgeRoute(route);
   const routeEntry = getPriorityRoute(route);
-  const documentRouteEntry = routeEntry ? null : getDocumentPriorityRoute(route);
+  const documentRouteEntry = routeEntry || customRoute ? null : getDocumentPriorityRoute(route);
 
-  if (!routeEntry && !documentRouteEntry) {
+  if (!customRoute && !routeEntry && !documentRouteEntry) {
     notFound();
+  }
+
+  if (matchingGuide && (customRoute || documentRouteEntry)) {
+    redirect(`/${locale}/guides/${route}`);
+  }
+
+  if (customRoute) {
+    const keyLinks = [
+      ...customRoute.relatedGuideSlugs
+        .map((slug) => getGuideBySlug(slug))
+        .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+        .map((entry) => ({
+          href: `/${locale}/guides/${entry.slug}`,
+          label: getGuideCopy(locale, entry.title),
+        })),
+      ...customRoute.relatedFaqSlugs
+        .map((slug) => getFaqBySlug(slug))
+        .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+        .map((entry) => ({
+          href: `/${locale}/faq/${entry.slug}`,
+          label: entry.question.en,
+        })),
+      {
+        href: buildPrefillHref(locale, '/intake', {
+          locale,
+          issuingSlug: customRoute.prefill?.issuingSlug,
+          destinationSlug: customRoute.prefill?.destinationSlug,
+          documentSlug: customRoute.prefill?.documentSlug,
+        }),
+        label: locale === 'zh' ? 'Begin intake' : 'Begin intake',
+      },
+    ].slice(0, 6);
+
+    const articleJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: getRouteCopy(locale, customRoute.title),
+      description: getRouteCopy(locale, customRoute.subheading),
+      url: `${siteUrl}/${locale}/routes/${customRoute.slug}`,
+      mainEntityOfPage: `${siteUrl}/${locale}/routes/${customRoute.slug}`,
+      author: { '@type': 'Organization', name: 'EGS Verification' },
+      publisher: { '@type': 'Organization', name: 'EGS Verification' },
+    };
+    const breadcrumbJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/${locale}` },
+        { '@type': 'ListItem', position: 2, name: 'Routes', item: `${siteUrl}/${locale}/routes` },
+        { '@type': 'ListItem', position: 3, name: getRouteCopy(locale, customRoute.title), item: `${siteUrl}/${locale}/routes/${customRoute.slug}` },
+      ],
+    };
+
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <RoutePriorityPage
+          locale={locale}
+          title={getRouteCopy(locale, customRoute.title)}
+          subheading={getRouteCopy(locale, customRoute.subheading)}
+          whoUsesThis={getRouteCopy(locale, customRoute.whoUsesThis)}
+          officialBaseline={getRouteCopy(locale, customRoute.officialBaseline)}
+          screeningDiscipline={getRouteCopy(locale, customRoute.screeningDiscipline)}
+          routeType={getRouteCopy(locale, customRoute.routeType)}
+          searchIntents={[getRouteCopy(locale, customRoute.title)]}
+          typicalRequirements={customRoute.typicalRequirements.map((item) => getRouteCopy(locale, item))}
+          expedited={getRouteCopy(locale, customRoute.expedited)}
+          reviewFocus={customRoute.reviewFocus.map((item) => getRouteCopy(locale, item))}
+          commonIssues={customRoute.commonIssues.map((item) => getRouteCopy(locale, item))}
+          userNeedsFirst={customRoute.typicalRequirements.slice(0, 3).map((item) => getRouteCopy(locale, item))}
+          beforePaymentReview={getRouteCopy(locale, customRoute.beforePaymentReview)}
+          keyLinks={keyLinks}
+          intakeHref={buildPrefillHref(locale, '/intake', {
+            locale,
+            issuingSlug: customRoute.prefill?.issuingSlug,
+            destinationSlug: customRoute.prefill?.destinationSlug,
+            documentSlug: customRoute.prefill?.documentSlug,
+          })}
+        />
+      </>
+    );
   }
 
   const activeRoute = routeEntry

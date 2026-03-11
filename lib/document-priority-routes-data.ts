@@ -23,7 +23,7 @@ export type DocumentPriorityRoute = {
   beforePaymentReview: CopyText;
 };
 
-export const documentPriorityRoutes: DocumentPriorityRoute[] = [
+const allDocumentPriorityRoutes: DocumentPriorityRoute[] = [
   {
     slug: 'australian-birth-certificate-for-use-in-china',
     parentRouteSlug: 'australian-documents-for-use-in-china',
@@ -825,6 +825,12 @@ export const documentPriorityRoutes: DocumentPriorityRoute[] = [
     },
   },
 ];
+
+const activeDocumentPriorityRouteSlugs = new Set<string>([]);
+
+export const documentPriorityRoutes: DocumentPriorityRoute[] = allDocumentPriorityRoutes.filter((route) =>
+  activeDocumentPriorityRouteSlugs.has(route.slug),
+);
 
 export function getDocumentPriorityRoute(slug: string) {
   return documentPriorityRoutes.find((route) => route.slug === slug);

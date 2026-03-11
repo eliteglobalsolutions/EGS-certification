@@ -7,12 +7,16 @@ import {
   issuingCountryEntries,
   destinationCountryEntries,
 } from '@/lib/search-entry-data';
+import { getGuideSlugs } from '@/lib/guides';
+import { getCityPageSlugs } from '@/lib/city-pages';
+import { getFaqSlugs } from '@/lib/knowledge-faqs';
+import { getKnowledgeRouteSlugs } from '@/lib/knowledge-routes';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 const locales = ['en', 'zh'] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseRoutes = ['', '/services', '/intake', '/track', '/resources', '/samples'];
+  const baseRoutes = ['', '/services', '/intake', '/track', '/resources', '/samples', '/guides', '/faq'];
   const seoRoutes = [
     '/apostille-australia',
     '/consular-legalisation-australia',
@@ -21,6 +25,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: MetadataRoute.Sitemap = [];
   const sampleSlugs = await getSampleSlugs();
+  const guideSlugs = getGuideSlugs();
+  const guideSlugSet = new Set(guideSlugs);
+  const faqSlugs = getFaqSlugs();
+  const citySlugs = getCityPageSlugs();
+  const knowledgeRouteSlugs = getKnowledgeRouteSlugs();
 
   for (const locale of locales) {
     for (const route of [...baseRoutes, ...seoRoutes]) {
@@ -41,6 +50,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
+    for (const slug of guideSlugs) {
+      entries.push({
+        url: `${siteUrl}/${locale}/guides/${slug}`,
+        changeFrequency: 'weekly',
+        priority: 0.76,
+        lastModified: new Date(),
+      });
+    }
+
+    for (const slug of faqSlugs) {
+      entries.push({
+        url: `${siteUrl}/${locale}/faq/${slug}`,
+        changeFrequency: 'monthly',
+        priority: 0.72,
+        lastModified: new Date(),
+      });
+    }
+
+    for (const slug of citySlugs) {
+      entries.push({
+        url: `${siteUrl}/${locale}/cities/${slug}`,
+        changeFrequency: 'weekly',
+        priority: 0.74,
+        lastModified: new Date(),
+      });
+      entries.push({
+        url: `${siteUrl}/${locale}/cities/${slug}/consular-authentication`,
+        changeFrequency: 'weekly',
+        priority: 0.73,
+        lastModified: new Date(),
+      });
+    }
+
     for (const route of priorityRoutes) {
       entries.push({
         url: `${siteUrl}/${locale}/routes/${route.slug}`,
@@ -51,8 +93,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const route of documentPriorityRoutes) {
+      if (guideSlugSet.has(route.slug)) continue;
       entries.push({
         url: `${siteUrl}/${locale}/routes/${route.slug}`,
+        changeFrequency: 'weekly',
+        priority: 0.82,
+        lastModified: new Date(),
+      });
+    }
+
+    for (const slug of knowledgeRouteSlugs) {
+      if (guideSlugSet.has(slug)) continue;
+      entries.push({
+        url: `${siteUrl}/${locale}/routes/${slug}`,
         changeFrequency: 'weekly',
         priority: 0.82,
         lastModified: new Date(),

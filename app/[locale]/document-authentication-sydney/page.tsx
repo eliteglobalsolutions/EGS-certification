@@ -74,12 +74,18 @@ export default async function DocumentAuthenticationSydneyPage({
         { q: '总部在哪里？', a: '总部位于悉尼，服务覆盖全球受理与寄送场景。' },
         { q: '人在墨尔本、布里斯班或其他澳洲城市，也可以办理吗？', a: '可以。悉尼总部统筹，墨尔本、布里斯班、珀斯、阿德莱德、堪培拉及其他澳洲城市都可通过在线受理、邮寄和回寄方式处理。' },
         { q: '是否提供法律意见？', a: '不提供。EGS 为独立行政协调机构。' },
+        { q: '哪些文件最常见会进入 Sydney document authentication 流程？', a: '常见类别包括个人身份证明、学历文件、商业文件、授权书和部分法院或银行类文件，但每一类文件的起步形式和后续路径都可能不同。' },
+        { q: '如果文件最终用于非海牙国家，会怎样？', a: '这通常意味着不只是 apostille，而是要先判断 authentication 与后续使馆或领馆环节是否存在。Sydney 页面更适合先回答“路径怎么分流”，而不是默认所有文件都走同一路。' },
+        { q: '多个公司文件能否一起安排？', a: '有时可以，但要看接收方是否接受组合式文件组、是否需要分别签章，以及公司签署结构是否已经合格。' },
       ]
     : [
         { q: 'Do you only handle Australia-issued documents?', a: 'No. We coordinate cross-border use for both Australia-issued and overseas-issued documents.' },
         { q: 'Where is your headquarters?', a: 'EGS is headquartered in Sydney, with global intake and dispatch coverage.' },
         { q: 'Can I still use the service if I am in Melbourne, Brisbane, or another Australian city?', a: 'Yes. Coordination is run from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can still proceed through online intake, tracked mail, and return dispatch.' },
         { q: 'Do you provide legal advice?', a: 'No. EGS operates as an independent administrative intermediary.' },
+        { q: 'What kinds of files most often come through a Sydney document authentication workflow?', a: 'Common categories include personal identity documents, academic records, commercial documents, powers of attorney, and some court or banking papers, but each category can still require a different starting format and route.' },
+        { q: 'What changes if the document is for a non-Hague destination?', a: 'That usually means the workflow should not be described as apostille only. The file may need authentication logic and, depending on the destination, an embassy or consular follow-up stage as well.' },
+        { q: 'Can multiple company documents be handled together?', a: 'Sometimes yes, but that depends on whether the receiving side accepts a grouped file set, whether separate certifications are required, and whether the company signing structure is already in order.' },
       ];
 
   const faqJsonLd = {
@@ -184,6 +190,9 @@ export default async function DocumentAuthenticationSydneyPage({
               </Link>
               <Link href={`/${locale}/consular-legalisation-australia`}>
                 {isZh ? '查看领事认证服务' : 'View Consular Legalisation service'}
+              </Link>
+              <Link href={`/${locale}/guides`}>
+                {isZh ? '查看搜索型指南库' : 'View search-intent guides'}
               </Link>
             </div>
           </div>

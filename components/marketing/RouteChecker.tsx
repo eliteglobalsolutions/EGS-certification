@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { AppCopy, Locale } from '@/lib/i18n/dictionaries';
+import { getRouteSignals } from '@/lib/knowledge-faqs';
 import { DOCUMENT_TYPE_SUGGESTIONS } from '@/lib/prefill';
 
 type RouteResult = {
@@ -33,6 +34,15 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
   const documentTypeSuggestions = useMemo(
     () => DOCUMENT_TYPE_SUGGESTIONS[locale],
     [locale],
+  );
+  const routeSignals = useMemo(
+    () =>
+      getRouteSignals({
+        issuingCountry,
+        destinationCountry,
+        documentType,
+      }),
+    [destinationCountry, documentType, issuingCountry],
   );
 
   useEffect(() => {
@@ -180,6 +190,48 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
         </div>
         {error ? <p className="error-text">{error}</p> : null}
       </form>
+
+      {routeSignals.risks.length || routeSignals.intake.length ? (
+        <div className="section-card stack-md route-knowledge-card">
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? 'Route-check prompts' : 'Route-check prompts'}</p>
+            <h3>{locale === 'zh' ? 'Common risks and what we usually ask first' : 'Common risks and what we usually ask first'}</h3>
+          </div>
+          {routeSignals.risks.length ? (
+            <div className="stack-sm">
+              <p className="small-text"><strong>{locale === 'zh' ? 'Common risks' : 'Common risks'}</strong></p>
+              <ul className="list-plain">
+                {routeSignals.risks.map((item) => (
+                  <li className="small-text" key={item}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {routeSignals.intake.length ? (
+            <div className="stack-sm">
+              <p className="small-text"><strong>{locale === 'zh' ? 'What we usually need first' : 'What we usually need first'}</strong></p>
+              <ul className="list-plain">
+                {routeSignals.intake.map((item) => (
+                  <li className="small-text" key={item}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {routeSignals.faqs.length ? (
+            <div className="footer-links">
+              {routeSignals.faqs.map((faq) => (
+                <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+                  {faq.question.en}
+                </Link>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       {result ? (
         <div className="section-card stack-md">

@@ -129,6 +129,51 @@ export function RoutePriorityPage({
           </Card>
         ) : null}
 
+        <Card className="card-main guide-conversion-section">
+          <div className="stack-md">
+            <div className="stack-sm">
+              <p className="kicker">{locale === 'zh' ? 'Next step' : 'Next step'}</p>
+              <h2>{locale === 'zh' ? 'Move from route reading into route check or intake' : 'Move from route reading into route check or intake'}</h2>
+            </div>
+            <div className="guide-conversion-grid">
+              <div className="stack-sm">
+                <h3>{locale === 'zh' ? 'Typical next step' : 'Typical next step'}</h3>
+                <p className="small-text">
+                  {locale === 'zh'
+                    ? '如果你已经有真实文件，下一步通常不是继续看泛泛介绍，而是用文件版本、接收方要求和路线风险来做 route check。'
+                    : 'If you already have the real file, the usual next step is not more generic reading. It is route check against the file version, receiving-side wording, and route risks.'}
+                </p>
+              </div>
+              <div className="stack-sm">
+                <h3>{locale === 'zh' ? 'What to prepare before intake' : 'What to prepare before intake'}</h3>
+                <ul className="list-plain">
+                  {preparationItems.slice(0, 4).map((item) => (
+                    <li className="small-text" key={item}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="stack-sm">
+              <h3>{locale === 'zh' ? 'Route uncertainty note' : 'Route uncertainty note'}</h3>
+              <p className="small-text">
+                {locale === 'zh'
+                  ? '路线通常取决于文件类别、版本、签发结构、接收方要求以及是否需要翻译、公证或额外领馆步骤，因此应在复核后确认。'
+                  : 'Route outcome usually depends on document class, issue format, signing structure, receiving-side requirements, and whether translation, notarial handling, or extra consular steps are also involved, so it should be confirmed after review.'}
+              </p>
+            </div>
+            <div className="actions">
+              <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>
+                {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
+              </Link>
+              <Link className="btn btn-primary" href={intakeHref}>
+                {locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}
+              </Link>
+            </div>
+          </div>
+        </Card>
+
         {(relatedRouteGroups && relatedRouteGroups.length) || (keyLinks && keyLinks.length) ? (
           <Card muted className="route-footer-card route-footer-lite">
             <div className="stack-md">
