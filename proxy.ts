@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const INTERNAL_LOCALES = ["en", "zh"] as const;
 const PUBLIC_CN_PREFIX = "cn";
+const INTERNAL_EN_PREFIX = "en";
+const INTERNAL_ZH_PREFIX = "zh";
 
 function normalizeLocalePath(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
@@ -34,6 +36,22 @@ function resolveRequestLocale(pathname: string) {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname === `/${INTERNAL_EN_PREFIX}` || pathname.startsWith(`/${INTERNAL_EN_PREFIX}/`)) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === `/${INTERNAL_EN_PREFIX}` ? "/" : pathname.replace(`/${INTERNAL_EN_PREFIX}`, "");
+    return NextResponse.redirect(url, 301);
+  }
+
+  if (pathname === `/${INTERNAL_ZH_PREFIX}` || pathname.startsWith(`/${INTERNAL_ZH_PREFIX}/`)) {
+    const url = request.nextUrl.clone();
+    url.pathname =
+      pathname === `/${INTERNAL_ZH_PREFIX}`
+        ? `/${PUBLIC_CN_PREFIX}`
+        : pathname.replace(`/${INTERNAL_ZH_PREFIX}`, `/${PUBLIC_CN_PREFIX}`);
+    return NextResponse.redirect(url, 301);
+  }
+
   const normalized = normalizeLocalePath(pathname);
   const locale = resolveRequestLocale(pathname);
   const requestHeaders = new Headers(request.headers);

@@ -29,10 +29,6 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      { source: '/en', destination: '/', permanent: true },
-      { source: '/en/:path*', destination: '/:path*', permanent: true },
-      { source: '/zh', destination: '/cn', permanent: true },
-      { source: '/zh/:path*', destination: '/cn/:path*', permanent: true },
       { source: '/index.html', destination: '/', permanent: true },
       { source: '/v3.html', destination: '/', permanent: true },
       { source: '/:path*.html', destination: '/', permanent: true },
