@@ -43,6 +43,28 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
             <Link href={`/${locale}/samples`}>{t.resources.samplesLinkLabel}</Link>
           </div>
         </section>
+
+        <section className="stack-sm" aria-label={locale === 'zh' ? '主要服务' : 'Primary services'}>
+          <p className="kicker">{locale === 'zh' ? '主要服务' : 'Primary services'}</p>
+          <div className="footer-links">
+            <Link href={`/${locale}/services`}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
+            <Link href={`/${locale}/apostille-australia`}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
+            <Link href={`/${locale}/consular-legalisation-australia`}>{locale === 'zh' ? '领馆认证' : 'Consular legalisation'}</Link>
+            <Link href={`/${locale}/document-authentication-sydney`}>{locale === 'zh' ? '文件认证协调' : 'Document authentication Sydney'}</Link>
+          </div>
+        </section>
+
+        <section className="stack-sm" aria-label={locale === 'zh' ? '主要国家页' : 'Priority destination pages'}>
+          <p className="kicker">{locale === 'zh' ? '主要国家页' : 'Priority destination pages'}</p>
+          <div className="footer-links">
+            <Link href={`/${locale}/used-in/china`}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
+            <Link href={`/${locale}/used-in/canada`}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
+            <Link href={`/${locale}/used-in/singapore`}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
+            <Link href={`/${locale}/used-in/united-states`}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
+            <Link href={`/${locale}/used-in/united-kingdom`}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
+            <Link href={`/${locale}/used-in/new-zealand`}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
+          </div>
+        </section>
       </div>
       <p className="small-text" style={{ marginTop: '1rem' }}>{copyright}</p>
     </footer>

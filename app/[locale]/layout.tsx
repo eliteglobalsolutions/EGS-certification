@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
-import { buildPageMetadata } from '@/lib/seo';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -11,7 +11,6 @@ export async function generateMetadata({
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const title =
     locale === 'zh'
       ? 'EGS Verification | 海牙认证与领事认证 | 澳洲及全球文件协调'

@@ -186,7 +186,7 @@ export default async function GuidesIndexPage({
           <Card className="card-main guides-index-hero">
             <div className="stack-md">
               <p className="kicker">Guides</p>
-              <h1>Apostille and authentication guides for document use and route review</h1>
+              <h1>Apostille and authentication guide pages</h1>
               <p className="body-text">
                 Practical guides grouped by scenario, document family, and issuing country before you move into route check or intake.
               </p>

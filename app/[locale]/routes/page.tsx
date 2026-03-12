@@ -16,10 +16,7 @@ import {
   getEntryText,
   issuingCountryEntries,
 } from '@/lib/search-entry-data';
-import {
-  documentPriorityRoutes,
-  getCopyText as getDocumentCopyText,
-} from '@/lib/document-priority-routes-data';
+import { documentPriorityRoutes, getCopyText as getDocumentCopyText } from '@/lib/document-priority-routes-data';
 import { getGuideBySlug } from '@/lib/guides';
 
 export default async function RoutesOverviewPage({
@@ -90,8 +87,6 @@ export default async function RoutesOverviewPage({
       description: getEntryText(entry.intro, locale),
     })),
   ];
-  const hasDocumentSpecificRoutes = documentPriorityRoutes.length > 0 || getKnowledgeRouteSlugs().length > 0;
-
   return (
     <Container>
       <Section>
@@ -157,84 +152,12 @@ export default async function RoutesOverviewPage({
           </div>
         </Card>
 
-        {hasDocumentSpecificRoutes ? (
-          <Card muted>
-            <div className="stack-md">
-              <div className="page-header">
-                <div className="stack-sm">
-                  <p className="kicker">Document-specific Route Guides</p>
-                  <h2>{locale === 'zh' ? '文件级 route guides' : 'Document-specific route guides'}</h2>
-                </div>
-              </div>
-              <div className="search-entry-grid">
-                {documentPriorityRoutes.map((route) => (
-                  <article className="search-entry-card" key={route.slug}>
-                    <div className="stack-sm">
-                      <h3>{getDocumentCopyText(route.title, locale)}</h3>
-                      <p className="small-text">{getDocumentCopyText(route.subheading, locale)}</p>
-                      <p className="small-text">{getDocumentCopyText(route.whoUsesThis, locale)}</p>
-                    </div>
-                    <div className="actions">
-                      <Link
-                        className="btn btn-ghost"
-                        href={getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`}
-                      >
-                        {locale === 'zh' ? 'Open guide' : 'Open guide'}
-                      </Link>
-                      <Link
-                        className="search-entry-intake-link"
-                        href={buildPrefillHref(locale, '/intake', {
-                          locale,
-                          documentSlug: route.documentSlug,
-                        })}
-                      >
-                        {locale === 'zh' ? 'Start intake' : 'Start intake'}
-                      </Link>
-                    </div>
-                  </article>
-                ))}
-                {getKnowledgeRouteSlugs().map((slug) => {
-                  const route = getKnowledgeRoute(slug)!;
-                  return (
-                    <article className="search-entry-card" key={route.slug}>
-                      <div className="stack-sm">
-                        <h3>{getRouteCopy(locale, route.title)}</h3>
-                        <p className="small-text">{getRouteCopy(locale, route.subheading)}</p>
-                        <p className="small-text">{getRouteCopy(locale, route.whoUsesThis)}</p>
-                      </div>
-                      <div className="actions">
-                        <Link
-                          className="btn btn-ghost"
-                          href={getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`}
-                        >
-                          {locale === 'zh' ? 'Open guide' : 'Open guide'}
-                        </Link>
-                        <Link
-                          className="search-entry-intake-link"
-                          href={buildPrefillHref(locale, '/intake', {
-                            locale,
-                            issuingSlug: route.prefill?.issuingSlug,
-                            destinationSlug: route.prefill?.destinationSlug,
-                            documentSlug: route.prefill?.documentSlug,
-                          })}
-                        >
-                          {locale === 'zh' ? 'Start intake' : 'Start intake'}
-                        </Link>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            </div>
-          </Card>
-        ) : null}
-
         <Card>
           <div className="stack-md">
             <div className="page-header">
               <div className="stack-sm">
-                <p className="kicker">Secondary Routes</p>
-                <h2>{locale === 'zh' ? '副线' : 'Supporting route-entry pages'}</h2>
+                <p className="kicker">{locale === 'zh' ? '入口页' : 'Entry pages'}</p>
+                <h2>{locale === 'zh' ? '按国家、目的地和文件类型继续查找' : 'Browse by country, destination, and document type'}</h2>
               </div>
             </div>
             <div className="search-entry-grid">
@@ -244,13 +167,13 @@ export default async function RoutesOverviewPage({
                     <h3>{item.label}</h3>
                     <p className="small-text">
                       {locale === 'zh'
-                        ? '作为副线入口页，继续承接国家词、目的地词和文件词搜索。'
-                        : 'Supporting entry page for country, destination, and document-type search traffic.'}
+                        ? '继续按签发地、使用地或文件类别进入对应的公开说明页。'
+                        : 'Use these entry pages to continue by issuing country, destination country, or document family.'}
                     </p>
                   </div>
                   <div className="actions">
                     <Link className="btn btn-ghost" href={item.href}>
-                      {locale === 'zh' ? 'View route' : 'View route'}
+                      {locale === 'zh' ? 'Open page' : 'Open page'}
                     </Link>
                     <Link className="search-entry-intake-link" href={item.intakeHref}>
                       {locale === 'zh' ? 'Start intake' : 'Start intake'}

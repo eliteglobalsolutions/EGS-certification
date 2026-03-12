@@ -45,6 +45,8 @@ type Props = {
   siblingPrefillType?: 'issuing' | 'destination' | 'document';
   regionalRequirements?: RegionalRequirement[];
   institutionReferences?: InstitutionReference[];
+  servicesTitle?: string;
+  servicesLinks?: RelatedLink[];
 };
 
 export function SearchEntryPage({
@@ -65,6 +67,8 @@ export function SearchEntryPage({
   siblingPrefillType,
   regionalRequirements,
   institutionReferences,
+  servicesTitle,
+  servicesLinks = [],
 }: Props) {
   const primaryRelatedLinks = relatedLinks.slice(0, 4);
   const siblingLinks = siblings.slice(0, 8);
@@ -100,11 +104,25 @@ export function SearchEntryPage({
             </div>
           </Card>
 
+        <Card muted className="route-secondary-section">
+          <div className="stack-sm">
+            <h2>{relatedTitle}</h2>
+            <div className="footer-links">
+                {primaryRelatedLinks.map((item) => (
+                  <Link href={item.href} key={item.href}>
+                    {item.label}
+                  </Link>
+                ))}
+            </div>
+          </div>
+        </Card>
+
+        {servicesLinks.length ? (
           <Card muted className="route-secondary-section">
             <div className="stack-sm">
-              <h2>{relatedTitle}</h2>
+              <h2>{servicesTitle || (locale === 'zh' ? '相关服务与下一步' : 'Related services and next steps')}</h2>
               <div className="footer-links">
-                {primaryRelatedLinks.map((item) => (
+                {servicesLinks.map((item) => (
                   <Link href={item.href} key={item.href}>
                     {item.label}
                   </Link>
@@ -112,6 +130,7 @@ export function SearchEntryPage({
               </div>
             </div>
           </Card>
+        ) : null}
         </div>
 
         {regionalRequirements && regionalRequirements.length ? (
@@ -228,6 +247,11 @@ export function SearchEntryPage({
                 </Link>
               ))}
             </div>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '公开页面仅做路线说明与预审参考。最终路径、文件形式与接收标准仍取决于签发机构、目的地国家及最终接收方要求。'
+                : 'Public pages provide route guidance and intake screening context only. Final handling, document form, and acceptance remain subject to the issuing authority, destination country, and receiving institution.'}
+            </p>
           </div>
         </Card>
       </Section>

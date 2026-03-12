@@ -9,6 +9,7 @@ import {
   getSampleSlugs,
   toSampleDocumentPageSlug,
 } from '@/lib/sample-library';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateStaticParams() {
   const slugs = await getSampleSlugs();
@@ -22,20 +23,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam, slug } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const item = await getSampleBySlug(slug);
 
   if (!item) {
     return {};
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/samples/${slug}`,
     title: locale === 'zh' ? `${item.sampleTitle}｜样本说明` : `${item.sampleTitle} | Sample Detail`,
     description: locale === 'zh' ? item.routeDescription : item.routeDescription,
-    alternates: {
-      canonical: `${siteUrl}/${locale}/samples/${slug}`,
-    },
-  };
+    keywords: [item.documentType, item.issuingCountry, ...item.tags].filter(Boolean),
+  });
 }
 
 export default async function SampleDetailPage({
@@ -64,7 +64,6 @@ export default async function SampleDetailPage({
     );
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',

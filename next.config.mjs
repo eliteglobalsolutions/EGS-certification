@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  trailingSlash: false,
   transpilePackages: [
     '@react-pdf/renderer',
     '@react-pdf/layout',

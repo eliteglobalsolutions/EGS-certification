@@ -4,3 +4,21 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from = "http://www.eliteglobalsolutions.co/*"
+  to = "https://eliteglobalsolutions.co/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.eliteglobalsolutions.co/*"
+  to = "https://eliteglobalsolutions.co/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://eliteglobalsolutions.co/*"
+  to = "https://eliteglobalsolutions.co/:splat"
+  status = 301
+  force = true

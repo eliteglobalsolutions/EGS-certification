@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -8,23 +9,24 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '/intake',
       title: '开始受理｜国际文件认证下单｜EGS Verification',
       description: '在线提交文件认证需求，先确认路径，再进入受理与支付流程。',
       keywords: ['开始下单 文件认证', '海牙认证 下单', '领事认证 下单', '澳洲 文件认证 下单'],
-      alternates: { canonical: `${siteUrl}/zh/intake` },
-    };
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/intake',
     title: 'Begin Intake | Apostille & Legalisation Order | EGS Verification',
     description: 'Start secure intake for apostille and legalisation. Confirm route, upload files, and proceed to payment.',
     keywords: ['start apostille order', 'legalisation intake form', 'document authentication order'],
-    alternates: { canonical: `${siteUrl}/en/intake` },
-  };
+  });
 }
 
 export default function IntakeLayout({ children }: { children: React.ReactNode }) {

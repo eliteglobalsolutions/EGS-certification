@@ -1,13 +1,12 @@
 import type { MetadataRoute } from 'next';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
+import { siteUrl } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin', '/api/admin'],
+      disallow: ['/admin', '/api/', '/portal/', '/order/success', '/order/upload', '/track-order'],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

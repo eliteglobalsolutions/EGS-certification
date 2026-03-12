@@ -231,6 +231,33 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 : 'Alongside the Australia main lane, we also handle high-value routes involving the United States, Canada, Singapore, and the United Kingdom. Final route choice still depends on issuing country, destination, and receiving-side requirements.'}
             </p>
             <p className="small-text">{INTERNATIONAL_ROUTE_COVERAGE.join(' · ')}</p>
+            <div className="footer-links">
+              <Link href={`/${locale}/used-in/china`}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
+              <Link href={`/${locale}/used-in/canada`}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
+              <Link href={`/${locale}/used-in/singapore`}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
+              <Link href={`/${locale}/used-in/united-states`}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
+              <Link href={`/${locale}/used-in/united-kingdom`}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
+              <Link href={`/${locale}/used-in/new-zealand`}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
+            </div>
+          </div>
+        </Card>
+
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '相关指南与文件页' : 'Related guides and document pages'}</p>
+            <p className="small-text">
+              {locale === 'zh'
+                ? '如果你已经知道文件类型或目的地国家，直接进入指南页、文件页或常见问题页会更高效。'
+                : 'If you already know the document type or destination country, moving directly into guides, document pages, and FAQs is usually more efficient.'}
+            </p>
+            <div className="footer-links">
+              <Link href={`/${locale}/guides`}>{locale === 'zh' ? '查看指南页' : 'Browse guides'}</Link>
+              <Link href={`/${locale}/faq`}>{locale === 'zh' ? '查看 FAQ' : 'View FAQ'}</Link>
+              <Link href={`/${locale}/documents/academic-transcript`}>{locale === 'zh' ? '学术成绩单' : 'Academic transcript'}</Link>
+              <Link href={`/${locale}/documents/birth-certificate`}>{locale === 'zh' ? '出生证明' : 'Birth certificate'}</Link>
+              <Link href={`/${locale}/documents/company-documents`}>{locale === 'zh' ? '公司文件' : 'Company documents'}</Link>
+              <Link href={`/${locale}/documents/police-check`}>{locale === 'zh' ? '无犯罪记录' : 'Police check'}</Link>
+            </div>
           </div>
         </Card>
 

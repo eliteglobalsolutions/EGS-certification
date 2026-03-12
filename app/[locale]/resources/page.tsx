@@ -5,6 +5,7 @@ import { getCopy } from '@/lib/i18n/dictionaries';
 import { Button } from '@/components/ui/Button';
 import { buildPrefillHref } from '@/lib/prefill';
 import { destinationCountryEntries, getEntryList, getEntryText, getSearchEntry } from '@/lib/search-entry-data';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -13,30 +14,30 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '/resources',
       title: '资源中心｜官方认证与公证信息链接｜EGS Verification',
       description: '查看官方公证与认证信息链接，包括 DFAT 与主要使领馆资源入口。',
       keywords: ['认证资源', 'DFAT 链接', '公证信息', '使领馆认证链接', 'EGS 资源中心'],
-      alternates: { canonical: `${siteUrl}/zh/resources` },
-    };
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/resources',
     title: 'Resources | Official Notary and Legalisation Links | EGS Verification',
     description: 'Official resource links for notary directories, DFAT legalisation guidance, and consular information portals.',
     keywords: ['notary resources Australia', 'DFAT apostille link', 'consular legalisation links', 'EGS resources'],
-    alternates: { canonical: `${siteUrl}/en/resources` },
-  };
+  });
 }
 
 export default async function ResourcesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const countryResources = [
     {
       slug: 'china',

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
-export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
+const canonicalOrigin = 'https://eliteglobalsolutions.co';
+
+export const siteUrl = canonicalOrigin;
 
 export const brandName = 'EGS Verification';
 
@@ -16,13 +17,28 @@ type SeoConfig = {
   type?: 'website' | 'article';
 };
 
-export function buildLocaleAlternates(path: string) {
+export function cleanPath(path: string) {
+  if (!path) return '';
+  const normalized = path.trim().replace(/\/{2,}/g, '/');
+  if (!normalized || normalized === '/') return '';
+  const withoutQuery = normalized.split('?')[0].split('#')[0];
+  return withoutQuery.endsWith('/') ? withoutQuery.slice(0, -1) : withoutQuery;
+}
+
+export function buildCanonicalUrl(locale: Locale, path: string) {
+  const normalizedPath = cleanPath(path);
+  return `${siteUrl}/${locale}${normalizedPath}`;
+}
+
+export function buildLocaleAlternates(locale: Locale, path: string) {
+  const normalizedPath = cleanPath(path);
+
   return {
-    canonical: `${siteUrl}/en${path}`,
+    canonical: `${siteUrl}/${locale}${normalizedPath}`,
     languages: {
-      en: `${siteUrl}/en${path}`,
-      zh: `${siteUrl}/zh${path}`,
-      'x-default': `${siteUrl}/en${path}`,
+      en: `${siteUrl}/en${normalizedPath}`,
+      zh: `${siteUrl}/zh${normalizedPath}`,
+      'x-default': `${siteUrl}/en${normalizedPath}`,
     },
   };
 }
@@ -35,8 +51,9 @@ export function buildPageMetadata({
   keywords,
   type = 'website',
 }: SeoConfig): Metadata {
-  const localePath = `${siteUrl}/${locale}${path}`;
+  const localePath = buildCanonicalUrl(locale, path);
   const imagePath = '/opengraph-image';
+  const alternates = buildLocaleAlternates(locale, path);
 
   return {
     title,
@@ -44,8 +61,8 @@ export function buildPageMetadata({
     keywords,
     metadataBase: new URL(siteUrl),
     alternates: {
-      canonical: localePath,
-      languages: buildLocaleAlternates(path).languages,
+      canonical: alternates.canonical,
+      languages: alternates.languages,
     },
     openGraph: {
       title,

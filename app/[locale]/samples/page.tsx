@@ -5,6 +5,7 @@ import { SamplesGallery } from '@/components/SamplesGallery';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import { loadSampleLibrary, toSampleDocumentPageSlug } from '@/lib/sample-library';
+import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -13,30 +14,30 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
 
   if (locale === 'zh') {
-    return {
+    return buildPageMetadata({
+      locale,
+      path: '/samples',
       title: '样本文档库｜打码文件样本｜EGS Verification',
       description: '浏览按文件类型、签发国家和使用目的整理的打码文件样本，查看更清晰的跨境文件路径示例。',
       keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', '文件样本库', 'EGS 样本库'],
-      alternates: { canonical: `${siteUrl}/zh/samples` },
-    };
+    });
   }
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: '/samples',
     title: 'Document Sample Library | Redacted Route Samples | EGS Verification',
     description: 'Browse redacted document sample previews organised by document type, issuing country, and route context.',
     keywords: ['document sample library', 'apostille sample', 'legalisation sample', 'redacted document sample', 'route sample EGS'],
-    alternates: { canonical: `${siteUrl}/en/samples` },
-  };
+  });
 }
 
 export default async function SamplesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.eliteglobalsolutions.co';
   const items = await loadSampleLibrary();
   const topDocumentTypes = Array.from(
     items.reduce((map, item) => map.set(item.documentType, (map.get(item.documentType) || 0) + 1), new Map<string, number>())
