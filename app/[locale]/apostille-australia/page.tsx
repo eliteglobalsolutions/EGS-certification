@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { AUSTRALIA_CITY_COVERAGE, AUSTRALIA_CITY_KEYWORDS } from '@/lib/australia-city-coverage';
 
@@ -62,6 +62,7 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const isZh = locale === 'zh';
+  const businessId = `${localizedUrl(locale, siteUrl)}#local-business`;
   const faq = isZh
     ? [
         { q: '是否保证通过？', a: '不保证。最终接受与有效性由相关主管机构独立决定。' },
@@ -103,12 +104,11 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
     name: isZh ? '澳洲海牙认证协调服务' : 'Apostille Australia coordination service',
     serviceType: isZh ? '海牙认证协调' : 'Apostille coordination',
     provider: {
-      '@type': 'Organization',
-      name: 'EGS Verification',
-      url: `${siteUrl}/${locale}`,
+      '@type': 'LocalBusiness',
+      '@id': businessId,
     },
     areaServed: ['Australia', ...AUSTRALIA_CITY_COVERAGE],
-    url: `${siteUrl}/${locale}/apostille-australia`,
+    url: localizedUrl(locale, siteUrl, '/apostille-australia'),
   };
 
   const breadcrumbJsonLd = {
@@ -119,13 +119,13 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
         '@type': 'ListItem',
         position: 1,
         name: isZh ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: isZh ? '澳洲海牙认证' : 'Apostille Australia',
-        item: `${siteUrl}/${locale}/apostille-australia`,
+        item: localizedUrl(locale, siteUrl, '/apostille-australia'),
       },
     ],
   };
@@ -155,8 +155,8 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
                 : 'Coordination service for apostille on Australia-issued documents. The work is coordinated from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can usually proceed through online intake and tracked mail.'}
             </p>
             <div className="actions">
-              <Link className="btn btn-primary" href={`/${locale}/intake`}>{isZh ? '开始受理' : 'Begin Intake'}</Link>
-              <Link className="btn btn-secondary" href={`/${locale}/track`}>{isZh ? '查询订单' : 'Track Order'}</Link>
+              <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>{isZh ? '开始受理' : 'Begin Intake'}</Link>
+              <Link className="btn btn-secondary" href={localizedPath(locale, '/track')}>{isZh ? '查询订单' : 'Track Order'}</Link>
             </div>
             <div className="stack-sm">
               <h2>{isZh ? 'Apostille Australia 常见场景' : 'Common apostille Australia scenarios'}</h2>
@@ -181,13 +181,13 @@ export default async function ApostilleAustraliaPage({ params }: { params: Promi
               <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             </div>
             <div className="footer-links">
-              <Link href={`/${locale}/consular-legalisation-australia`}>
+              <Link href={localizedPath(locale, '/consular-legalisation-australia')}>
                 {isZh ? '查看领事认证服务' : 'View Consular Legalisation service'}
               </Link>
-              <Link href={`/${locale}/document-authentication-sydney`}>
+              <Link href={localizedPath(locale, '/document-authentication-sydney')}>
                 {isZh ? '查看悉尼文件认证服务' : 'View Document Authentication Sydney'}
               </Link>
-              <Link href={`/${locale}/guides`}>
+              <Link href={localizedPath(locale, '/guides')}>
                 {isZh ? '查看搜索型指南库' : 'View search-intent guides'}
               </Link>
             </div>

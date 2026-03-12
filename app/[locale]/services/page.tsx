@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { InfoRow } from '@/components/ui/InfoRow';
 import { ServiceLanes } from '@/components/marketing/ServiceLanes';
 import { RouteChecker } from '@/components/marketing/RouteChecker';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import Link from 'next/link';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
@@ -77,17 +77,18 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
+  const businessId = `${localizedUrl(locale, siteUrl, '')}#local-business`;
   const serviceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: locale === 'zh' ? '国际文件认证协调服务' : 'Cross-border document coordination service',
     provider: {
-      '@type': 'Organization',
-      name: 'EGS Verification',
-      url: `${siteUrl}/${locale}`,
+      '@type': 'LocalBusiness',
+      '@id': businessId,
     },
     areaServed: 'Worldwide',
     serviceType: ['Apostille', 'Consular legalisation', 'Document authentication coordination'],
+    url: localizedUrl(locale, siteUrl, '/services'),
   };
 
   const breadcrumbJsonLd = {
@@ -98,13 +99,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         '@type': 'ListItem',
         position: 1,
         name: locale === 'zh' ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl, ''),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: locale === 'zh' ? '服务' : 'Services',
-        item: `${siteUrl}/${locale}/services`,
+        item: localizedUrl(locale, siteUrl, '/services'),
       },
     ],
   };
@@ -192,10 +193,40 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             title={t.services.title}
             subtitle={t.services.subtitle}
             actions={[
-              { label: t.services.ctaStart, href: `/${locale}/intake`, variant: 'primary' },
-              { label: t.services.ctaTrack, href: `/${locale}/track`, variant: 'secondary' },
+              { label: t.services.ctaStart, href: localizedPath(locale, '/intake'), variant: 'primary' },
+              { label: t.services.ctaTrack, href: localizedPath(locale, '/track'), variant: 'secondary' },
             ]}
           />
+        </Card>
+
+        <Card muted>
+          <div className="stack-sm">
+            <p className="kicker">{locale === 'zh' ? '服务分流' : 'Service lanes'}</p>
+            <div className="grid-2">
+              <div className="state-block stack-sm">
+                <strong>{locale === 'zh' ? '海牙认证服务' : 'Apostille service'}</strong>
+                <p className="small-text">
+                  {locale === 'zh'
+                    ? '适用于文件拟用于按 Apostille 路线接收的国家或机构。'
+                    : 'Use this page for destinations and authorities that accept the apostille route.'}
+                </p>
+                <Link className="inline-link" href={localizedPath(locale, '/services/apostille')}>
+                  {locale === 'zh' ? '查看 Apostille 服务页' : 'View apostille service page'}
+                </Link>
+              </div>
+              <div className="state-block stack-sm">
+                <strong>{locale === 'zh' ? '领事认证服务' : 'Legalisation service'}</strong>
+                <p className="small-text">
+                  {locale === 'zh'
+                    ? '适用于非海牙国家或仍要求领馆合法化链路的场景。'
+                    : 'Use this page for non-Hague destinations or cases that still require embassy or consular legalisation.'}
+                </p>
+                <Link className="inline-link" href={localizedPath(locale, '/services/legalisation')}>
+                  {locale === 'zh' ? '查看 Legalisation 服务页' : 'View legalisation service page'}
+                </Link>
+              </div>
+            </div>
+          </div>
         </Card>
 
         <Card muted>
@@ -208,16 +239,16 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             </p>
             <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             <div className="footer-links">
-              <Link href={`/${locale}/cities/melbourne`}>{locale === 'zh' ? '墨尔本页面' : 'Melbourne page'}</Link>
-              <Link href={`/${locale}/cities/brisbane`}>{locale === 'zh' ? '布里斯班页面' : 'Brisbane page'}</Link>
-              <Link href={`/${locale}/cities/adelaide`}>{locale === 'zh' ? '阿德莱德页面' : 'Adelaide page'}</Link>
-              <Link href={`/${locale}/cities/canberra`}>{locale === 'zh' ? '堪培拉页面' : 'Canberra page'}</Link>
+              <Link href={localizedPath(locale, '/cities/melbourne')}>{locale === 'zh' ? '墨尔本页面' : 'Melbourne page'}</Link>
+              <Link href={localizedPath(locale, '/cities/brisbane')}>{locale === 'zh' ? '布里斯班页面' : 'Brisbane page'}</Link>
+              <Link href={localizedPath(locale, '/cities/adelaide')}>{locale === 'zh' ? '阿德莱德页面' : 'Adelaide page'}</Link>
+              <Link href={localizedPath(locale, '/cities/canberra')}>{locale === 'zh' ? '堪培拉页面' : 'Canberra page'}</Link>
             </div>
             <div className="footer-links">
-              <Link href={`/${locale}/cities/melbourne/consular-authentication`}>{locale === 'zh' ? '墨尔本领事认证页' : 'Melbourne consular page'}</Link>
-              <Link href={`/${locale}/cities/brisbane/consular-authentication`}>{locale === 'zh' ? '布里斯班领事认证页' : 'Brisbane consular page'}</Link>
-              <Link href={`/${locale}/cities/adelaide/consular-authentication`}>{locale === 'zh' ? '阿德莱德领事认证页' : 'Adelaide consular page'}</Link>
-              <Link href={`/${locale}/cities/canberra/consular-authentication`}>{locale === 'zh' ? '堪培拉领事认证页' : 'Canberra consular page'}</Link>
+              <Link href={localizedPath(locale, '/cities/melbourne/consular-authentication')}>{locale === 'zh' ? '墨尔本领事认证页' : 'Melbourne consular page'}</Link>
+              <Link href={localizedPath(locale, '/cities/brisbane/consular-authentication')}>{locale === 'zh' ? '布里斯班领事认证页' : 'Brisbane consular page'}</Link>
+              <Link href={localizedPath(locale, '/cities/adelaide/consular-authentication')}>{locale === 'zh' ? '阿德莱德领事认证页' : 'Adelaide consular page'}</Link>
+              <Link href={localizedPath(locale, '/cities/canberra/consular-authentication')}>{locale === 'zh' ? '堪培拉领事认证页' : 'Canberra consular page'}</Link>
             </div>
           </div>
         </Card>
@@ -235,6 +266,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               <Link href={`/${locale}/used-in/china`}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
               <Link href={`/${locale}/used-in/canada`}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
               <Link href={`/${locale}/used-in/singapore`}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
+              <Link href={`/${locale}/used-in/spain`}>{locale === 'zh' ? '用于西班牙' : 'Used in Spain'}</Link>
               <Link href={`/${locale}/used-in/united-states`}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
               <Link href={`/${locale}/used-in/united-kingdom`}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
               <Link href={`/${locale}/used-in/new-zealand`}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
@@ -372,6 +404,12 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             <div className="footer-links">
               <Link href={`/${locale}/apostille-australia`}>
                 {locale === 'zh' ? '澳洲海牙认证服务' : 'Apostille Australia'}
+              </Link>
+              <Link href={`/${locale}/used-in/china`}>
+                {locale === 'zh' ? '文件用于中国' : 'Documents for use in China'}
+              </Link>
+              <Link href={`/${locale}/faq`}>
+                {locale === 'zh' ? '常见问题' : 'FAQ hub'}
               </Link>
               <Link href={`/${locale}/consular-legalisation-australia`}>
                 {locale === 'zh' ? '澳洲领事认证服务' : 'Consular Legalisation Australia'}

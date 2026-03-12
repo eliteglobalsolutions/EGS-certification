@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { localizedPath } from '@/lib/i18n/locale';
 
 export function SamplePreviewCard({
   locale,
@@ -16,7 +17,7 @@ export function SamplePreviewCard({
   altText: string;
 }) {
   return (
-    <Link className="guide-visual-card" href={`/${locale}/samples/${slug}`}>
+    <Link className="guide-visual-card" href={localizedPath(locale, `/samples/${slug}`)}>
       {thumbPath ? <img alt={altText} className="guide-visual-image" loading="lazy" src={thumbPath} /> : null}
       <div className="guide-visual-caption">
         <strong>{title}</strong>

@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import type { AppCopy } from '@/lib/i18n/dictionaries';
 import { COMPANY_BRAND_NAME } from '@/lib/company';
+import { localizedPath } from '@/lib/i18n/locale';
 
 export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
   const year = new Date().getFullYear();
+  const path = (value = '') => localizedPath(locale as 'en' | 'zh', value);
   const copyright =
     locale === 'zh'
       ? `© ${year} ${COMPANY_BRAND_NAME}. 版权所有。`
@@ -28,41 +30,42 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
         <section className="stack-sm" aria-label={t.landing.footer.legalTitle}>
           <p className="kicker">{t.landing.footer.legalTitle}</p>
           <div className="footer-links">
-            <Link href={`/${locale}/legal/terms`}>{t.common.terms}</Link>
-            <Link href={`/${locale}/legal/privacy`}>{t.common.privacy}</Link>
-            <Link href={`/${locale}/legal/authorisation`}>{t.common.authorisation}</Link>
-            <Link href={`/${locale}/resources`}>{t.resources.linkLabel}</Link>
+            <Link href={path('/legal/terms')}>{t.common.terms}</Link>
+            <Link href={path('/legal/privacy')}>{t.common.privacy}</Link>
+            <Link href={path('/legal/authorisation')}>{t.common.authorisation}</Link>
+            <Link href={path('/resources')}>{t.resources.linkLabel}</Link>
           </div>
         </section>
 
         <section className="stack-sm" aria-label={t.landing.footer.clientAccessTitle}>
           <p className="kicker">{t.landing.footer.clientAccessTitle}</p>
           <div className="footer-links">
-            <Link href={`/${locale}/track`}>{t.nav.track}</Link>
-            <Link href={`/${locale}/order/upload`}>{t.nav.upload}</Link>
-            <Link href={`/${locale}/samples`}>{t.resources.samplesLinkLabel}</Link>
+            <Link href={path('/track')}>{t.nav.track}</Link>
+            <Link href={path('/order/upload')}>{t.nav.upload}</Link>
+            <Link href={path('/samples')}>{t.resources.samplesLinkLabel}</Link>
           </div>
         </section>
 
         <section className="stack-sm" aria-label={locale === 'zh' ? '主要服务' : 'Primary services'}>
           <p className="kicker">{locale === 'zh' ? '主要服务' : 'Primary services'}</p>
           <div className="footer-links">
-            <Link href={`/${locale}/services`}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
-            <Link href={`/${locale}/apostille-australia`}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
-            <Link href={`/${locale}/consular-legalisation-australia`}>{locale === 'zh' ? '领馆认证' : 'Consular legalisation'}</Link>
-            <Link href={`/${locale}/document-authentication-sydney`}>{locale === 'zh' ? '文件认证协调' : 'Document authentication Sydney'}</Link>
+            <Link href={path('/services')}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
+            <Link href={path('/apostille-australia')}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
+            <Link href={path('/consular-legalisation-australia')}>{locale === 'zh' ? '领馆认证' : 'Consular legalisation'}</Link>
+            <Link href={path('/document-authentication-sydney')}>{locale === 'zh' ? '文件认证协调' : 'Document authentication Sydney'}</Link>
           </div>
         </section>
 
         <section className="stack-sm" aria-label={locale === 'zh' ? '主要国家页' : 'Priority destination pages'}>
           <p className="kicker">{locale === 'zh' ? '主要国家页' : 'Priority destination pages'}</p>
           <div className="footer-links">
-            <Link href={`/${locale}/used-in/china`}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
-            <Link href={`/${locale}/used-in/canada`}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
-            <Link href={`/${locale}/used-in/singapore`}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
-            <Link href={`/${locale}/used-in/united-states`}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
-            <Link href={`/${locale}/used-in/united-kingdom`}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
-            <Link href={`/${locale}/used-in/new-zealand`}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
+            <Link href={path('/used-in/china')}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
+            <Link href={path('/used-in/canada')}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
+            <Link href={path('/used-in/singapore')}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
+            <Link href={path('/used-in/spain')}>{locale === 'zh' ? '用于西班牙' : 'Used in Spain'}</Link>
+            <Link href={path('/used-in/united-states')}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
+            <Link href={path('/used-in/united-kingdom')}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
+            <Link href={path('/used-in/new-zealand')}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
           </div>
         </section>
       </div>

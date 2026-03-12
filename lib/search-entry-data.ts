@@ -680,6 +680,62 @@ export const destinationCountryEntries: SearchEntry[] = [
     relatedIssuingSlugs: ['australia', 'china', 'united-kingdom'],
   },
   {
+    slug: 'spain',
+    name: { en: 'Documents for use in Spain', zh: '用于西班牙的文件' },
+    intro: {
+      en: 'Entry page for documents intended for Spain across study, family, visa, employment, and civil filing matters.',
+      zh: '面向留学、家庭、签证、就业及民事登记等场景赴西班牙使用文件的搜索入口页。',
+    },
+    scope: {
+      en: 'Spain destination work is mainly apostille-led, with practical review focused on translation, issue recency, and whether the receiving side wants the original public document or a properly prepared supporting set.',
+      zh: '用于西班牙的文件以海牙路径为主，实务重点通常在翻译、签发时效，以及接收方要原始公文书还是准备完整的配套文件包。',
+    },
+    helperTitle: {
+      en: 'What usually matters for Spain use',
+      zh: '用于西班牙时通常最关键的判断点',
+    },
+    helperText: {
+      en: 'Spain-bound files usually need more than the country label alone. The first check is often whether the receiving body wants apostille only, sworn translation, recent issue date, or a wider supporting document set.',
+      zh: '用于西班牙的文件通常不能只看国家名。第一步更常见的判断，是接收方要的究竟只是附加证明书，还是还包括宣誓翻译、近期签发件，或更完整的配套材料。',
+    },
+    checkpoints: [
+      { en: 'Identify the Spanish receiving side first, especially university, registry, consulate, employer, notary, or civil authority.', zh: '先明确西班牙接收方，尤其是大学、登记机关、领馆、雇主、公证机构或民事主管部门。' },
+      { en: 'Check whether the Spain-side filing expects apostille only, sworn translation, original presentation, or a recent reissue.', zh: '确认西班牙提交是只要附加证明书，还是还要求宣誓翻译、原件出示或近期补开件。' },
+      { en: 'Move to intake only after the file set and Spain-side wording are specific enough to screen properly.', zh: '只有在文件组合和西班牙用途表述都足够明确后，再进入受理。' },
+    ],
+    regionalRequirements: [
+      {
+        region: { en: 'Spain destination baseline', zh: '西班牙目的地官方基线' },
+        summary: {
+          en: 'Spain accepts foreign public documents through the apostille framework, but many real filings still depend on whether the receiving side also expects sworn translation, original issue, and a recent document date.',
+          zh: '西班牙对外国公文书适用附加证明书框架，但很多真实提交最终仍取决于接收方是否还要求宣誓翻译、原始签发件，以及文件是否足够新近。',
+        },
+        officialRequirements: [
+          { en: 'Spain is within the Apostille Convention, so incoming public documents from Convention jurisdictions usually move through apostille rather than older consular legalisation chains', zh: '西班牙适用《海牙公约》，来自《公约》缔约国的公文书通常走附加证明书，而不是旧领馆认证链' },
+          { en: 'Spain-side institutions may still specify translation, sworn translation, or issue-date expectations in addition to apostille', zh: '西班牙接收机构仍可能在附加证明书之外要求翻译、宣誓翻译或近期签发时间' },
+          { en: 'Private documents and signed instruments still need a proper notarisation route before apostille becomes relevant', zh: '私人文件和签字文件，仍需先完成合格公证，之后附加证明书路径才有意义' },
+        ],
+        egsRequirements: [
+          { en: 'Current scan of the document set and a clear explanation of the Spain-side use', zh: '提供当前文件组合扫描件，并清楚说明西班牙端用途' },
+          { en: 'Receiving-side name where available, especially school, employer, registry, or notary', zh: '如已知，应提供接收方名称，尤其是学校、雇主、登记机关或公证机构' },
+          { en: 'Check whether sworn translation, original release, or a fresh issue may later be needed', zh: '确认后续是否还可能需要宣誓翻译、原件流转或补开新版' },
+        ],
+        commonExamples: [
+          { en: 'Birth / marriage certificates', zh: '出生证 / 结婚证' },
+          { en: 'Degree certificates / transcripts / enrollment letters', zh: '毕业证 / 成绩单 / 在读证明' },
+          { en: 'Police checks', zh: '无犯罪记录' },
+          { en: 'Power of attorney / company documents', zh: '授权书 / 公司文件' },
+        ],
+        expedite: {
+          en: 'Spain-bound files are often manageable when the receiving side and translation expectation are already clear. Timing becomes less reliable where the client still needs sworn translation or a fresh civil certificate issue.',
+          zh: '如果西班牙接收方和翻译要求已经明确，整体通常较好推进；若客户仍需做宣誓翻译或补开新的民事证书，时效就会不稳定。',
+        },
+      },
+    ],
+    relatedDocumentSlugs: ['birth-certificate', 'marriage-certificate', 'degree-certificate', 'power-of-attorney'],
+    relatedIssuingSlugs: ['australia', 'china', 'united-kingdom', 'singapore'],
+  },
+  {
     slug: 'usa',
     name: { en: 'Documents for use in the USA', zh: '用于美国的文件' },
     intro: {

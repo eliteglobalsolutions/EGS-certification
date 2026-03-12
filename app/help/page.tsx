@@ -2,5 +2,5 @@ import { redirect } from 'next/navigation';
 
 export default function HelpPage()
   {
-  redirect('/en/resources');
+  redirect('/resources');
 }

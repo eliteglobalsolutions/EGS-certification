@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { localizedUrl } from '@/lib/i18n/locale';
 
 const canonicalOrigin = 'https://eliteglobalsolutions.co';
 
@@ -26,19 +27,18 @@ export function cleanPath(path: string) {
 }
 
 export function buildCanonicalUrl(locale: Locale, path: string) {
-  const normalizedPath = cleanPath(path);
-  return `${siteUrl}/${locale}${normalizedPath}`;
+  return localizedUrl(locale, siteUrl, cleanPath(path));
 }
 
 export function buildLocaleAlternates(locale: Locale, path: string) {
   const normalizedPath = cleanPath(path);
 
   return {
-    canonical: `${siteUrl}/${locale}${normalizedPath}`,
+    canonical: localizedUrl(locale, siteUrl, normalizedPath),
     languages: {
-      en: `${siteUrl}/en${normalizedPath}`,
-      zh: `${siteUrl}/zh${normalizedPath}`,
-      'x-default': `${siteUrl}/en${normalizedPath}`,
+      en: localizedUrl('en', siteUrl, normalizedPath),
+      zh: localizedUrl('zh', siteUrl, normalizedPath),
+      'x-default': localizedUrl('en', siteUrl, normalizedPath),
     },
   };
 }

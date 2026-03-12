@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
 import { FaqHubClient } from '@/components/faq/FaqHubClient';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { getFaqIndexSections, getFaqs } from '@/lib/knowledge-faqs';
 
@@ -46,7 +46,7 @@ export default async function FaqHubPage({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'EGS FAQ Hub',
-    url: `${siteUrl}/${locale}/faq`,
+    url: localizedUrl(locale, siteUrl, '/faq'),
     description:
       'Knowledge base hub for apostille, authentication, education documents, overseas-issued documents, intake logic, and route warnings.',
   };
@@ -74,10 +74,10 @@ export default async function FaqHubPage({
                   : 'This hub is built for route clarity, not generic blogging. It answers high-frequency customer questions using conditional, review-based wording and links users into route check, intake, guides, and route pages.'}
               </p>
               <div className="actions">
-                <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>
+                <Link className="btn btn-secondary" href={`${localizedPath(locale)}#route-checker`}>
                   {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
                 </Link>
-                <Link className="btn btn-primary" href={`/${locale}/intake`}>
+                <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>
                   {locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}
                 </Link>
               </div>
@@ -110,13 +110,19 @@ export default async function FaqHubPage({
                 </p>
               </div>
               <div className="guides-cta-actions">
-                <Link className="btn btn-secondary" href={`/${locale}/guides`}>
+                <Link className="btn btn-secondary" href={localizedPath(locale, '/apostille-australia')}>
+                  {locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}
+                </Link>
+                <Link className="btn btn-secondary" href={localizedPath(locale, '/used-in/china')}>
+                  {locale === 'zh' ? '用于中国' : 'Used in China'}
+                </Link>
+                <Link className="btn btn-secondary" href={localizedPath(locale, '/guides')}>
                   {locale === 'zh' ? 'Guides' : 'Guides'}
                 </Link>
-                <Link className="btn btn-secondary" href={`/${locale}/routes`}>
+                <Link className="btn btn-secondary" href={localizedPath(locale, '/routes')}>
                   {locale === 'zh' ? 'Route pages' : 'Route pages'}
                 </Link>
-                <Link className="btn btn-primary" href={`/${locale}/intake`}>
+                <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>
                   {locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}
                 </Link>
               </div>

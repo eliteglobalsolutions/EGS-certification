@@ -32,6 +32,7 @@ export const INTERNATIONAL_ROUTE_COVERAGE = [
   'United States',
   'Canada',
   'Singapore',
+  'Spain',
   'United Kingdom',
 ] as const;
 
@@ -40,10 +41,12 @@ export const INTERNATIONAL_ROUTE_KEYWORDS = [
   'USA apostille service',
   'Canada apostille service',
   'Singapore document legalisation',
+  'Spain apostille service',
   'UK apostille service',
   'documents for use in the USA',
   'documents for use in Canada',
   'documents for use in Singapore',
+  'documents for use in Spain',
   'documents for use in the UK',
 ] as const;
 
@@ -51,6 +54,7 @@ export const KEY_DESTINATION_CITY_COVERAGE = {
   'United States': ['New York', 'Los Angeles', 'San Francisco', 'Chicago', 'Houston', 'Seattle'],
   Canada: ['Toronto', 'Vancouver', 'Calgary', 'Montreal', 'Ottawa'],
   Singapore: ['Singapore'],
+  Spain: ['Madrid', 'Barcelona', 'Valencia', 'Seville'],
   'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Edinburgh', 'Glasgow'],
 } as const;
 
@@ -61,6 +65,8 @@ export const KEY_DESTINATION_CITY_KEYWORDS = [
   'documents for use in Toronto',
   'documents for use in Vancouver',
   'documents for use in Singapore city',
+  'documents for use in Madrid',
+  'documents for use in Barcelona',
   'documents for use in London',
   'documents for use in Manchester',
 ] as const;

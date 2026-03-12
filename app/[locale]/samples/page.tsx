@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { SamplesGallery } from '@/components/SamplesGallery';
 import { Button } from '@/components/ui/Button';
@@ -53,7 +54,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
     description: locale === 'zh'
       ? '按文件类型、签发国家和用途路径浏览打码样本。'
       : 'Browse redacted samples by document type, issuing country, and route context.',
-    url: `${siteUrl}/${locale}/samples`,
+    url: localizedUrl(locale, siteUrl, '/samples'),
     inLanguage: locale,
     mainEntity: {
       '@type': 'ItemList',
@@ -69,13 +70,13 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
         '@type': 'ListItem',
         position: 1,
         name: locale === 'zh' ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: locale === 'zh' ? '样本库' : 'Sample Library',
-        item: `${siteUrl}/${locale}/samples`,
+        item: localizedUrl(locale, siteUrl, '/samples'),
       },
     ],
   };
@@ -95,7 +96,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
           <h1 id="samples-heading">{t.resources.samples.title}</h1>
           <p className="body-text">{t.resources.samples.subtitle}</p>
           <div className="actions">
-            <Button href={`/${locale}/intake`} variant="primary">
+            <Button href={localizedPath(locale, '/intake')} variant="primary">
               {locale === 'zh' ? '开始受理' : 'Begin intake'}
             </Button>
           </div>
@@ -123,7 +124,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
           {topDocumentTypes.map((label) => {
             const slug = toSampleDocumentPageSlug(label);
             return slug ? (
-              <Link className="inline-link" href={`/${locale}/documents/${slug}`} key={label}>
+              <Link className="inline-link" href={localizedPath(locale, `/documents/${slug}`)} key={label}>
                 {label}
               </Link>
             ) : null;

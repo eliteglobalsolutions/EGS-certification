@@ -1,2 +1,5 @@
-import { redirect } from 'next/navigation'; export default function Page()
-  { redirect('/en/order/upload'); }
+import { redirect } from 'next/navigation';
+
+export default function Page() {
+  redirect('/intake');
+}

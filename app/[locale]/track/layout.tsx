@@ -11,22 +11,42 @@ export async function generateMetadata({
   const locale = resolveLocale(localeParam);
 
   if (locale === 'zh') {
-    return buildPageMetadata({
-      locale,
-      path: '/track',
-      title: '订单查询｜文件认证进度跟踪｜EGS Verification',
-      description: '输入订单号查看客户可见状态、预计时效和最近更新。',
-      keywords: ['订单查询', '认证进度查询', '海牙认证 进度', '文件认证 跟踪'],
-    });
+    return {
+      ...buildPageMetadata({
+        locale,
+        path: '/track',
+        title: '订单查询｜文件认证进度跟踪｜EGS Verification',
+        description: '输入订单号查看客户可见状态、预计时效和最近更新。',
+        keywords: ['订单查询', '认证进度查询', '海牙认证 进度', '文件认证 跟踪'],
+      }),
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      },
+    };
   }
 
-  return buildPageMetadata({
-    locale,
-    path: '/track',
-    title: 'Track Order | Apostille & Legalisation Status | EGS Verification',
-    description: 'Track your order with code lookup. View status milestones, estimated timeline, and latest update.',
-    keywords: ['track apostille order', 'legalisation status', 'order status document authentication'],
-  });
+  return {
+    ...buildPageMetadata({
+      locale,
+      path: '/track',
+      title: 'Track Order | Apostille & Legalisation Status | EGS Verification',
+      description: 'Track your order with code lookup. View status milestones, estimated timeline, and latest update.',
+      keywords: ['track apostille order', 'legalisation status', 'order status document authentication'],
+    }),
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
+  };
 }
 
 export default function TrackLayout({ children }: { children: React.ReactNode }) {

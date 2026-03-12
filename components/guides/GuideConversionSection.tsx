@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Guide } from '@/lib/guides';
 import { getGuideCopy } from '@/lib/guides';
+import { localizedPath } from '@/lib/i18n/locale';
 import { buildPrefillHref } from '@/lib/prefill';
 
 export function GuideConversionSection({
@@ -18,7 +19,7 @@ export function GuideConversionSection({
         destinationSlug: guide.prefill.destinationSlug,
         documentSlug: guide.prefill.documentSlug,
       })
-    : `/${locale}/intake`;
+    : localizedPath(locale, '/intake');
 
   return (
     <section className="guide-conversion-section section-card stack-md" aria-labelledby="guide-conversion-heading">
@@ -51,7 +52,7 @@ export function GuideConversionSection({
       </div>
 
       <div className="actions">
-        <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>
+        <Link className="btn btn-secondary" href={`${localizedPath(locale)}#route-checker`}>
           {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
         </Link>
         <Link className="btn btn-primary" href={intakeHref}>

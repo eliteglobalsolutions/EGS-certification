@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import { localizedPath } from '@/lib/i18n/locale';
 import type { KnowledgeFaq } from '@/lib/knowledge-faqs';
 
 type Bucket = {
@@ -99,7 +100,7 @@ export function FaqHubClient({
               <h3>{section.label}</h3>
               <div className="guides-link-list">
                 {section.faqs.map((faq) => (
-                  <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+                  <Link href={localizedPath(locale, `/faq/${faq.slug}`)} key={faq.slug}>
                     {faq.question.en}
                   </Link>
                 ))}
@@ -153,7 +154,7 @@ function BucketList({ buckets, locale }: { buckets: Bucket[]; locale: 'en' | 'zh
           <h3>{bucket.label}</h3>
           <div className="guides-link-list">
             {bucket.faqs.map((faq) => (
-              <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+              <Link href={localizedPath(locale, `/faq/${faq.slug}`)} key={faq.slug}>
                 {faq.question.en}
               </Link>
             ))}
@@ -184,7 +185,7 @@ function FaqCard({ faq, locale }: { faq: KnowledgeFaq; locale: 'en' | 'zh' }) {
     <article className="section-card faq-card stack-sm">
       <p className="kicker">{faq.category}</p>
       <h3>
-        <Link href={`/${locale}/faq/${faq.slug}`}>{faq.question.en}</Link>
+        <Link href={localizedPath(locale, `/faq/${faq.slug}`)}>{faq.question.en}</Link>
       </h3>
       <p className="small-text">{faq.shortAnswer.en}</p>
       <div className="faq-chip-row">
@@ -195,8 +196,8 @@ function FaqCard({ faq, locale }: { faq: KnowledgeFaq; locale: 'en' | 'zh' }) {
         ))}
       </div>
       <div className="footer-links">
-        <Link href={`/${locale}/faq/${faq.slug}`}>{locale === 'zh' ? 'Open FAQ' : 'Open FAQ'}</Link>
-        <Link href={`/${locale}#route-checker`}>{locale === 'zh' ? 'Check My Route' : 'Check My Route'}</Link>
+        <Link href={localizedPath(locale, `/faq/${faq.slug}`)}>{locale === 'zh' ? 'Open FAQ' : 'Open FAQ'}</Link>
+        <Link href={`${localizedPath(locale)}#route-checker`}>{locale === 'zh' ? 'Check My Route' : 'Check My Route'}</Link>
       </div>
     </article>
   );

@@ -12,12 +12,23 @@ import { getCityPageSlugs } from '@/lib/city-pages';
 import { getFaqSlugs } from '@/lib/knowledge-faqs';
 import { getKnowledgeRouteSlugs } from '@/lib/knowledge-routes';
 import { siteUrl } from '@/lib/seo';
+import { localizedUrl } from '@/lib/i18n/locale';
 
 const locales = ['en', 'zh'] as const;
 const lastModified = new Date('2026-03-12T00:00:00.000Z');
 
+function buildAlternates(path: string) {
+  return {
+    languages: {
+      en: localizedUrl('en', siteUrl, path),
+      zh: localizedUrl('zh', siteUrl, path),
+      'x-default': localizedUrl('en', siteUrl, path),
+    },
+  };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseRoutes = ['', '/services', '/routes', '/intake', '/track', '/resources', '/samples', '/guides', '/faq', '/post-documents'];
+  const baseRoutes = ['', '/services', '/services/apostille', '/services/legalisation', '/routes', '/intake', '/track', '/resources', '/samples', '/guides', '/faq', '/post-documents'];
   const legalRoutes = ['/legal/privacy', '/legal/terms', '/legal/authorisation'];
   const seoRoutes = [
     '/apostille-australia',
@@ -36,11 +47,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const locale of locales) {
     for (const route of [...baseRoutes, ...legalRoutes, ...seoRoutes]) {
-      const url = `${siteUrl}/${locale}${route}`;
+      const url = localizedUrl(locale, siteUrl, route);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(route),
         changeFrequency:
           route === ''
             ? 'weekly'
@@ -62,11 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const slug of sampleSlugs) {
-      const url = `${siteUrl}/${locale}/samples/${slug}`;
+      const url = localizedUrl(locale, siteUrl, `/samples/${slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/samples/${slug}`),
         changeFrequency: 'monthly',
         priority: 0.65,
         lastModified,
@@ -74,11 +87,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const slug of guideSlugs) {
-      const url = `${siteUrl}/${locale}/guides/${slug}`;
+      const url = localizedUrl(locale, siteUrl, `/guides/${slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/guides/${slug}`),
         changeFrequency: 'weekly',
         priority: 0.76,
         lastModified,
@@ -86,11 +100,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const slug of faqSlugs) {
-      const url = `${siteUrl}/${locale}/faq/${slug}`;
+      const url = localizedUrl(locale, siteUrl, `/faq/${slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/faq/${slug}`),
         changeFrequency: 'monthly',
         priority: 0.72,
         lastModified,
@@ -98,21 +113,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const slug of citySlugs) {
-      const cityUrl = `${siteUrl}/${locale}/cities/${slug}`;
+      const cityUrl = localizedUrl(locale, siteUrl, `/cities/${slug}`);
       if (!seen.has(cityUrl)) {
         seen.add(cityUrl);
         entries.push({
           url: cityUrl,
+          alternates: buildAlternates(`/cities/${slug}`),
           changeFrequency: 'weekly',
           priority: 0.74,
           lastModified,
         });
       }
-      const consularUrl = `${siteUrl}/${locale}/cities/${slug}/consular-authentication`;
+      const consularUrl = localizedUrl(locale, siteUrl, `/cities/${slug}/consular-authentication`);
       if (seen.has(consularUrl)) continue;
       seen.add(consularUrl);
       entries.push({
         url: consularUrl,
+        alternates: buildAlternates(`/cities/${slug}/consular-authentication`),
         changeFrequency: 'weekly',
         priority: 0.73,
         lastModified,
@@ -120,11 +137,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const route of priorityRoutes) {
-      const url = `${siteUrl}/${locale}/routes/${route.slug}`;
+      const url = localizedUrl(locale, siteUrl, `/routes/${route.slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/routes/${route.slug}`),
         changeFrequency: 'weekly',
         priority: 0.85,
         lastModified,
@@ -133,11 +151,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const route of documentPriorityRoutes) {
       if (guideSlugSet.has(route.slug)) continue;
-      const url = `${siteUrl}/${locale}/routes/${route.slug}`;
+      const url = localizedUrl(locale, siteUrl, `/routes/${route.slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/routes/${route.slug}`),
         changeFrequency: 'weekly',
         priority: 0.82,
         lastModified,
@@ -146,11 +165,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const slug of knowledgeRouteSlugs) {
       if (guideSlugSet.has(slug)) continue;
-      const url = `${siteUrl}/${locale}/routes/${slug}`;
+      const url = localizedUrl(locale, siteUrl, `/routes/${slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/routes/${slug}`),
         changeFrequency: 'weekly',
         priority: 0.82,
         lastModified,
@@ -158,11 +178,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const entry of documentTypeEntries) {
-      const url = `${siteUrl}/${locale}/documents/${entry.slug}`;
+      const url = localizedUrl(locale, siteUrl, `/documents/${entry.slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/documents/${entry.slug}`),
         changeFrequency: 'weekly',
         priority: 0.8,
         lastModified,
@@ -170,11 +191,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const entry of issuingCountryEntries) {
-      const url = `${siteUrl}/${locale}/issued-in/${entry.slug}`;
+      const url = localizedUrl(locale, siteUrl, `/issued-in/${entry.slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/issued-in/${entry.slug}`),
         changeFrequency: 'weekly',
         priority: 0.78,
         lastModified,
@@ -182,11 +204,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const entry of destinationCountryEntries) {
-      const url = `${siteUrl}/${locale}/used-in/${entry.slug}`;
+      const url = localizedUrl(locale, siteUrl, `/used-in/${entry.slug}`);
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
         url,
+        alternates: buildAlternates(`/used-in/${entry.slug}`),
         changeFrequency: 'weekly',
         priority: 0.78,
         lastModified,
@@ -199,6 +222,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     seen.add(rootUrl);
     entries.push({
       url: rootUrl,
+      alternates: buildAlternates(''),
       changeFrequency: 'weekly',
       priority: 1,
       lastModified,

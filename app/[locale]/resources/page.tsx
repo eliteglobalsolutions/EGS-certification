@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { Button } from '@/components/ui/Button';
 import { buildPrefillHref } from '@/lib/prefill';
@@ -42,7 +42,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'china',
       lane: { en: 'Apostille-led', zh: '海牙主线' },
-      routeHref: `/${locale}/routes/australian-apostille-for-use-in-china`,
+      routeHref: localizedPath(locale, '/routes/australian-apostille-for-use-in-china'),
       links: [
         {
           label: locale === 'zh' ? '中国驻澳使馆 Apostille / 认证通知' : 'PRC Embassy in Australia apostille notice',
@@ -53,7 +53,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'singapore',
       lane: { en: 'Apostille-led', zh: '海牙主线' },
-      routeHref: `/${locale}/routes/australian-documents-for-use-in-singapore`,
+      routeHref: localizedPath(locale, '/routes/australian-documents-for-use-in-singapore'),
       links: [
         {
           label: locale === 'zh' ? '新加坡驻堪培拉高专署官方领事服务' : 'Singapore High Commission Canberra consular services',
@@ -64,7 +64,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'usa',
       lane: { en: 'Receiving-side review', zh: '接收方审核型' },
-      routeHref: `/${locale}/routes/australian-documents-for-use-in-united-states`,
+      routeHref: localizedPath(locale, '/routes/australian-documents-for-use-in-united-states'),
       links: [
         {
           label: locale === 'zh' ? '美国国务院认证信息' : 'U.S. Department of State authentications guidance',
@@ -75,7 +75,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'united-kingdom',
       lane: { en: 'Apostille-led', zh: '海牙主线' },
-      routeHref: `/${locale}/routes/australian-documents-for-use-in-united-kingdom`,
+      routeHref: localizedPath(locale, '/routes/australian-documents-for-use-in-united-kingdom'),
       links: [],
     },
     {
@@ -87,31 +87,31 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'hong-kong',
       lane: { en: 'Commercial route', zh: '商业文件强路线' },
-      routeHref: `/${locale}/routes/canadian-documents-for-use-in-hong-kong`,
+      routeHref: localizedPath(locale, '/routes/canadian-documents-for-use-in-hong-kong'),
       links: [],
     },
     {
       slug: 'uae',
       lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
-      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-uae`,
+      routeHref: localizedPath(locale, '/routes/australian-consular-legalisation-for-use-in-uae'),
       links: [],
     },
     {
       slug: 'saudi-arabia',
       lane: { en: 'Consular / mixed path', zh: '领馆 / 混合路径' },
-      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-saudi-arabia`,
+      routeHref: localizedPath(locale, '/routes/australian-consular-legalisation-for-use-in-saudi-arabia'),
       links: [],
     },
     {
       slug: 'kuwait',
       lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
-      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-kuwait`,
+      routeHref: localizedPath(locale, '/routes/australian-consular-legalisation-for-use-in-kuwait'),
       links: [],
     },
     {
       slug: 'malaysia',
       lane: { en: 'Document-sensitive lane', zh: '文件类型敏感路径' },
-      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-malaysia`,
+      routeHref: localizedPath(locale, '/routes/australian-consular-legalisation-for-use-in-malaysia'),
       links: [
         {
           label: locale === 'zh' ? '马来西亚驻堪培拉官方入口' : 'Malaysia High Commission Canberra portal',
@@ -122,7 +122,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
     {
       slug: 'vietnam',
       lane: { en: 'Consular legalisation', zh: '领馆认证主线' },
-      routeHref: `/${locale}/routes/australian-consular-legalisation-for-use-in-vietnam`,
+      routeHref: localizedPath(locale, '/routes/australian-consular-legalisation-for-use-in-vietnam'),
       links: [
         {
           label: locale === 'zh' ? '越南驻澳使馆领事信息' : 'Embassy of Vietnam in Australia consular information',
@@ -151,13 +151,13 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
         '@type': 'ListItem',
         position: 1,
         name: locale === 'zh' ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: locale === 'zh' ? '资源中心' : 'Resources',
-        item: `${siteUrl}/${locale}/resources`,
+        item: localizedUrl(locale, siteUrl, '/resources'),
       },
     ],
   };
@@ -178,7 +178,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
               : 'Start from official reference points, then move into the destination-country route page and intake. This page is now structured for fast route triage rather than generic link dumping.'}
           </p>
           <p className="small-text">
-            <Link className="inline-link" href={`/${locale}/guides`}>
+            <Link className="inline-link" href={localizedPath(locale, '/guides')}>
               {locale === 'zh'
                 ? '查看围绕 Apostille、DFAT、Sydney document authentication 建立的专题指南页'
                 : 'Browse the dedicated guide pages built around apostille, DFAT, and Sydney document authentication queries'}
@@ -266,7 +266,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
                   ) : null}
                 </div>
                 <div className="actions">
-                  <Link className="btn btn-secondary" href={routeHref || `/${locale}/used-in/${slug}`}>
+                  <Link className="btn btn-secondary" href={routeHref || localizedPath(locale, `/used-in/${slug}`)}>
                     {locale === 'zh' ? '查看路线' : 'View route'}
                   </Link>
                   <Link
@@ -300,7 +300,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
                   <p className="small-text">{getEntryText(entry.scope, locale)}</p>
                 </div>
                 <div className="actions">
-                  <Link className="btn btn-secondary" href={routeHref || `/${locale}/used-in/${slug}`}>
+                  <Link className="btn btn-secondary" href={routeHref || localizedPath(locale, `/used-in/${slug}`)}>
                     {locale === 'zh' ? '查看路线' : 'View route'}
                   </Link>
                   <Link
@@ -320,10 +320,10 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
         <h3 id="resources-note-heading">{t.resources.noteTitle}</h3>
         <p className="small-text resources-note-body">{t.resources.noteBody}</p>
         <div className="actions resources-note-actions">
-          <Button href={`/${locale}/order/new`} variant="primary">
+          <Button href={localizedPath(locale, '/order/new')} variant="primary">
             {t.nav.start}
           </Button>
-          <Link className="inline-link" href={`/${locale}/order/track`}>
+          <Link className="inline-link" href={localizedPath(locale, '/order/track')}>
             {t.nav.track}
           </Link>
         </div>
@@ -338,9 +338,9 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
             </p>
             <p className="small-text">
               相关页面：
-              <Link className="inline-link" href={`/${locale}/services`}> 服务范围</Link> ·
-              <Link className="inline-link" href={`/${locale}/order/new`}> 开始下单</Link> ·
-              <Link className="inline-link" href={`/${locale}/samples`}> 样本库</Link>
+              <Link className="inline-link" href={localizedPath(locale, '/services')}> 服务范围</Link> ·
+              <Link className="inline-link" href={localizedPath(locale, '/order/new')}> 开始下单</Link> ·
+              <Link className="inline-link" href={localizedPath(locale, '/samples')}> 样本库</Link>
             </p>
           </>
         ) : (
@@ -351,9 +351,9 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
             </p>
             <p className="small-text">
               Related pages:
-              <Link className="inline-link" href={`/${locale}/services`}> Services</Link> ·
-              <Link className="inline-link" href={`/${locale}/order/new`}> Start Order</Link> ·
-              <Link className="inline-link" href={`/${locale}/samples`}> Sample Library</Link>
+              <Link className="inline-link" href={localizedPath(locale, '/services')}> Services</Link> ·
+              <Link className="inline-link" href={localizedPath(locale, '/order/new')}> Start Order</Link> ·
+              <Link className="inline-link" href={localizedPath(locale, '/samples')}> Sample Library</Link>
             </p>
           </>
         )}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { AppCopy, Locale } from '@/lib/i18n/dictionaries';
+import { localizedPath } from '@/lib/i18n/locale';
 import { getRouteSignals } from '@/lib/knowledge-faqs';
 import { DOCUMENT_TYPE_SUGGESTIONS } from '@/lib/prefill';
 
@@ -172,7 +173,7 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           </button>
           <Link
             className="btn btn-secondary"
-            href={`/${locale}/intake?${new URLSearchParams({
+            href={`${localizedPath(locale, '/intake')}?${new URLSearchParams({
               ...(issuingCountry.trim() ? { issuingCountry } : {}),
               ...(destinationCountry.trim() ? { destinationCountry } : {}),
               ...(documentType.trim() ? { documentType } : {}),
@@ -217,7 +218,7 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           {routeSignals.faqs.length ? (
             <div className="footer-links">
               {routeSignals.faqs.map((faq) => (
-                <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+                <Link href={localizedPath(locale, `/faq/${faq.slug}`)} key={faq.slug}>
                   {faq.question.en}
                 </Link>
               ))}
@@ -265,7 +266,7 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           <div className="actions">
             <Link
               className="btn btn-primary"
-              href={`/${locale}/intake?${new URLSearchParams({
+              href={`${localizedPath(locale, '/intake')}?${new URLSearchParams({
                 ...(issuingCountry.trim() ? { issuingCountry } : {}),
                 ...(destinationCountry.trim() ? { destinationCountry } : {}),
                 ...(documentType.trim() ? { documentType } : {}),

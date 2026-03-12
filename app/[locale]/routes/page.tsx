@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { SiteNav } from '@/components/marketing/SiteNav';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
 import { RoutesMiniSearch } from '@/components/marketing/RoutesMiniSearch';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { priorityRoutes, getCopyText } from '@/lib/priority-routes-data';
 import { buildPrefillHref } from '@/lib/prefill';
@@ -30,17 +30,17 @@ export default async function RoutesOverviewPage({
 
   const secondaryLinks = [
     ...issuingCountryEntries.slice(0, 6).map((entry) => ({
-      href: `/${locale}/issued-in/${entry.slug}`,
+      href: localizedPath(locale, `/issued-in/${entry.slug}`),
       label: `${locale === 'zh' ? '签发地' : 'Issued in'} · ${getEntryText(entry.name, locale)}`,
       intakeHref: buildPrefillHref(locale, '/intake', { locale, issuingSlug: entry.slug }),
     })),
     ...destinationCountryEntries.slice(0, 6).map((entry) => ({
-      href: `/${locale}/used-in/${entry.slug}`,
+      href: localizedPath(locale, `/used-in/${entry.slug}`),
       label: `${locale === 'zh' ? '目的地' : 'Used in'} · ${getEntryText(entry.name, locale)}`,
       intakeHref: buildPrefillHref(locale, '/intake', { locale, destinationSlug: entry.slug }),
     })),
     ...documentTypeEntries.slice(0, 6).map((entry) => ({
-      href: `/${locale}/documents/${entry.slug}`,
+      href: localizedPath(locale, `/documents/${entry.slug}`),
       label: `${locale === 'zh' ? '文件' : 'Document'} · ${getEntryText(entry.name, locale)}`,
       intakeHref: buildPrefillHref(locale, '/intake', { locale, documentSlug: entry.slug }),
     })),
@@ -48,13 +48,15 @@ export default async function RoutesOverviewPage({
 
   const miniSearchItems = [
     ...priorityRoutes.map((route) => ({
-      href: `/${locale}/routes/${route.slug}`,
+      href: localizedPath(locale, `/routes/${route.slug}`),
       label: getCopyText(route.title, locale),
       kind: 'route' as const,
       description: getCopyText(route.subheading, locale),
     })),
     ...documentPriorityRoutes.map((route) => ({
-      href: getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`,
+      href: getGuideBySlug(route.slug)
+        ? localizedPath(locale, `/guides/${route.slug}`)
+        : localizedPath(locale, `/routes/${route.slug}`),
       label: getDocumentCopyText(route.title, locale),
       kind: 'route' as const,
       description: getDocumentCopyText(route.subheading, locale),
@@ -62,26 +64,28 @@ export default async function RoutesOverviewPage({
     ...getKnowledgeRouteSlugs().map((slug) => {
       const route = getKnowledgeRoute(slug)!;
       return {
-        href: getGuideBySlug(route.slug) ? `/${locale}/guides/${route.slug}` : `/${locale}/routes/${route.slug}`,
+        href: getGuideBySlug(route.slug)
+          ? localizedPath(locale, `/guides/${route.slug}`)
+          : localizedPath(locale, `/routes/${route.slug}`),
         label: getRouteCopy(locale, route.title),
         kind: 'route' as const,
         description: getRouteCopy(locale, route.subheading),
       };
     }),
     ...issuingCountryEntries.map((entry) => ({
-      href: `/${locale}/issued-in/${entry.slug}`,
+      href: localizedPath(locale, `/issued-in/${entry.slug}`),
       label: getEntryText(entry.name, locale),
       kind: 'country' as const,
       description: getEntryText(entry.intro, locale),
     })),
     ...destinationCountryEntries.map((entry) => ({
-      href: `/${locale}/used-in/${entry.slug}`,
+      href: localizedPath(locale, `/used-in/${entry.slug}`),
       label: getEntryText(entry.name, locale),
       kind: 'destination' as const,
       description: getEntryText(entry.intro, locale),
     })),
     ...documentTypeEntries.map((entry) => ({
-      href: `/${locale}/documents/${entry.slug}`,
+      href: localizedPath(locale, `/documents/${entry.slug}`),
       label: getEntryText(entry.name, locale),
       kind: 'document' as const,
       description: getEntryText(entry.intro, locale),
@@ -102,13 +106,13 @@ export default async function RoutesOverviewPage({
                 : 'This page groups the core commercial routes and the supporting secondary route-entry pages. Main routes take priority; secondary routes expand issuing-country, destination-country, and document-type coverage.'}
             </p>
             <div className="actions">
-              <Link className="btn btn-primary" href={`/${locale}#route-checker`}>
+              <Link className="btn btn-primary" href={`${localizedPath(locale)}#route-checker`}>
                 {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
               </Link>
             </div>
             <div className="footer-links">
-              <Link href={`/${locale}/faq`}>{locale === 'zh' ? 'FAQ Hub' : 'FAQ Hub'}</Link>
-              <Link href={`/${locale}/guides`}>{locale === 'zh' ? 'Guides' : 'Guides'}</Link>
+              <Link href={localizedPath(locale, '/faq')}>{locale === 'zh' ? 'FAQ Hub' : 'FAQ Hub'}</Link>
+              <Link href={localizedPath(locale, '/guides')}>{locale === 'zh' ? 'Guides' : 'Guides'}</Link>
             </div>
           </div>
         </Card>
@@ -132,7 +136,7 @@ export default async function RoutesOverviewPage({
                     <p className="small-text">{getCopyText(route.routeType, locale)}</p>
                   </div>
                   <div className="actions">
-                    <Link className="btn btn-ghost" href={`/${locale}/routes/${route.slug}`}>
+                    <Link className="btn btn-ghost" href={localizedPath(locale, `/routes/${route.slug}`)}>
                       {locale === 'zh' ? 'View route' : 'View route'}
                     </Link>
                     <Link

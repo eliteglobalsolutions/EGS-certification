@@ -1170,10 +1170,10 @@ main {
 }
 
 .guides-detail-head h1 {
-  font-size: clamp(18px, 2vw, 26px);
+  font-size: clamp(15px, 1.55vw, 20px);
   line-height: 1.14;
   letter-spacing: -0.025em;
-  max-width: 18ch;
+  max-width: 22ch;
 }
 
 .guides-detail-hero-image {
@@ -4607,10 +4607,10 @@ p {
 
   .hero-timing-table tbody tr {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) auto;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
     align-items: center;
-    gap: 6px;
-    padding: 6px 8px;
+    gap: 4px;
+    padding: 4px 6px;
   }
 
   .hero-timing-table-wrap {
@@ -4623,26 +4623,26 @@ p {
   }
 
   .hero-timing-value {
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.05;
   }
 
   .hero-timing-country {
-    min-width: 24px;
-    min-height: 16px;
-    padding: 1px 5px;
-    font-size: 8px;
+    min-width: 22px;
+    min-height: 14px;
+    padding: 1px 4px;
+    font-size: 7px;
   }
 
   .hero-timing-route {
-    min-height: 14px;
+    min-height: 13px;
     padding: 0 4px;
-    font-size: 6.5px;
+    font-size: 6px;
   }
 
   .hero-timing-table th,
   .hero-timing-table td {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .hero-timing-table td {
@@ -4682,15 +4682,15 @@ p {
   }
 
   .guides-index-hero h1 {
-    font-size: clamp(14px, 3.8vw, 16px) !important;
-    line-height: 1.16 !important;
-    max-width: 26ch;
+    font-size: clamp(26px, 7vw, 34px) !important;
+    line-height: 1.06 !important;
+    max-width: 12ch;
   }
 
   .guides-detail-head h1 {
-    font-size: clamp(16px, 4.6vw, 20px);
-    line-height: 1.18;
-    max-width: 20ch;
+    font-size: clamp(14px, 4vw, 18px);
+    line-height: 1.14;
+    max-width: 24ch;
   }
 
   .guides-index-hero .body-text {
@@ -4709,9 +4709,9 @@ p {
   }
 
   .routes-overview-hero h1 {
-    font-size: clamp(18px, 5.2vw, 24px);
+    font-size: clamp(15px, 4.4vw, 18px);
     line-height: 1.16;
-    max-width: 18ch;
+    max-width: 24ch;
   }
 
 }

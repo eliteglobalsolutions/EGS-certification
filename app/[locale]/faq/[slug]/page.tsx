@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import {
   getFaqBySlug,
@@ -76,9 +76,9 @@ export default async function FaqDetailPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/${locale}` },
-      { '@type': 'ListItem', position: 2, name: 'FAQ', item: `${siteUrl}/${locale}/faq` },
-      { '@type': 'ListItem', position: 3, name: getFaqCopy(locale, faq.question), item: `${siteUrl}/${locale}/faq/${faq.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: localizedUrl(locale, siteUrl, '') },
+      { '@type': 'ListItem', position: 2, name: 'FAQ', item: localizedUrl(locale, siteUrl, '/faq') },
+      { '@type': 'ListItem', position: 3, name: getFaqCopy(locale, faq.question), item: localizedUrl(locale, siteUrl, `/faq/${faq.slug}`) },
     ],
   };
 
@@ -102,10 +102,10 @@ export default async function FaqDetailPage({
                 <h1>{getFaqCopy(locale, faq.question)}</h1>
                 <p className="body-text">{getFaqCopy(locale, faq.shortAnswer)}</p>
                 <div className="actions">
-                  <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>
+                  <Link className="btn btn-secondary" href={`${localizedPath(locale)}#route-checker`}>
                     {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
                   </Link>
-                  <Link className="btn btn-primary" href={`/${locale}/intake`}>
+                  <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>
                     {locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}
                   </Link>
                 </div>
@@ -155,7 +155,7 @@ export default async function FaqDetailPage({
                 <h2>{locale === 'zh' ? 'Related pages' : 'Related pages'}</h2>
                 <div className="guides-link-list">
                   {faq.relatedPages.map((path) => (
-                    <Link href={`/${locale}${path}`} key={path}>
+                    <Link href={localizedPath(locale, path)} key={path}>
                       {path.replace(/^\//, '')}
                     </Link>
                   ))}
@@ -198,7 +198,7 @@ export default async function FaqDetailPage({
                   <h2>{locale === 'zh' ? 'Related FAQs' : 'Related FAQs'}</h2>
                   <div className="guides-link-list">
                     {related.map((entry) => (
-                      <Link href={`/${locale}/faq/${entry.slug}`} key={entry.slug}>
+                      <Link href={localizedPath(locale, `/faq/${entry.slug}`)} key={entry.slug}>
                         {entry.question.en}
                       </Link>
                     ))}

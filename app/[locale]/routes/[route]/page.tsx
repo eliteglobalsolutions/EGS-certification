@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { RoutePriorityPage } from '@/components/marketing/RoutePriorityPage';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPrefillHref } from '@/lib/prefill';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { getEntryText, getSearchEntry } from '@/lib/search-entry-data';
@@ -124,7 +124,7 @@ export default async function PriorityRoutePage({
   }
 
   if (matchingGuide && (customRoute || documentRouteEntry)) {
-    redirect(`/${locale}/guides/${route}`);
+    redirect(localizedPath(locale, `/guides/${route}`));
   }
 
   if (customRoute) {
@@ -133,14 +133,14 @@ export default async function PriorityRoutePage({
         .map((slug) => getGuideBySlug(slug))
         .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
         .map((entry) => ({
-          href: `/${locale}/guides/${entry.slug}`,
+          href: localizedPath(locale, `/guides/${entry.slug}`),
           label: getGuideCopy(locale, entry.title),
         })),
       ...customRoute.relatedFaqSlugs
         .map((slug) => getFaqBySlug(slug))
         .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
         .map((entry) => ({
-          href: `/${locale}/faq/${entry.slug}`,
+          href: localizedPath(locale, `/faq/${entry.slug}`),
           label: entry.question.en,
         })),
       {
@@ -159,8 +159,8 @@ export default async function PriorityRoutePage({
       '@type': 'Article',
       headline: getRouteCopy(locale, customRoute.title),
       description: getRouteCopy(locale, customRoute.subheading),
-      url: `${siteUrl}/${locale}/routes/${customRoute.slug}`,
-      mainEntityOfPage: `${siteUrl}/${locale}/routes/${customRoute.slug}`,
+      url: localizedUrl(locale, siteUrl, `/routes/${customRoute.slug}`),
+      mainEntityOfPage: localizedUrl(locale, siteUrl, `/routes/${customRoute.slug}`),
       author: { '@type': 'Organization', name: 'EGS Verification' },
       publisher: { '@type': 'Organization', name: 'EGS Verification' },
     };
@@ -168,9 +168,9 @@ export default async function PriorityRoutePage({
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/${locale}` },
-        { '@type': 'ListItem', position: 2, name: 'Routes', item: `${siteUrl}/${locale}/routes` },
-        { '@type': 'ListItem', position: 3, name: getRouteCopy(locale, customRoute.title), item: `${siteUrl}/${locale}/routes/${customRoute.slug}` },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: localizedUrl(locale, siteUrl, '') },
+        { '@type': 'ListItem', position: 2, name: 'Routes', item: localizedUrl(locale, siteUrl, '/routes') },
+        { '@type': 'ListItem', position: 3, name: getRouteCopy(locale, customRoute.title), item: localizedUrl(locale, siteUrl, `/routes/${customRoute.slug}`) },
       ],
     };
 
@@ -229,7 +229,7 @@ export default async function PriorityRoutePage({
     .map((slug) => getSearchEntry('document', slug))
     .filter((value): value is NonNullable<typeof value> => Boolean(value))
     .map((value) => ({
-      href: `/${locale}/documents/${value.slug}`,
+      href: localizedPath(locale, `/documents/${value.slug}`),
       label: getEntryText(value.name, locale),
     }));
 
@@ -240,7 +240,7 @@ export default async function PriorityRoutePage({
         .filter((value): value is NonNullable<typeof value> => Boolean(value))
         .slice(0, 3)
         .map((value) => ({
-          href: `/${locale}/routes/${value.slug}`,
+          href: localizedPath(locale, `/routes/${value.slug}`),
           label: getDocumentCopyText(value.title, locale),
         }));
 
@@ -255,7 +255,7 @@ export default async function PriorityRoutePage({
             })
             .slice(0, 4)
             .map((item) => ({
-              href: `/${locale}/routes/${item.slug}`,
+              href: localizedPath(locale, `/routes/${item.slug}`),
               label: `${locale === 'zh' ? 'View route' : 'View route'}: ${getDocumentCopyText(item.title, locale)}`,
             })),
         },
@@ -268,7 +268,7 @@ export default async function PriorityRoutePage({
             })
             .slice(0, 4)
             .map((item) => ({
-              href: `/${locale}/routes/${item.slug}`,
+              href: localizedPath(locale, `/routes/${item.slug}`),
               label: `${locale === 'zh' ? 'View route' : 'View route'}: ${getDocumentCopyText(item.title, locale)}`,
             })),
         },
@@ -278,7 +278,7 @@ export default async function PriorityRoutePage({
             .filter((item) => item.documentSlug === documentRouteEntry.documentSlug && item.slug !== documentRouteEntry.slug)
             .slice(0, 4)
             .map((item) => ({
-              href: `/${locale}/routes/${item.slug}`,
+              href: localizedPath(locale, `/routes/${item.slug}`),
               label: `${locale === 'zh' ? 'View route' : 'View route'}: ${getDocumentCopyText(item.title, locale)}`,
             })),
         },
@@ -302,7 +302,7 @@ export default async function PriorityRoutePage({
             )
             .slice(0, 3)
             .map((item) => ({
-              href: `/${locale}/routes/${item.slug}`,
+              href: localizedPath(locale, `/routes/${item.slug}`),
               label: `${locale === 'zh' ? 'View route' : 'View route'}: ${getCopyText(item.title, locale)}`,
             })),
         },
@@ -312,23 +312,23 @@ export default async function PriorityRoutePage({
     ...(documentRouteEntry
       ? [
           {
-            href: `/${locale}/routes/${activeRoute.slug}`,
+            href: localizedPath(locale, `/routes/${activeRoute.slug}`),
             label: getCopyText(activeRoute.title, locale),
           },
         ]
       : []),
     {
-      href: `/${locale}/issued-in/${issuingEntry.slug}`,
+      href: localizedPath(locale, `/issued-in/${issuingEntry.slug}`),
       label: getEntryText(issuingEntry.name, locale),
     },
     {
-      href: `/${locale}/used-in/${destinationEntry.slug}`,
+      href: localizedPath(locale, `/used-in/${destinationEntry.slug}`),
       label: getEntryText(destinationEntry.name, locale),
     },
     ...(activeDocumentEntry
       ? [
           {
-            href: `/${locale}/documents/${activeDocumentEntry.slug}`,
+            href: localizedPath(locale, `/documents/${activeDocumentEntry.slug}`),
             label: getEntryText(activeDocumentEntry.name, locale),
           },
         ]

@@ -5,7 +5,7 @@ import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
 import { GuideCard } from '@/components/guides/GuideCard';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { getAllGuides, getGuideCopy, type Guide } from '@/lib/guides';
 
@@ -148,10 +148,10 @@ export default async function GuidesIndexPage({
   const hiddenSlugs = new Set([primaryFeatured.slug, ...secondaryFeatured.map((guide) => guide.slug)]);
   const thematicSections = buildThematicSections(allGuides.filter((guide) => !hiddenSlugs.has(guide.slug)));
   const primaryNav = [
-    { label: 'Home', href: `/${locale}` },
+    { label: 'Home', href: localizedPath(locale) },
     { label: 'Featured', href: '#featured-guides' },
-    { label: 'FAQ', href: `/${locale}/faq` },
-    { label: 'Begin Intake', href: `/${locale}/intake` },
+    { label: 'FAQ', href: localizedPath(locale, '/faq') },
+    { label: 'Begin Intake', href: localizedPath(locale, '/intake') },
   ];
   const fileTypeNav = [
     { label: 'Academic', href: '#academic-documents' },
@@ -168,7 +168,7 @@ export default async function GuidesIndexPage({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'EGS Guides',
-    url: `${siteUrl}/${locale}/guides`,
+    url: localizedUrl(locale, siteUrl, '/guides'),
     description:
       'Editorial-style guide section for academic records, personal documents, company documents, overseas-issued documents, and route review topics.',
   };
@@ -231,7 +231,7 @@ export default async function GuidesIndexPage({
                   <div className="stack-md">
                     <p className="kicker">Featured guide</p>
                     <h2 className="guides-lead-title">
-                      <Link href={`/${locale}/guides/${primaryFeatured.slug}`}>{getGuideCopy(locale, primaryFeatured.title)}</Link>
+                      <Link href={localizedPath(locale, `/guides/${primaryFeatured.slug}`)}>{getGuideCopy(locale, primaryFeatured.title)}</Link>
                     </h2>
                     <p className="small-text guides-lead-summary">{getGuideCopy(locale, primaryFeatured.excerpt)}</p>
                     <ul className="guide-card-tags" aria-label="Featured guide tags">
@@ -245,10 +245,10 @@ export default async function GuidesIndexPage({
                         ))}
                     </ul>
                     <div className="guide-card-actions" role="group" aria-label="Featured guide actions">
-                      <Link className="guide-card-action-primary" href={`/${locale}/guides/${primaryFeatured.slug}`}>
+                      <Link className="guide-card-action-primary" href={localizedPath(locale, `/guides/${primaryFeatured.slug}`)}>
                         Open guide
                       </Link>
-                      <Link className="guide-card-action-secondary" href={`/${locale}/intake`}>
+                      <Link className="guide-card-action-secondary" href={localizedPath(locale, '/intake')}>
                         Begin intake
                       </Link>
                     </div>
@@ -356,6 +356,17 @@ export default async function GuidesIndexPage({
                 <p className="small-text">
                   If the document is already in hand, route check and intake usually matter more than reading another generic page.
                 </p>
+                <div className="footer-links">
+                  <Link href={localizedPath(locale, '/apostille-australia')}>
+                    {locale === 'zh' ? '澳洲海牙认证服务' : 'Apostille Australia'}
+                  </Link>
+                  <Link href={localizedPath(locale, '/used-in/china')}>
+                    {locale === 'zh' ? '文件用于中国' : 'Documents for use in China'}
+                  </Link>
+                  <Link href={localizedPath(locale, '/faq')}>
+                    {locale === 'zh' ? '常见问题入口' : 'FAQ hub'}
+                  </Link>
+                </div>
               </div>
               <div className="guides-cta-actions">
                 <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>

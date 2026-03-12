@@ -8,7 +8,7 @@ import { GuideConversionSection } from '@/components/guides/GuideConversionSecti
 import { GuideCard } from '@/components/guides/GuideCard';
 import { AcademicSupportGraphic } from '@/components/guides/AcademicSupportGraphic';
 import { PdfReferencePreview } from '@/components/guides/PdfReferencePreview';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import {
   getAllGuides,
@@ -90,8 +90,8 @@ export default async function GuidePage({
       '@type': 'Organization',
       name: 'EGS Verification',
     },
-    url: `${siteUrl}/${locale}/guides/${guide.slug}`,
-    mainEntityOfPage: `${siteUrl}/${locale}/guides/${guide.slug}`,
+    url: localizedUrl(locale, siteUrl, `/guides/${guide.slug}`),
+    mainEntityOfPage: localizedUrl(locale, siteUrl, `/guides/${guide.slug}`),
     datePublished: guide.publishedAt,
     articleSection: getGuideCopy(locale, guide.routeLabel),
     keywords: guide.keywords.join(', '),
@@ -121,19 +121,19 @@ export default async function GuidePage({
         '@type': 'ListItem',
         position: 1,
         name: locale === 'zh' ? 'Home' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl, ''),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: locale === 'zh' ? 'Guides' : 'Guides',
-        item: `${siteUrl}/${locale}/guides`,
+        item: localizedUrl(locale, siteUrl, '/guides'),
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: getGuideCopy(locale, guide.title),
-        item: `${siteUrl}/${locale}/guides/${guide.slug}`,
+        item: localizedUrl(locale, siteUrl, `/guides/${guide.slug}`),
       },
     ],
   };
@@ -232,10 +232,10 @@ export default async function GuidePage({
                 </div>
 
                 <div className="actions">
-                  <Link className="btn btn-secondary" href={`/${locale}#route-checker`}>
+                  <Link className="btn btn-secondary" href={`${localizedPath(locale)}#route-checker`}>
                     {locale === 'zh' ? 'Check My Route' : 'Check My Route'}
                   </Link>
-                  <Link className="btn btn-primary" href={`/${locale}/intake`}>
+                  <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>
                     {locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}
                   </Link>
                 </div>
@@ -424,7 +424,7 @@ export default async function GuidePage({
                   <h2>{locale === 'zh' ? 'Related sample library items' : 'Related sample library items'}</h2>
                   <div className="guide-sample-grid">
                     {relatedSamples.map((sample) => (
-                      <Link className="guide-sample-card" href={`/${locale}/samples/${sample.slug}`} key={sample.slug}>
+                      <Link className="guide-sample-card" href={localizedPath(locale, `/samples/${sample.slug}`)} key={sample.slug}>
                         {sample.thumb_path ? (
                           <img alt={sample.altText} className="guide-sample-thumb" src={sample.thumb_path} />
                         ) : null}
@@ -443,7 +443,7 @@ export default async function GuidePage({
                   <h2>{locale === 'zh' ? 'Related FAQs' : 'Related FAQs'}</h2>
                   <div className="guides-link-list">
                     {relatedFaqs.map((faq) => (
-                      <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+                      <Link href={localizedPath(locale, `/faq/${faq.slug}`)} key={faq.slug}>
                         {faq.question.en}
                       </Link>
                     ))}
@@ -458,17 +458,17 @@ export default async function GuidePage({
                   <h2>{locale === 'zh' ? 'Related guides and routes' : 'Related guides and routes'}</h2>
                   <div className="guides-link-list">
                     {relatedGuides.map((entry) => (
-                      <Link href={`/${locale}/guides/${entry.slug}`} key={entry.slug}>
+                      <Link href={localizedPath(locale, `/guides/${entry.slug}`)} key={entry.slug}>
                         {getGuideCopy(locale, entry.title)}
                       </Link>
                     ))}
                     {directRoute ? (
-                      <Link href={`/${locale}/routes/${guide.slug}`}>
+                      <Link href={localizedPath(locale, `/routes/${guide.slug}`)}>
                         {locale === 'zh' ? 'Related route page' : 'Related route page'}
                       </Link>
                     ) : null}
                     {relatedSamples.length ? (
-                      <Link href={`/${locale}/samples/${relatedSamples[0].slug}`}>
+                      <Link href={localizedPath(locale, `/samples/${relatedSamples[0].slug}`)}>
                         {locale === 'zh' ? 'View sample format' : 'View sample format'}
                       </Link>
                     ) : null}
@@ -519,9 +519,9 @@ export default async function GuidePage({
                   </div>
                 </div>
                 <div className="footer-links">
-                  <Link href={`/${locale}#route-checker`}>{locale === 'zh' ? 'Check My Route' : 'Check My Route'}</Link>
-                  <Link href={`/${locale}/intake`}>{locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}</Link>
-                  <Link href={`/${locale}/samples`}>{locale === 'zh' ? 'Sample Library' : 'Sample Library'}</Link>
+                  <Link href={`${localizedPath(locale)}#route-checker`}>{locale === 'zh' ? 'Check My Route' : 'Check My Route'}</Link>
+                  <Link href={localizedPath(locale, '/intake')}>{locale === 'zh' ? 'Begin Intake' : 'Begin Intake'}</Link>
+                  <Link href={localizedPath(locale, '/samples')}>{locale === 'zh' ? 'Sample Library' : 'Sample Library'}</Link>
                 </div>
               </div>
             </Card>
@@ -532,7 +532,7 @@ export default async function GuidePage({
                   <h2>{locale === 'zh' ? 'Related guides' : 'Related guides'}</h2>
                   <div className="guides-link-list">
                     {relatedGuides.map((entry) => (
-                      <Link href={`/${locale}/guides/${entry.slug}`} key={entry.slug}>
+                      <Link href={localizedPath(locale, `/guides/${entry.slug}`)} key={entry.slug}>
                         {getGuideCopy(locale, entry.title)}
                       </Link>
                     ))}
@@ -547,7 +547,7 @@ export default async function GuidePage({
                   <h2>{locale === 'zh' ? 'Related FAQs' : 'Related FAQs'}</h2>
                   <div className="guides-link-list">
                     {relatedFaqs.slice(0, 3).map((faq) => (
-                      <Link href={`/${locale}/faq/${faq.slug}`} key={faq.slug}>
+                      <Link href={localizedPath(locale, `/faq/${faq.slug}`)} key={faq.slug}>
                         {faq.question.en}
                       </Link>
                     ))}

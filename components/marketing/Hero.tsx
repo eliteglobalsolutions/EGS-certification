@@ -2,9 +2,11 @@
 
 import { Button } from '@/components/ui/Button';
 import type { AppCopy } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/dictionaries';
+import { localizedPath } from '@/lib/i18n/locale';
 import { TrustBadges } from './TrustBadges';
 
-export function Hero({ locale, t }: { locale: string; t: AppCopy }) {
+export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
   const laneCards =
     locale === 'zh'
       ? [
@@ -64,18 +66,18 @@ export function Hero({ locale, t }: { locale: string; t: AppCopy }) {
               <span className="cta-label-full">{t.landing.hero.ctaPrimary}</span>
               <span className="cta-label-short">{t.landing.hero.ctaPrimaryShort}</span>
             </Button>
-            <Button href={`/${locale}/intake`} variant="primary">
+            <Button href={localizedPath(locale, '/intake')} variant="primary">
               <span className="cta-label-full">{t.landing.hero.ctaSecondary}</span>
               <span className="cta-label-short">{t.landing.hero.ctaSecondaryShort}</span>
             </Button>
-            <Button href={`/${locale}/post-documents`} variant="ghost">
+            <Button href={localizedPath(locale, '/post-documents')} variant="ghost">
               <span className="cta-label-full">{t.landing.hero.ctaTertiary}</span>
               <span className="cta-label-short">{t.landing.hero.ctaTertiaryShort}</span>
             </Button>
           </div>
           <div className="hero-quick-links" aria-label={locale === 'zh' ? '快捷入口' : 'Quick links'}>
-            <a href={`/${locale}/guides`}>{locale === 'zh' ? 'Browse guides' : 'Browse guides'}</a>
-            <a href={`/${locale}/faq`}>{locale === 'zh' ? 'FAQ hub' : 'FAQ hub'}</a>
+            <a href={localizedPath(locale, '/guides')}>{locale === 'zh' ? 'Browse guides' : 'Browse guides'}</a>
+            <a href={localizedPath(locale, '/faq')}>{locale === 'zh' ? 'FAQ hub' : 'FAQ hub'}</a>
           </div>
           <TrustBadges t={t} />
         </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { SearchEntryPage } from '@/components/marketing/SearchEntryPage';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPrefillHref } from '@/lib/prefill';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import {
@@ -63,14 +63,14 @@ export default async function IssuingCountryEntryPage({
       .map((slug) => getSearchEntry('destination', slug))
       .filter((value): value is NonNullable<typeof value> => Boolean(value))
       .map((value) => ({
-        href: `/${locale}/used-in/${value.slug}`,
+        href: localizedPath(locale, `/used-in/${value.slug}`),
         label: getEntryText(value.name, locale),
       })),
     ...entry.relatedDocumentSlugs
       .map((slug) => getSearchEntry('document', slug))
       .filter((value): value is NonNullable<typeof value> => Boolean(value))
       .map((value) => ({
-        href: `/${locale}/documents/${value.slug}`,
+        href: localizedPath(locale, `/documents/${value.slug}`),
         label: getEntryText(value.name, locale),
       })),
   ].slice(0, 6);
@@ -80,9 +80,9 @@ export default async function IssuingCountryEntryPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: locale === 'zh' ? '首页' : 'Home', item: `${siteUrl}/${locale}` },
-      { '@type': 'ListItem', position: 2, name: locale === 'zh' ? '签发地页面' : 'Issued-in pages', item: `${siteUrl}/${locale}/routes` },
-      { '@type': 'ListItem', position: 3, name: countryName, item: `${siteUrl}/${locale}/issued-in/${entry.slug}` },
+      { '@type': 'ListItem', position: 1, name: locale === 'zh' ? '首页' : 'Home', item: localizedUrl(locale, siteUrl, '') },
+      { '@type': 'ListItem', position: 2, name: locale === 'zh' ? '签发地页面' : 'Issued-in pages', item: localizedUrl(locale, siteUrl, '/routes') },
+      { '@type': 'ListItem', position: 3, name: countryName, item: localizedUrl(locale, siteUrl, `/issued-in/${entry.slug}`) },
     ],
   };
 
@@ -122,10 +122,10 @@ export default async function IssuingCountryEntryPage({
         relatedLinks={relatedLinks}
         servicesTitle={locale === 'zh' ? '相关服务与下一步' : 'Related services and next steps'}
         servicesLinks={[
-          { href: `/${locale}/services`, label: locale === 'zh' ? '查看服务总页' : 'View services' },
-          { href: `/${locale}/faq`, label: locale === 'zh' ? '查看常见问题' : 'View FAQ' },
-          { href: `/${locale}/guides`, label: locale === 'zh' ? '查看指南页' : 'Browse guides' },
-          { href: `/${locale}/intake`, label: locale === 'zh' ? '开始 intake' : 'Begin intake' },
+          { href: localizedPath(locale, '/services'), label: locale === 'zh' ? '查看服务总页' : 'View services' },
+          { href: localizedPath(locale, '/faq'), label: locale === 'zh' ? '查看常见问题' : 'View FAQ' },
+          { href: localizedPath(locale, '/guides'), label: locale === 'zh' ? '查看指南页' : 'Browse guides' },
+          { href: localizedPath(locale, '/intake'), label: locale === 'zh' ? '开始 intake' : 'Begin intake' },
         ]}
         regionalRequirements={
           entry.regionalRequirements?.map((item) => ({

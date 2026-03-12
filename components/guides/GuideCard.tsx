@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Guide } from '@/lib/guides';
 import { getGuideCopy } from '@/lib/guides';
+import { localizedPath } from '@/lib/i18n/locale';
 
 export function GuideCard({
   guide,
@@ -39,7 +40,7 @@ export function GuideCard({
           <span className="guide-card-badge">{badge}</span>
         </div>
         <h3 className="guide-card-title">
-          <Link href={`/${locale}/guides/${guide.slug}`}>{getGuideCopy(locale, guide.title)}</Link>
+          <Link href={localizedPath(locale, `/guides/${guide.slug}`)}>{getGuideCopy(locale, guide.title)}</Link>
         </h3>
         {!compact ? <p className="small-text guide-card-summary">{getGuideCopy(locale, guide.excerpt)}</p> : null}
         <ul className="guide-card-tags" aria-label={locale === 'zh' ? '指南标签' : 'Guide tags'}>
@@ -50,10 +51,10 @@ export function GuideCard({
           ))}
         </ul>
         <div className="guide-card-actions" role="group" aria-label={locale === 'zh' ? '指南操作' : 'Guide actions'}>
-          <Link className="guide-card-action-primary" href={`/${locale}/guides/${guide.slug}`}>
+          <Link className="guide-card-action-primary" href={localizedPath(locale, `/guides/${guide.slug}`)}>
             {locale === 'zh' ? '打开指南' : 'Open guide'}
           </Link>
-          <Link className="guide-card-action-secondary" href={`/${locale}/intake`}>
+          <Link className="guide-card-action-secondary" href={localizedPath(locale, '/intake')}>
             {locale === 'zh' ? '开始受理' : 'Begin intake'}
           </Link>
         </div>

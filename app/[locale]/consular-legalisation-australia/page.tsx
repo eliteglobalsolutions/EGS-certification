@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { AUSTRALIA_CITY_COVERAGE, AUSTRALIA_CITY_KEYWORDS } from '@/lib/australia-city-coverage';
 
@@ -62,6 +62,7 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const isZh = locale === 'zh';
+  const businessId = `${localizedUrl(locale, siteUrl)}#local-business`;
   const faq = isZh
     ? [
         { q: '非海牙目的地是否都一样？', a: '不同目的地要求不同，实际链路需按目的地与主管机构规则确认。' },
@@ -95,12 +96,11 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
     name: isZh ? '澳洲领事认证协调服务' : 'Consular legalisation Australia coordination service',
     serviceType: isZh ? '领事认证协调' : 'Consular legalisation coordination',
     provider: {
-      '@type': 'Organization',
-      name: 'EGS Verification',
-      url: `${siteUrl}/${locale}`,
+      '@type': 'LocalBusiness',
+      '@id': businessId,
     },
     areaServed: ['Australia', ...AUSTRALIA_CITY_COVERAGE],
-    url: `${siteUrl}/${locale}/consular-legalisation-australia`,
+    url: localizedUrl(locale, siteUrl, '/consular-legalisation-australia'),
   };
 
   const breadcrumbJsonLd = {
@@ -111,13 +111,13 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
         '@type': 'ListItem',
         position: 1,
         name: isZh ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: isZh ? '澳洲领事认证' : 'Consular Legalisation Australia',
-        item: `${siteUrl}/${locale}/consular-legalisation-australia`,
+        item: localizedUrl(locale, siteUrl, '/consular-legalisation-australia'),
       },
     ],
   };
@@ -147,8 +147,8 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
                 : 'Administrative coordination for consular legalisation pathways for non-Hague destinations. The work is coordinated from Sydney, but clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can also proceed through online intake and tracked mail.'}
             </p>
             <div className="actions">
-              <Link className="btn btn-primary" href={`/${locale}/intake`}>{isZh ? '开始受理' : 'Begin Intake'}</Link>
-              <Link className="btn btn-secondary" href={`/${locale}/track`}>{isZh ? '查询订单' : 'Track Order'}</Link>
+              <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>{isZh ? '开始受理' : 'Begin Intake'}</Link>
+              <Link className="btn btn-secondary" href={localizedPath(locale, '/track')}>{isZh ? '查询订单' : 'Track Order'}</Link>
             </div>
             <div className="stack-sm">
               <h2>{isZh ? 'Consular Legalisation 常见场景' : 'Common consular legalisation scenarios'}</h2>
@@ -164,13 +164,13 @@ export default async function ConsularLegalisationAustraliaPage({ params }: { pa
               <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             </div>
             <div className="footer-links">
-              <Link href={`/${locale}/apostille-australia`}>
+              <Link href={localizedPath(locale, '/apostille-australia')}>
                 {isZh ? '查看海牙认证服务' : 'View Apostille Australia service'}
               </Link>
-              <Link href={`/${locale}/document-authentication-sydney`}>
+              <Link href={localizedPath(locale, '/document-authentication-sydney')}>
                 {isZh ? '查看悉尼文件认证服务' : 'View Document Authentication Sydney'}
               </Link>
-              <Link href={`/${locale}/cities/melbourne/consular-authentication`}>
+              <Link href={localizedPath(locale, '/cities/melbourne/consular-authentication')}>
                 {isZh ? '查看城市型领事认证页面' : 'View city-based consular pages'}
               </Link>
             </div>

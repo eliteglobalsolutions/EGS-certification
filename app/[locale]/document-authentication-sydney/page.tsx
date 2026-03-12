@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Card } from '@/components/ui/Card';
-import { resolveLocale } from '@/lib/i18n/locale';
+import { localizedPath, localizedUrl, resolveLocale } from '@/lib/i18n/locale';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 import { AUSTRALIA_CITY_COVERAGE, AUSTRALIA_CITY_KEYWORDS } from '@/lib/australia-city-coverage';
 
@@ -68,6 +68,7 @@ export default async function DocumentAuthenticationSydneyPage({
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const isZh = locale === 'zh';
+  const businessId = `${localizedUrl(locale, siteUrl)}#local-business`;
   const faq = isZh
     ? [
         { q: '只受理澳洲文件吗？', a: '不是。支持澳洲签发与海外签发文件的跨境使用协调。' },
@@ -107,12 +108,11 @@ export default async function DocumentAuthenticationSydneyPage({
     name: isZh ? '悉尼文件认证协调服务' : 'Document authentication Sydney coordination service',
     serviceType: isZh ? '文件认证协调' : 'Document authentication coordination',
     provider: {
-      '@type': 'Organization',
-      name: 'EGS Verification',
-      url: `${siteUrl}/${locale}`,
+      '@type': 'LocalBusiness',
+      '@id': businessId,
     },
     areaServed: ['Australia', ...AUSTRALIA_CITY_COVERAGE],
-    url: `${siteUrl}/${locale}/document-authentication-sydney`,
+    url: localizedUrl(locale, siteUrl, '/document-authentication-sydney'),
   };
 
   const breadcrumbJsonLd = {
@@ -123,13 +123,13 @@ export default async function DocumentAuthenticationSydneyPage({
         '@type': 'ListItem',
         position: 1,
         name: isZh ? '首页' : 'Home',
-        item: `${siteUrl}/${locale}`,
+        item: localizedUrl(locale, siteUrl),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: isZh ? '悉尼文件认证' : 'Document Authentication Sydney',
-        item: `${siteUrl}/${locale}/document-authentication-sydney`,
+        item: localizedUrl(locale, siteUrl, '/document-authentication-sydney'),
       },
     ],
   };
@@ -159,10 +159,10 @@ export default async function DocumentAuthenticationSydneyPage({
                 : 'Sydney-coordinated document authentication service for cross-border use of Australia-issued and overseas-issued documents. Clients in Melbourne, Brisbane, Perth, Adelaide, Canberra, and other Australian cities can also proceed through online intake and tracked mail. Final pathway and timeline still depend on destination and authority requirements.'}
             </p>
             <div className="actions">
-              <Link className="btn btn-primary" href={`/${locale}/intake`}>
+              <Link className="btn btn-primary" href={localizedPath(locale, '/intake')}>
                 {isZh ? '开始受理' : 'Begin Intake'}
               </Link>
-              <Link className="btn btn-secondary" href={`/${locale}/track`}>
+              <Link className="btn btn-secondary" href={localizedPath(locale, '/track')}>
                 {isZh ? '查询订单' : 'Track Order'}
               </Link>
             </div>
@@ -185,13 +185,13 @@ export default async function DocumentAuthenticationSydneyPage({
               <p className="small-text">{AUSTRALIA_CITY_COVERAGE.join(' · ')}</p>
             </div>
             <div className="footer-links">
-              <Link href={`/${locale}/apostille-australia`}>
+              <Link href={localizedPath(locale, '/apostille-australia')}>
                 {isZh ? '查看海牙认证服务' : 'View Apostille Australia service'}
               </Link>
-              <Link href={`/${locale}/consular-legalisation-australia`}>
+              <Link href={localizedPath(locale, '/consular-legalisation-australia')}>
                 {isZh ? '查看领事认证服务' : 'View Consular Legalisation service'}
               </Link>
-              <Link href={`/${locale}/guides`}>
+              <Link href={localizedPath(locale, '/guides')}>
                 {isZh ? '查看搜索型指南库' : 'View search-intent guides'}
               </Link>
             </div>
