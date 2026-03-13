@@ -19,8 +19,6 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
       <div className="nav-topbar">
         <div className="nav-topbar-inner">
           <div className="nav-topbar-left">
-            <span>185–187 Liverpool Street, Sydney NSW 2000</span>
-            <span className="nav-topbar-sep">|</span>
             <span>1300 990 666</span>
             <span className="nav-topbar-sep">|</span>
             <span>info@eliteglobalsolutions.co</span>
