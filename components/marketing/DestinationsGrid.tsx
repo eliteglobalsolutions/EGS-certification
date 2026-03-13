@@ -21,7 +21,15 @@ export function DestinationsGrid({ locale, t }: { locale: string; t: AppCopy }) 
               className="dest-cell"
             >
               <span className="dest-arrow">→</span>
-              <div className={`dest-flag-img ${item.flagClass}`}></div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://flagcdn.com/w40/${item.iso.toLowerCase()}.png`}
+                alt={item.name}
+                className="dest-flag-img"
+                width={28}
+                height={19}
+                loading="lazy"
+              />
               <div className="dest-iso">{item.iso}</div>
               <div className="dest-name">{item.name}</div>
               <div className="dest-route">{item.route}</div>
