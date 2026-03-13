@@ -13,8 +13,7 @@ import { MarketingFAQ } from '@/components/marketing/FAQ';
 import { CTABand } from '@/components/marketing/CTABand';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
 import { MobileActionBar } from '@/components/marketing/MobileActionBar';
-import { Card } from '@/components/ui/Card';
-import Link from 'next/link';
+import { TickerStrip } from '@/components/marketing/TickerStrip';
 import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
@@ -127,23 +126,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     url: siteUrl,
     inLanguage: [locale === 'zh' ? 'zh-CN' : 'en-AU'],
   };
-  const priorityCountries = [
-    { slug: 'china', label: locale === 'zh' ? '文件用于中国' : 'Documents for use in China' },
-    { slug: 'canada', label: locale === 'zh' ? '文件用于加拿大' : 'Documents for use in Canada' },
-    { slug: 'singapore', label: locale === 'zh' ? '文件用于新加坡' : 'Documents for use in Singapore' },
-    { slug: 'spain', label: locale === 'zh' ? '文件用于西班牙' : 'Documents for use in Spain' },
-    { slug: 'united-states', label: locale === 'zh' ? '文件用于美国' : 'Documents for use in the United States' },
-    { slug: 'united-kingdom', label: locale === 'zh' ? '文件用于英国' : 'Documents for use in the United Kingdom' },
-    { slug: 'new-zealand', label: locale === 'zh' ? '文件用于新西兰' : 'Documents for use in New Zealand' },
-  ];
-  const priorityPages = [
-    { href: path('/services'), label: locale === 'zh' ? '服务总页' : 'Services overview' },
-    { href: path('/guides'), label: locale === 'zh' ? '指南页' : 'Guides' },
-    { href: path('/faq'), label: locale === 'zh' ? '常见问题' : 'FAQ hub' },
-    { href: path('/resources'), label: locale === 'zh' ? '资源中心' : 'Resources' },
-    { href: path('/post-documents'), label: locale === 'zh' ? '邮寄文件说明' : 'Post documents' },
-    { href: path('/legal/authorisation'), label: locale === 'zh' ? '授权说明' : 'Authorisation notice' },
-  ];
 
   return (
     <Container>
@@ -162,6 +144,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         />
         <SiteNav locale={locale} t={t} />
         <Hero locale={locale} t={t} />
+        <TickerStrip locale={locale} />
         <DataStrip t={t} />
         <TimingSection t={t} />
         <DestinationsGrid locale={locale} t={t} />
@@ -170,41 +153,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <Testimonials locale={locale} t={t} />
         <MarketingFAQ t={t} locale={locale} />
         <CTABand locale={locale} t={t} />
-        <Card muted>
-          <div className="stack-md">
-            <div className="stack-sm">
-              <p className="kicker">{locale === 'zh' ? '核心页面' : 'Core pages'}</p>
-              <h2>{locale === 'zh' ? '主要国家页、服务页与流程页' : 'Priority destination, service, and process pages'}</h2>
-              <p className="small-text">
-                {locale === 'zh'
-                  ? '从首页直接进入主要国家页、服务说明、指南页和 FAQ，可以让搜索引擎和客户都更快找到核心路线。'
-                  : 'These direct text links help both search engines and customers discover the site\'s main route, service, guide, and FAQ pages faster.'}
-              </p>
-            </div>
-            <div className="grid-2">
-              <div className="stack-sm">
-                <p className="kicker">{locale === 'zh' ? '主要国家页' : 'Priority destination pages'}</p>
-                <div className="footer-links">
-                  {priorityCountries.map((item) => (
-                    <Link key={item.slug} href={path(`/used-in/${item.slug}`)}>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              <div className="stack-sm">
-                <p className="kicker">{locale === 'zh' ? '主要站内入口' : 'Priority site links'}</p>
-                <div className="footer-links">
-                  {priorityPages.map((item) => (
-                    <Link key={item.href} href={item.href}>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
         <SiteFooter locale={locale} t={t} />
         <MobileActionBar locale={locale} t={t} />
       </Section>
