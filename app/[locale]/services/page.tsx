@@ -31,7 +31,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/services',
-      title: '服务范围｜海牙认证、领事认证、翻译协调｜EGS Verification',
+      title: '服务范围｜海牙认证、领事认证、翻译协调',
       description: '查看 EGS 服务范围：海牙认证、领事认证路径、翻译协调、证书支持与跨境文件流程。',
       keywords: [
         '海牙认证服务',
@@ -55,7 +55,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/services',
-    title: 'Services | Apostille, Legalisation, Translation Coordination | EGS Verification',
+    title: 'Services | Apostille, Legalisation, Translation Coordination',
     description:
       'Explore EGS services for apostille, consular legalisation, translation coordination, and structured cross-border document workflows.',
     keywords: [

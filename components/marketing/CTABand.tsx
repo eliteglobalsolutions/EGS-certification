@@ -9,7 +9,7 @@ export function CTABand({ locale, t }: { locale: string; t: AppCopy }) {
   return (
     <div className="cta-band">
       <div className="cta-band-inner">
-        <div>
+        <div className="cta-band-copy">
           <div className="cta-band-label">{cta.label}</div>
           <div className="cta-band-title">
             {titleLines.map((line, i) => (

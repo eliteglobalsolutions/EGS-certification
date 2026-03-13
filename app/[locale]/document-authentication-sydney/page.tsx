@@ -19,7 +19,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/document-authentication-sydney',
-      title: '悉尼文件认证服务｜EGS Verification',
+      title: '悉尼文件认证服务',
       description:
         '悉尼文件认证协调服务，面向澳洲和海外签发文件，覆盖路径确认、材料审核、处理跟踪与全球寄送。',
       keywords: [
@@ -42,7 +42,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/document-authentication-sydney',
-    title: 'Document Authentication Sydney Service | EGS Verification',
+    title: 'Document Authentication Sydney Service',
     description:
       'Document authentication coordination in Sydney for Australia-issued and overseas-issued documents, with route confirmation, review, status tracking, and dispatch support.',
     keywords: [

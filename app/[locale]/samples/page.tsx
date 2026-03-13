@@ -20,7 +20,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/samples',
-      title: '样本文档库｜打码文件样本｜EGS Verification',
+      title: '样本文档库｜打码文件样本',
       description: '浏览按文件类型、签发国家和使用目的整理的打码文件样本，查看更清晰的跨境文件路径示例。',
       keywords: ['文件认证样本', '打码样本', '海牙认证样本', '领馆认证样本', '文件样本库', 'EGS 样本库'],
     });
@@ -29,7 +29,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/samples',
-    title: 'Document Sample Library | Redacted Route Samples | EGS Verification',
+    title: 'Document Sample Library | Redacted Route Samples',
     description: 'Browse redacted document sample previews organised by document type, issuing country, and route context.',
     keywords: ['document sample library', 'apostille sample', 'legalisation sample', 'redacted document sample', 'route sample EGS'],
   });

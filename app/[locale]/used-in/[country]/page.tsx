@@ -31,12 +31,12 @@ export async function generateMetadata({
   const countryName = getEntryText(entry.name, locale);
   const title =
     locale === 'zh'
-      ? `文件用于${countryName}｜海牙认证、领事认证与路线说明`
-      : `Documents for use in ${countryName} | Apostille, authentication, and route guidance`;
+      ? `${countryName}｜海牙认证、领事认证与路线说明`
+      : `${countryName} | Apostille, authentication, and route guidance`;
   const description =
     locale === 'zh'
-      ? `查看文件用于${countryName}时常见的认证路径、文件类型、基本流程、常见情况和 intake 预审入口。`
-      : `Review common document routes for use in ${countryName}, including file types, process basics, practical requirements, and intake-first route review.`;
+      ? `查看${countryName}常见的认证路径、文件类型、基本流程、常见情况和 intake 预审入口。`
+      : `Review common document routes for ${countryName}, including file types, process basics, practical requirements, and intake-first route review.`;
 
   return buildPageMetadata({
     locale,

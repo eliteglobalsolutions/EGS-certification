@@ -19,7 +19,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/resources',
-      title: '资源中心｜官方认证与公证信息链接｜EGS Verification',
+      title: '资源中心｜官方认证与公证信息链接',
       description: '查看官方公证与认证信息链接，包括 DFAT 与主要使领馆资源入口。',
       keywords: ['认证资源', 'DFAT 链接', '公证信息', '使领馆认证链接', 'EGS 资源中心'],
     });
@@ -28,7 +28,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/resources',
-    title: 'Resources | Official Notary and Legalisation Links | EGS Verification',
+    title: 'Resources | Official Notary and Legalisation Links',
     description: 'Official resource links for notary directories, DFAT legalisation guidance, and consular information portals.',
     keywords: ['notary resources Australia', 'DFAT apostille link', 'consular legalisation links', 'EGS resources'],
   });

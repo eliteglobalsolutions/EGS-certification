@@ -19,7 +19,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/apostille-australia',
-      title: '澳洲海牙认证 Apostille 服务｜EGS Verification',
+      title: '澳洲海牙认证 Apostille 服务',
       description:
         '澳洲文件海牙认证协调服务，覆盖路径确认、材料审核、预计时效、费用说明、受理跟踪与寄送安排。',
       keywords: [
@@ -40,7 +40,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/apostille-australia',
-    title: 'Apostille Australia Service | EGS Verification',
+    title: 'Apostille Australia Service',
     description:
       'Apostille coordination for Australia-issued documents with route confirmation, document review, intake, milestone tracking, and dispatch support.',
     keywords: [

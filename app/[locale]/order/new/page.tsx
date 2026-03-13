@@ -33,6 +33,7 @@ import {
 } from '@/lib/catalog';
 import { findDestinationMatch } from '@/lib/prefill';
 import { DOCUMENT_TYPE_SUGGESTIONS } from '@/lib/prefill';
+import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
 
 type OrderDraft = {
   step: number;
@@ -105,6 +106,7 @@ export default function NewOrderPage() {
   const [passportDocs, setPassportDocs] = useState<File[]>([]);
   const [supportingIdDocs, setSupportingIdDocs] = useState<File[]>([]);
   const [showChecklist, setShowChecklist] = useState(false);
+  const [customerAccessToken, setCustomerAccessToken] = useState('');
   const [email, setEmail] = useState('');
   const [tosAccepted, setTosAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
@@ -266,7 +268,10 @@ export default function NewOrderPage() {
 
     const createRes = await fetch('/api/orders/create', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(customerAccessToken ? { Authorization: `Bearer ${customerAccessToken}` } : {}),
+      },
       body: JSON.stringify({
         locale,
         email,
@@ -416,6 +421,22 @@ export default function NewOrderPage() {
       // Ignore storage errors and continue without persistence.
     }
   }
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+
+    supabase.auth.getSession().then(({ data }) => {
+      setCustomerAccessToken(data.session?.access_token || '');
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCustomerAccessToken(session?.access_token || '');
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;

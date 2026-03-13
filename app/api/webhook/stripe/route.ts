@@ -1,3 +1,4 @@
+import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { requireEnv } from '@/lib/env';
@@ -35,6 +36,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('Stripe webhook failed', error);
+
+    if (error instanceof Stripe.errors.StripeSignatureVerificationError) {
+      return NextResponse.json({ error: 'Invalid Stripe webhook signature' }, { status: 400 });
+    }
+
+    if (error instanceof Error && /Missing environment variable: STRIPE_WEBHOOK_SECRET/.test(error.message)) {
+      return NextResponse.json({ error: 'Missing Stripe webhook secret' }, { status: 500 });
+    }
+
     return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });
   }
 }

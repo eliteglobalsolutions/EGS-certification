@@ -19,7 +19,7 @@ export async function generateMetadata({
     return buildPageMetadata({
       locale,
       path: '/consular-legalisation-australia',
-      title: '澳洲领事认证 Legalisation 服务｜EGS Verification',
+      title: '澳洲领事认证 Legalisation 服务',
       description:
         '面向非海牙目的地的澳洲领事认证协调服务，覆盖路径确认、材料准备、预计时效、进度跟踪与寄送安排。',
       keywords: [
@@ -40,7 +40,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/consular-legalisation-australia',
-    title: 'Consular Legalisation Australia Service | EGS Verification',
+    title: 'Consular Legalisation Australia Service',
     description:
       'Consular legalisation coordination for non-Hague destinations, including route confirmation, document handling guidance, tracking, and dispatch support.',
     keywords: [

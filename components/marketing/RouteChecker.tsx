@@ -12,11 +12,22 @@ type RouteResult = {
   routeType: 'apostille' | 'consular_legalisation' | 'needs_review';
   routeLabel: string;
   summary: string;
+  issuingCountryMatched: string;
+  destinationCountryMatched: string;
+  issuingHagueStatus: string;
+  destinationHagueStatus: string;
   requiredItems: string[];
   steps: string[];
   etaRange: string;
   riskNotes: string[];
   complianceNote: string;
+};
+
+type CountryOption = {
+  code: string;
+  en: string;
+  zh: string;
+  hague: boolean;
 };
 
 export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
@@ -32,9 +43,14 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
   const [result, setResult] = useState<RouteResult | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [countries, setCountries] = useState<CountryOption[]>([]);
   const documentTypeSuggestions = useMemo(
     () => DOCUMENT_TYPE_SUGGESTIONS[locale],
     [locale],
+  );
+  const countrySuggestions = useMemo(
+    () => countries.map((country) => (locale === 'zh' ? country.zh : country.en)),
+    [countries, locale],
   );
   const routeSignals = useMemo(
     () =>
@@ -45,6 +61,23 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
       }),
     [destinationCountry, documentType, issuingCountry],
   );
+
+  useEffect(() => {
+    let active = true;
+
+    fetch('/api/countries')
+      .then((res) => res.json())
+      .then((json) => {
+        if (active && Array.isArray(json.countries)) {
+          setCountries(json.countries);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const issuingPrefill = searchParams.get('issuingCountry');
@@ -71,6 +104,7 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
+        locale,
         issuingCountry,
         destinationCountry,
         documentType,
@@ -114,11 +148,33 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
             <p className="kicker">{t.landing.routeChecker.groups.basics}</p>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.issuingCountry}</label>
-              <input className="input" value={issuingCountry} onChange={(e) => setIssuingCountry(e.target.value)} />
+              <input
+                className="input"
+                list="route-issuing-country-options"
+                placeholder={locale === 'zh' ? '可搜索或直接输入国家 / 地区' : 'Search or type a country / territory'}
+                value={issuingCountry}
+                onChange={(e) => setIssuingCountry(e.target.value)}
+              />
+              <datalist id="route-issuing-country-options">
+                {countrySuggestions.map((item) => (
+                  <option key={`issuing-${item}`} value={item} />
+                ))}
+              </datalist>
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.destinationCountry}</label>
-              <input className="input" value={destinationCountry} onChange={(e) => setDestinationCountry(e.target.value)} />
+              <input
+                className="input"
+                list="route-destination-country-options"
+                placeholder={locale === 'zh' ? '可搜索或直接输入国家 / 地区' : 'Search or type a country / territory'}
+                value={destinationCountry}
+                onChange={(e) => setDestinationCountry(e.target.value)}
+              />
+              <datalist id="route-destination-country-options">
+                {countrySuggestions.map((item) => (
+                  <option key={`destination-${item}`} value={item} />
+                ))}
+              </datalist>
             </div>
             <div className="stack-sm">
               <label className="small-text">{t.landing.routeChecker.fields.documentType}</label>
@@ -154,14 +210,6 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
               <select className="select" value={speed} onChange={(e) => setSpeed(e.target.value as 'standard' | 'express')}>
                 <option value="standard">{t.landing.routeChecker.options.standard}</option>
                 <option value="express">{t.landing.routeChecker.options.express}</option>
-              </select>
-            </div>
-            <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.haguePreference}</label>
-              <select className="select" value={haguePreference} onChange={(e) => setHaguePreference(e.target.value as 'hague' | 'non_hague' | 'unsure')}>
-                <option value="unsure">{t.landing.routeChecker.options.unsure}</option>
-                <option value="hague">{t.landing.routeChecker.options.hague}</option>
-                <option value="non_hague">{t.landing.routeChecker.options.nonHague}</option>
               </select>
             </div>
           </section>
@@ -229,6 +277,10 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
 
       {result ? (
         <div className="section-card stack-md">
+          <InfoRow label={t.landing.routeChecker.result.issuingCountry} value={result.issuingCountryMatched} />
+          <InfoRow label={t.landing.routeChecker.result.issuingHague} value={result.issuingHagueStatus} />
+          <InfoRow label={t.landing.routeChecker.result.destinationCountry} value={result.destinationCountryMatched} />
+          <InfoRow label={t.landing.routeChecker.result.destinationHague} value={result.destinationHagueStatus} />
           <InfoRow label={t.landing.routeChecker.result.route} value={result.routeLabel} />
           <InfoRow label={t.landing.routeChecker.result.summary} value={result.summary} />
           <InfoRow label={t.landing.routeChecker.result.eta} value={result.etaRange} />

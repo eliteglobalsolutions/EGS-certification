@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getLegalContent, sha256 } from '@/lib/legal-documents';
 import { rateLimit } from '@/lib/rate-limit';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getAuthenticatedCustomer } from '@/lib/supabase/auth-server';
 import { generateOrderCode } from '@/lib/order';
 import { generateAccessToken } from '@/lib/security';
 
@@ -15,6 +16,7 @@ export async function POST(req: Request) {
       );
     }
 
+    const customerUser = await getAuthenticatedCustomer(req);
     const body = await req.json();
     const locale = body.locale === 'zh' ? 'zh' : 'en';
     const email = String(body.email || '');
@@ -63,6 +65,14 @@ export async function POST(req: Request) {
         internal_status: 'received',
         client_status: 'received',
         customer_email: email || null,
+        customer_user_id: customerUser?.id || null,
+        checkout_mode: customerUser ? 'customer_portal' : 'guest',
+        customer_profile_snapshot: customerUser
+          ? {
+              user_id: customerUser.id,
+              email: customerUser.email || email || null,
+            }
+          : {},
         customer_phone: phone || null,
         locale,
         destination_country: destinationCountry || null,
@@ -96,6 +106,17 @@ export async function POST(req: Request) {
 
     if (error) throw error;
     const orderId = data.id;
+
+    if (customerUser?.id) {
+      const profileEmail = customerUser.email || email || null;
+      await supabaseAdmin.from('customer_profiles').upsert({
+        user_id: customerUser.id,
+        email: profileEmail,
+        full_name: recipientName || null,
+        phone: phone || null,
+        locale,
+      });
+    }
 
     const { error: consentError } = await supabaseAdmin.from('order_consents').insert({
       order_id: orderId,

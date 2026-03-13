@@ -7,6 +7,7 @@ export async function POST(req: Request) {
     const issuingCountry = String(body.issuingCountry || '');
     const destinationCountry = String(body.destinationCountry || '');
     const documentType = String(body.documentType || '');
+    const locale = body.locale === 'zh' ? 'zh' : 'en';
     const quantity = Math.max(1, Number(body.quantity || 1));
     const translationRequired = Boolean(body.translationRequired);
     const originalHandling = Boolean(body.originalHandling);
@@ -21,6 +22,7 @@ export async function POST(req: Request) {
     }
 
     const result = estimateRoute({
+      locale,
       issuingCountry,
       destinationCountry,
       documentType,

@@ -15,7 +15,7 @@ export async function generateMetadata({
       ...buildPageMetadata({
         locale,
         path: '/track',
-        title: '订单查询｜文件认证进度跟踪｜EGS Verification',
+        title: '订单查询｜文件认证进度跟踪',
         description: '输入订单号查看客户可见状态、预计时效和最近更新。',
         keywords: ['订单查询', '认证进度查询', '海牙认证 进度', '文件认证 跟踪'],
       }),
@@ -34,7 +34,7 @@ export async function generateMetadata({
     ...buildPageMetadata({
       locale,
       path: '/track',
-      title: 'Track Order | Apostille & Legalisation Status | EGS Verification',
+      title: 'Track Order | Apostille & Legalisation Status',
       description: 'Track your order with code lookup. View status milestones, estimated timeline, and latest update.',
       keywords: ['track apostille order', 'legalisation status', 'order status document authentication'],
     }),

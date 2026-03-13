@@ -51,6 +51,7 @@ export const INTERNATIONAL_ROUTE_KEYWORDS = [
 ] as const;
 
 export const KEY_DESTINATION_CITY_COVERAGE = {
+  Australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Canberra'],
   'United States': ['New York', 'Los Angeles', 'San Francisco', 'Chicago', 'Houston', 'Seattle'],
   Canada: ['Toronto', 'Vancouver', 'Calgary', 'Montreal', 'Ottawa'],
   Singapore: ['Singapore'],

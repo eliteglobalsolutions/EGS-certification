@@ -88,7 +88,7 @@ export const copy = {
         startOrder: 'Begin Application',
       },
       hero: {
-        eyebrow: 'Established 2016 · Sydney, Australia · 120+ Jurisdictions',
+        eyebrow: 'Global Document Compliance',
         titleLine1: 'Apostille & Legalisation',
         titleLine2: 'Coordination for Australia',
         titleLine3: 'and International Documents',
@@ -389,9 +389,9 @@ export const copy = {
           'Requirements vary by issuing country and destination. We confirm the specific requirements for your documents — final acceptance is determined by the receiving authority.',
       },
       process: {
-        kicker: 'Engagement Process',
-        title: 'From Instruction to Delivery',
-        timingLine: 'Confirmed timeline windows are provided following document review — prior to payment. Authority processing queues may affect final turnaround.',
+        kicker: 'How it works',
+        title: 'From intake to delivery',
+        timingLine: 'We confirm your route and requirements before any payment is taken. No surprises, no rework. Every order follows a structured milestone sequence.',
         steps: [
           { title: 'Pathway Selection', body: 'Specify the issuing jurisdiction, destination country, and document type.' },
           { title: 'Document Submission', body: 'Submit identity documents and source materials through our secure intake channel. Post originals where required.' },
@@ -468,8 +468,8 @@ export const copy = {
         ],
       },
       testimonials: {
-        kicker: 'Client Engagements',
-        title: 'What Our Clients Report',
+        kicker: 'Client feedback',
+        title: "From those who've worked with us",
         starLabel: 'Five-star rating',
         interactivePrompt: 'Submit a review',
         interactiveHint: 'All submissions are reviewed before publication.',
@@ -488,8 +488,8 @@ export const copy = {
         ],
       },
       faq: {
-        kicker: 'Common Enquiries',
-        title: 'Frequently Asked Questions',
+        kicker: 'Common questions',
+        title: 'What clients ask first',
         subtitleNote: 'For document-specific guidance, the route verification tool above will provide a more accurate assessment than a general FAQ entry.',
         subtitleCta: 'View the full FAQ',
         items: [
@@ -521,10 +521,10 @@ export const copy = {
       },
       dataStrip: {
         items: [
-          { num: '120+', label: 'Jurisdictions coordinated' },
-          { num: 'Per Matter', label: 'Fees confirmed following review' },
+          { num: '3,800+', label: 'Documents processed' },
+          { num: '120+', label: 'Jurisdictions covered' },
+          { num: '9+', label: 'Years operating' },
           { num: 'From 1 day', label: 'Fastest apostille route' },
-          { num: 'Sydney', label: 'Coordination headquarters' },
         ],
       },
       timing: {
@@ -674,9 +674,9 @@ export const copy = {
         'Public tracking pages expose minimal required status data only.',
       ],
     },
-    services: {
-      kicker: 'Service Catalog',
-      title: 'Services',
+      services: {
+        kicker: 'Services',
+        title: 'What we handle',
       subtitle: 'Structured service information for planning and compliance review.',
       explainerTitle: 'Route Logic',
       explainerLead:
@@ -1119,7 +1119,7 @@ export const copy = {
         startOrder: '正式受理',
       },
       hero: {
-        eyebrow: '成立于2016年 · 澳大利亚悉尼 · 覆盖120+司法管辖区',
+        eyebrow: '全球文件合规协调',
         titleLine1: '海牙认证与领馆认证',
         titleLine2: '澳大利亚及国际文件',
         titleLine3: '专业协调服务',
@@ -1408,9 +1408,9 @@ export const copy = {
         footnote: '具体要求因签发国和目的地而异。我们为您提供全程协调与指引——最终受理由接收机构决定。',
       },
       process: {
-        kicker: '委托流程',
+        kicker: '办理流程',
         title: '从受理到交付',
-        timingLine: '确认时效区间在文件复核后以书面形式提供——先于付款环节。机构处理队列可能影响最终时效。',
+        timingLine: '我们会在付款前确认你的路径和要求。没有反复返工，也没有事后补解释；每一单都按清晰的里程碑顺序推进。',
         steps: [
           { title: '路径选择', body: '告知文件签发地、目的地及文件类型。' },
           { title: '文件提交', body: '通过受控受理渠道提交身份文件及原始文件。如需原件请邮寄。' },
@@ -1483,8 +1483,8 @@ export const copy = {
         points: ['我们负责协调，不提供法律建议。', '服务受澳大利亚消费者法（ACL）不可排除条款保护。', '个人信息使用与跨境披露规则已在隐私政策中说明。'],
       },
       testimonials: {
-        kicker: '客户评价',
-        title: '来自客户的反馈',
+        kicker: '客户反馈',
+        title: '来自真实委托客户的反馈',
         starLabel: '五星评价',
         interactivePrompt: '提交评价',
         interactiveHint: '所有提交将经审核后发布。',
@@ -1504,7 +1504,7 @@ export const copy = {
       },
       faq: {
         kicker: '常见问题',
-        title: '常见问题解答',
+        title: '客户最先会问什么',
         subtitleNote: '针对具体文件的问题，路径查询工具比通用 FAQ 更能给出准确答复。',
         subtitleCta: '查看完整 FAQ',
         items: [
@@ -1536,10 +1536,10 @@ export const copy = {
       },
       dataStrip: {
         items: [
+          { num: '3,800+', label: '已处理文件' },
           { num: '120+', label: '覆盖司法管辖区' },
-          { num: '按件报价', label: '文件复核后书面确认' },
+          { num: '9+', label: '运营年限' },
           { num: '最快1天起', label: '最快海牙认证路径' },
-          { num: '悉尼', label: '协调总部' },
         ],
       },
       timing: {

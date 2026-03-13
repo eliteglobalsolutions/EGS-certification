@@ -4,6 +4,7 @@ import { Section } from '@/components/ui/Section';
 import { SiteNav } from '@/components/marketing/SiteNav';
 import { Hero } from '@/components/marketing/Hero';
 import { DataStrip } from '@/components/marketing/DataStrip';
+import { ComplianceStrip } from '@/components/marketing/ComplianceStrip';
 import { TimingSection } from '@/components/marketing/TimingSection';
 import { DestinationsGrid } from '@/components/marketing/DestinationsGrid';
 import { ProcessStepper } from '@/components/marketing/ProcessStepper';
@@ -146,6 +147,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <Hero locale={locale} t={t} />
         <TickerStrip locale={locale} />
         <DataStrip t={t} />
+        <ComplianceStrip locale={locale} t={t} />
         <TimingSection t={t} />
         <DestinationsGrid locale={locale} t={t} />
         <ProcessStepper locale={locale} t={t} />

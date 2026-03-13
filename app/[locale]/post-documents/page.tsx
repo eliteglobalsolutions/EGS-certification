@@ -17,7 +17,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: '/post-documents',
-    title: locale === 'zh' ? '邮寄文件办理 | EGS Verification' : 'Post Your Documents | EGS Verification',
+    title: locale === 'zh' ? '邮寄文件办理' : 'Post Your Documents',
     description:
       locale === 'zh'
         ? '了解邮寄文件办理前的 checklist、联系客服 double check 的方式，以及 EGS 的邮寄地址和联系电话。'

@@ -1,0 +1,73 @@
+import { NextResponse } from 'next/server';
+import { getAuthenticatedCustomer } from '@/lib/supabase/auth-server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
+import { normalizeClientStatus } from '@/lib/status';
+
+const DOWNLOAD_TTL_SECONDS = 60 * 60 * 24 * 7;
+
+export async function GET(req: Request, context: { params: Promise<{ orderId: string }> }) {
+  try {
+    const user = await getAuthenticatedCustomer(req);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { orderId } = await context.params;
+
+    const { data: order, error } = await supabaseAdmin
+      .from('orders')
+      .select('*')
+      .eq('id', orderId)
+      .eq('customer_user_id', user.id)
+      .single();
+
+    if (error) throw error;
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+
+    const [{ data: files }, { data: history }, { data: submissionEvents }] = await Promise.all([
+      supabaseAdmin.from('order_files').select('id, role, file_name, storage_path, created_at').eq('order_id', order.id).order('created_at', { ascending: false }),
+      supabaseAdmin.from('orders_history').select('id, client_status, note, created_at').eq('order_id', order.id).order('created_at', { ascending: false }).limit(20),
+      supabaseAdmin.from('order_submission_events').select('id, actor, event_type, channel, payload, created_at').eq('order_id', order.id).order('created_at', { ascending: false }).limit(30),
+    ]);
+
+    const filesWithLinks = await Promise.all(
+      (files || []).map(async (file: any) => {
+        const signed = await supabaseAdmin.storage.from('order-uploads').createSignedUrl(file.storage_path, DOWNLOAD_TTL_SECONDS);
+        return {
+          ...file,
+          download_url: signed.error ? null : signed.data?.signedUrl || null,
+        };
+      })
+    );
+
+    return NextResponse.json({
+      order: {
+        id: order.id,
+        order_no: order.order_no,
+        order_code: order.order_code,
+        destination_country: order.destination_country,
+        service_type: order.service_type,
+        document_type: order.document_type,
+        document_quantity: order.document_quantity,
+        delivery_method: order.delivery_method,
+        latest_scanned_copy_deadline: order.latest_scanned_copy_deadline,
+        estimated_days: order.estimated_days,
+        amount_total: order.amount_total,
+        currency: order.currency,
+        client_status: normalizeClientStatus(order.client_status),
+        client_note: order.client_note,
+        invoice_url: order.invoice_pdf_url || order.invoice_url,
+        updated_at: order.updated_at,
+        created_at: order.created_at,
+      },
+      files: filesWithLinks,
+      history: history ?? [],
+      submissionEvents: submissionEvents ?? [],
+    });
+  } catch (error) {
+    console.error('Customer order detail failed', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}

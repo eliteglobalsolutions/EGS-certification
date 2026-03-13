@@ -59,14 +59,14 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
 
   const assuranceItems = locale === 'zh'
     ? [
-        '付款前完成路径核实与书面费用确认',
-        '文件全程受控处理，从受理到退还均有可追溯记录',
-        '独立文件协调机构——非法律事务所，亦非政府机关',
+        '付款前确认路径与书面费用',
+        '文件从受理到退还全程可追踪',
+        '独立协调机构，非政府部门或法律事务所',
       ]
     : [
-        'Route verified and fees confirmed before any obligation is incurred',
-        'Controlled document handling from intake to return dispatch',
-        'Independent coordination service — not a legal practice or government authority',
+        'Route and fees confirmed before payment',
+        'Tracked document handling from intake to return',
+        'Independent coordination service, not a government authority',
       ];
 
   useEffect(() => {
@@ -142,20 +142,23 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
           <h1>
             {locale === 'zh' ? (
               <>
-                海牙认证与领馆认证<br />
-                协调办理，适用于<em>澳大利亚</em><br />
-                及国际文件
+                <em>跨国文件</em>，<br />
+                需要一条清晰、<br />
+                可控的路径
               </>
             ) : (
               <>
-                Apostille &amp; Legalisation<br />
-                Coordination for <em>Australia</em><br />
-                and International Documents
+                Documents that<br />
+                <em>cross borders.</em>
               </>
             )}
           </h1>
 
-          <p className="hero-lead">{t.landing.hero.subtitle}</p>
+          <p className="hero-lead">
+            {locale === 'zh'
+              ? '为澳大利亚签发及海外签发文件提供海牙认证与领馆认证协调。先确认路径，再进入正式受理。'
+              : 'Apostille and legalisation coordination for Australia-issued and overseas-issued documents. Verify the route first, then move into formal intake.'}
+          </p>
 
           <ul className="assurance-list">
             {assuranceItems.map((item) => (
