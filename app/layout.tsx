@@ -12,6 +12,21 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'EGS Verification',
+  url: 'https://eliteglobalsolutions.co',
+  description:
+    'Independent document coordination service providing apostille and consular legalisation for Australian and international documents.',
+  areaServed: 'Worldwide',
+  serviceType: 'Document Apostille and Legalisation Coordination',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'AU',
+  },
+};
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const requestHeaders = await headers();
   const htmlLang = requestHeaders.get('x-egs-html-lang') || 'en';
@@ -20,6 +35,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={htmlLang}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
