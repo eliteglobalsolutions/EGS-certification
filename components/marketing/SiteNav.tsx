@@ -64,13 +64,17 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
                 中文
               </Link>
             </div>
-            <Button href={trackHref} variant="ghost">
-              <span className="nav-cta-full">{t.landing.nav.track}</span>
-            </Button>
-            <Button href={intakeHref} variant="primary">
-              <span className="nav-cta-full">{t.landing.nav.startOrder}</span>
-              <span className="nav-cta-short">{locale === 'zh' ? '申请' : 'Apply'}</span>
-            </Button>
+            <div className="marketing-nav-action marketing-nav-action-track">
+              <Button href={trackHref} variant="ghost">
+                <span className="nav-cta-full">{t.landing.nav.track}</span>
+              </Button>
+            </div>
+            <div className="marketing-nav-action marketing-nav-action-primary">
+              <Button href={intakeHref} variant="primary">
+                <span className="nav-cta-full">{t.landing.nav.startOrder}</span>
+                <span className="nav-cta-short">{locale === 'zh' ? '申请' : 'Apply'}</span>
+              </Button>
+            </div>
           </div>
         </div>
         <nav className="marketing-nav-mobile-links" aria-label="Mobile section links">
