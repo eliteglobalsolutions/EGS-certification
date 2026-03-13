@@ -13,21 +13,28 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
       : `© ${year} ${COMPANY_BRAND_NAME}. All rights reserved.`;
 
   return (
-    <footer id="contact" className="site-footer surface-0" aria-labelledby="footer-heading">
+    <footer id="contact" className="site-footer" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         {t.landing.footer.contactTitle}
       </h2>
 
       <div className="site-footer-grid">
-        <section className="stack-sm" aria-label={t.landing.footer.contactTitle}>
-          <p className="kicker">{t.landing.footer.contactTitle}</p>
-          <p className="small-text">{t.landing.footer.address}</p>
-          <p className="small-text">{t.landing.footer.poBox}</p>
-          <p className="small-text">{t.landing.footer.phone}</p>
-          {supportEmail ? <p className="small-text">{t.landing.footer.emailLabel}: {supportEmail}</p> : null}
+        <section className="site-footer-brand" aria-label={t.landing.footer.contactTitle}>
+          <div className="nav-logo-seal" style={{ borderColor: 'rgba(255,255,255,0.25)' }}>
+            <span className="nav-logo-seal-letter" style={{ color: 'var(--white)' }}>E</span>
+          </div>
+          <p className="footer-brand-name">EGS Verification</p>
+          <p className="footer-brand-tagline">{locale === 'zh' ? '公证认证 · 澳大利亚' : "Apostille & Legalisation"}</p>
+          <p className="footer-brand-descriptor">{t.landing.footer.descriptor}</p>
+          <div className="footer-contact">
+            <div>{t.landing.footer.address}</div>
+            {t.landing.footer.poBox && <div>{t.landing.footer.poBox}</div>}
+            <div>{t.landing.footer.phone}</div>
+            {supportEmail && <div>{t.landing.footer.emailLabel}: {supportEmail}</div>}
+          </div>
         </section>
 
-        <section className="stack-sm" aria-label={t.landing.footer.legalTitle}>
+        <section aria-label={t.landing.footer.legalTitle}>
           <p className="kicker">{t.landing.footer.legalTitle}</p>
           <div className="footer-links">
             <Link href={path('/legal/terms')}>{t.common.terms}</Link>
@@ -37,7 +44,7 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
           </div>
         </section>
 
-        <section className="stack-sm" aria-label={t.landing.footer.clientAccessTitle}>
+        <section aria-label={t.landing.footer.clientAccessTitle}>
           <p className="kicker">{t.landing.footer.clientAccessTitle}</p>
           <div className="footer-links">
             <Link href={path('/track')}>{t.nav.track}</Link>
@@ -46,30 +53,25 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
           </div>
         </section>
 
-        <section className="stack-sm" aria-label={locale === 'zh' ? '主要服务' : 'Primary services'}>
+        <section aria-label={locale === 'zh' ? '主要服务' : 'Primary services'}>
           <p className="kicker">{locale === 'zh' ? '主要服务' : 'Primary services'}</p>
           <div className="footer-links">
             <Link href={path('/services')}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
             <Link href={path('/apostille-australia')}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
             <Link href={path('/consular-legalisation-australia')}>{locale === 'zh' ? '领馆认证' : 'Consular legalisation'}</Link>
-            <Link href={path('/document-authentication-sydney')}>{locale === 'zh' ? '文件认证协调' : 'Document authentication Sydney'}</Link>
-          </div>
-        </section>
-
-        <section className="stack-sm" aria-label={locale === 'zh' ? '主要国家页' : 'Priority destination pages'}>
-          <p className="kicker">{locale === 'zh' ? '主要国家页' : 'Priority destination pages'}</p>
-          <div className="footer-links">
             <Link href={path('/used-in/china')}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
-            <Link href={path('/used-in/canada')}>{locale === 'zh' ? '用于加拿大' : 'Used in Canada'}</Link>
             <Link href={path('/used-in/singapore')}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
-            <Link href={path('/used-in/spain')}>{locale === 'zh' ? '用于西班牙' : 'Used in Spain'}</Link>
             <Link href={path('/used-in/united-states')}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
-            <Link href={path('/used-in/united-kingdom')}>{locale === 'zh' ? '用于英国' : 'Used in United Kingdom'}</Link>
-            <Link href={path('/used-in/new-zealand')}>{locale === 'zh' ? '用于新西兰' : 'Used in New Zealand'}</Link>
           </div>
         </section>
       </div>
-      <p className="small-text" style={{ marginTop: '1rem' }}>{copyright}</p>
+
+      <div className="site-footer-bottom">
+        <p className="footer-copy">{copyright}</p>
+        <p className="footer-legal">
+          {t.landing.footer.roleDisclosure}
+        </p>
+      </div>
     </footer>
   );
 }
