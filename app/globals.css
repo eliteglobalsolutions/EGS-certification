@@ -2310,6 +2310,10 @@ p {
   display: block;
 }
 
+.wordmark-compact {
+  display: none;
+}
+
 .marketing-nav-links {
   display: flex;
   align-items: stretch;
@@ -4434,32 +4438,39 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     min-width: 0;
     height: auto;
-    min-height: 56px;
+    min-height: 54px;
     padding-top: 8px;
     padding-bottom: 8px;
   }
 
   .wordmark {
     min-width: 0;
-    gap: 10px;
+    gap: 8px;
     padding-right: 0;
     border-right: 0;
-    flex: 1;
+    flex: 1 1 auto;
     align-items: center;
   }
 
   .wordmark-kicker {
-    font-size: 9px;
-    letter-spacing: 1.1px;
+    display: none;
   }
 
   .wordmark strong {
-    font-size: 14px;
-    letter-spacing: 0.45px;
-    line-height: 1.05;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .wordmark-full {
+    display: none;
+  }
+
+  .wordmark-compact {
+    display: inline;
   }
 
   .marketing-nav-actions {
@@ -4488,21 +4499,22 @@ p {
   }
 
   .lang-segment-item {
-    min-width: 44px;
-    min-height: 36px;
+    min-width: 36px;
+    min-height: 34px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 7px;
+    padding: 0 8px;
+    font-size: 11px;
   }
 
   .nav-logo-seal {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   .nav-logo-seal-letter {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .marketing-nav-action-track {
@@ -4658,51 +4670,45 @@ p {
 
 @media (max-width: 520px) {
   .page-container {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .marketing-nav-inner {
-    gap: 8px;
+    gap: 6px;
     min-height: 50px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
 
   .wordmark {
-    gap: 8px;
-  }
-
-  .wordmark-kicker {
-    font-size: 8px;
-    letter-spacing: 0.9px;
-    margin-bottom: 2px;
+    gap: 7px;
   }
 
   .wordmark strong {
-    font-size: 13px;
-    letter-spacing: 0.35px;
+    font-size: 17px;
+    letter-spacing: 0.02em;
   }
 
   .marketing-nav-actions {
-    gap: 6px;
+    gap: 5px;
   }
 
   .marketing-nav-actions .btn {
     min-height: 34px;
-    padding: 6px 10px;
-    font-size: 11px;
+    padding: 6px 12px;
+    font-size: 10px;
   }
 
   .lang-segment-item {
-    min-width: 38px;
+    min-width: 32px;
     min-height: 34px;
-    padding: 0 8px;
-    font-size: 11px;
+    padding: 0 7px;
+    font-size: 10px;
   }
 
   .marketing-nav-action-primary .btn {
-    min-width: 88px;
+    min-width: 84px;
   }
 
   .marketing-nav-mobile-links {
@@ -4717,12 +4723,12 @@ p {
   }
 
   .nav-logo-seal {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
 
   .nav-logo-seal-letter {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .mobile-action-bar {

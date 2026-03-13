@@ -24,7 +24,10 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
             </div>
             <div>
               <span className="wordmark-kicker">{t.landing.nav.wordmarkKicker}</span>
-              <strong>EGS Verification</strong>
+              <strong>
+                <span className="wordmark-full">EGS Verification</span>
+                <span className="wordmark-compact">EGS</span>
+              </strong>
             </div>
           </Link>
 
@@ -42,7 +45,7 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
                 EN
               </Link>
               <Link className="lang-segment-item" aria-current={locale === 'zh' ? 'page' : undefined} href={zhHref}>
-                中文
+                中
               </Link>
             </div>
             <div className="marketing-nav-action marketing-nav-action-track">
