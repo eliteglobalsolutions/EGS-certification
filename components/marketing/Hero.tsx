@@ -59,14 +59,14 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
 
   const assuranceItems = locale === 'zh'
     ? [
-        '付款前确认路径与所需材料',
-        '安全收件，严格控制访问权限并执行脱敏流程',
-        '独立中介机构——非律所，亦非政府机关',
+        '付款前完成路径核实与书面费用确认',
+        '文件全程受控处理，从受理到退还均有可追溯记录',
+        '独立文件协调机构——非法律事务所，亦非政府机关',
       ]
     : [
-        'Route and requirements confirmed before payment is taken',
-        'Secure document intake with controlled access and redaction',
-        'Independent intermediary — not a law firm or government authority',
+        'Route verified and fees confirmed before any obligation is incurred',
+        'Controlled document handling from intake to return dispatch',
+        'Independent coordination service — not a legal practice or government authority',
       ];
 
   useEffect(() => {
@@ -168,14 +168,14 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
 
           <div className="hero-cta">
             <Button href={intakeHref} variant="primary">
-              {locale === 'zh' ? '提交申请' : 'Start Application'} →
+              {locale === 'zh' ? '正式受理' : 'Begin Application'} →
             </Button>
             <div className="hero-cta-actions">
               <Button href="#route-check" variant="secondary">
-                {locale === 'zh' ? '先查看路线' : 'Check my route first'}
+                {locale === 'zh' ? '路径核实' : 'Verify My Route'}
               </Button>
               <Button href={postDocumentsHref} variant="ghost">
-                {locale === 'zh' ? '邮寄文件给我们' : 'Post documents to us'}
+                {locale === 'zh' ? '邮寄原件至我们' : 'Post Originals to Us'}
               </Button>
             </div>
           </div>
@@ -186,10 +186,10 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
           <div className="panel">
             <div className="panel-head">
               <div className="panel-title">
-                {locale === 'zh' ? '路线确认' : 'Route Check'}
+                {locale === 'zh' ? '路径核实' : 'Route Verification'}
               </div>
               <div className="panel-flag">
-                {locale === 'zh' ? '付款前确认' : 'No payment required'}
+                {locale === 'zh' ? '无需承诺' : 'Obligation-free'}
               </div>
             </div>
 
@@ -257,7 +257,7 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
 
               <div className="hero-route-actions">
                 <button className="btn-route" type="submit">
-                  {loading ? (locale === 'zh' ? '查询中…' : 'Checking…') : locale === 'zh' ? '确认路线' : 'Confirm Route'}
+                  {loading ? (locale === 'zh' ? '查询中…' : 'Checking…') : locale === 'zh' ? '确认路径' : 'Confirm Pathway'}
                 </button>
                 <Link
                   className="btn-route-secondary"
@@ -267,7 +267,7 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
                     ...(documentType.trim() ? { documentType } : {}),
                   }).toString()}`}
                 >
-                  {locale === 'zh' ? '进入受理' : 'Start intake'}
+                  {locale === 'zh' ? '正式受理' : 'Begin Application'}
                 </Link>
               </div>
 
@@ -302,8 +302,8 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
             <div className="panel-foot">
               <span>
                 {locale === 'zh'
-                  ? '路线预估在正式承诺前提供。'
-                  : 'Route estimates provided before any commitment.'}
+                  ? '路径评估在任何承诺前提供。'
+                  : 'Route assessments provided before any commitment.'}
               </span>
               <div style={{ display: 'flex', gap: '14px', flexShrink: 0 }}>
                 <Link href={localizedPath(locale, '/faq')}>

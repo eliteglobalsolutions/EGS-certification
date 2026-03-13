@@ -31,6 +31,8 @@
   --accent: var(--color-accent);
   --diplomatic-blue: #1b3a5c;
   --union-blue: #254e7a;
+  --gold: #9a7140;
+  --gold-lt: #f5ede0;
   --ok: #1f4a35;
   --warn: #7a5612;
   --err: #7a1f1f;
@@ -1573,9 +1575,9 @@ main {
 .kicker {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 2.5px;
+  letter-spacing: 2.8px;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--gold);
   margin-bottom: 8px;
 }
 
@@ -2463,9 +2465,9 @@ p {
 .hero-kicker {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 2.5px;
+  letter-spacing: 2.8px;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--gold);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2478,7 +2480,7 @@ p {
   display: inline-block;
   width: 28px;
   height: 1.5px;
-  background: var(--blue);
+  background: var(--gold);
   flex-shrink: 0;
 }
 
@@ -4766,6 +4768,304 @@ p {
 .samples-facet-card {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 248, 246, 0.92));
   padding: 16px 18px;
+}
+
+.customer-auth-shell,
+.customer-products-shell {
+  min-height: 100vh;
+  padding: 32px 18px 120px;
+  background:
+    linear-gradient(180deg, #f4f2ee 0%, #ece9e2 100%);
+}
+
+.customer-auth-card,
+.customer-products-hero,
+.customer-products-grid,
+.customer-app-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.customer-auth-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 420px);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.customer-auth-copy,
+.customer-auth-form,
+.customer-products-hero,
+.customer-products-card,
+.customer-app-card,
+.customer-app-sidebar,
+.customer-app-main {
+  border: 1px solid rgba(18, 27, 45, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.customer-auth-copy,
+.customer-auth-form,
+.customer-products-hero,
+.customer-products-card,
+.customer-app-card {
+  padding: 26px;
+}
+
+.customer-auth-kicker,
+.customer-app-eyebrow,
+.customer-app-card-kicker,
+.customer-products-hero p:first-child {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5d6a79;
+}
+
+.customer-auth-copy h1,
+.customer-products-hero h1,
+.customer-app-header h1 {
+  margin: 0 0 10px;
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.02;
+  color: #101924;
+}
+
+.customer-auth-copy p,
+.customer-products-hero > p:last-child,
+.customer-app-header p,
+.customer-products-card p,
+.customer-app-card p {
+  margin: 0;
+  color: #51606f;
+  line-height: 1.6;
+}
+
+.customer-auth-form {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.customer-auth-tabs {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid rgba(18, 27, 45, 0.1);
+  background: #f5f6f7;
+}
+
+.customer-auth-tabs button {
+  border: 0;
+  background: transparent;
+  padding: 12px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.customer-auth-tabs button.is-active {
+  background: #11233e;
+  color: #fff;
+}
+
+.customer-auth-field {
+  display: grid;
+  gap: 6px;
+}
+
+.customer-auth-field span {
+  font-size: 12px;
+  color: #4e5b68;
+}
+
+.customer-auth-submit {
+  width: 100%;
+}
+
+.customer-auth-back {
+  font-size: 13px;
+  color: #425268;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.customer-products-actions,
+.customer-app-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.customer-products-grid,
+.customer-app-grid,
+.customer-app-detail-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.customer-products-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.customer-app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 0;
+  background: #ece9e2;
+}
+
+.customer-app-sidebar {
+  padding: 22px;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  border-right: 1px solid rgba(18, 27, 45, 0.08);
+}
+
+.customer-app-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customer-app-brand-mark {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #0f1720;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'EB Garamond', serif;
+  font-size: 18px;
+}
+
+.customer-app-brand p,
+.customer-app-brand strong {
+  margin: 0;
+}
+
+.customer-app-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.customer-app-nav-link {
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid rgba(18, 27, 45, 0.08);
+  color: #263240;
+  background: #f7f8f9;
+}
+
+.customer-app-nav-link.is-active {
+  background: #11233e;
+  color: #fff;
+}
+
+.customer-app-signout {
+  margin-top: auto;
+  border: 1px solid rgba(18, 27, 45, 0.12);
+  background: transparent;
+  padding: 10px 12px;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.customer-app-main {
+  padding: 28px;
+}
+
+.customer-app-header {
+  margin-bottom: 18px;
+  padding: 24px;
+  border: 1px solid rgba(18, 27, 45, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.customer-app-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+}
+
+.customer-app-card-hero {
+  grid-row: span 2;
+}
+
+.customer-app-order-list,
+.customer-app-file-list,
+.customer-app-history-list,
+.customer-app-bullet-list,
+.customer-app-list-page {
+  display: grid;
+  gap: 10px;
+}
+
+.customer-app-order-item,
+.customer-app-order-row,
+.customer-app-file-item,
+.customer-app-history-item {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgba(18, 27, 45, 0.08);
+  background: #f7f8f9;
+}
+
+.customer-app-order-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.customer-app-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.customer-app-meta-list span {
+  padding: 5px 8px;
+  border: 1px solid rgba(18, 27, 45, 0.1);
+  background: #f7f8f9;
+  font-size: 12px;
+}
+
+.customer-app-loading {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+}
+
+.customer-app-loading-card {
+  padding: 18px 20px;
+  border: 1px solid rgba(18, 27, 45, 0.1);
+  background: #fff;
+}
+
+@media (max-width: 920px) {
+  .customer-auth-card,
+  .customer-products-grid,
+  .customer-app-shell,
+  .customer-app-grid,
+  .customer-app-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-app-shell {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .customer-app-main,
+  .customer-app-sidebar {
+    padding: 18px;
+  }
 }
 
 .samples-facet-groups {
