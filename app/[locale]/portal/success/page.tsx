@@ -16,6 +16,9 @@ export default function PortalSuccessPage() {
   const locale = params.locale;
   const t = getCopy(locale);
   const searchParams = useSearchParams();
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17994379586';
+  const googleAdsConversionLabel =
+    process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || 'F-OlCNmLlIMcEMLisYRD';
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState('');
   const adsEventSent = useRef(false);
@@ -62,7 +65,7 @@ export default function PortalSuccessPage() {
     const gtag = (window as any).gtag;
     if (typeof gtag !== 'function') return;
 
-    gtag('event', 'conversion', { send_to: 'AW-17994379586/F-OlCNmLlIMcEMLisYRD' });
+    gtag('event', 'conversion', { send_to: `${googleAdsId}/${googleAdsConversionLabel}` });
     gtag('event', 'ads_conversion___1', {
       order_id: data.id || undefined,
       order_no: data.order_no || undefined,
@@ -71,7 +74,7 @@ export default function PortalSuccessPage() {
     });
 
     adsEventSent.current = true;
-  }, [data]);
+  }, [data, googleAdsConversionLabel, googleAdsId]);
 
   if (error) {
     return (
