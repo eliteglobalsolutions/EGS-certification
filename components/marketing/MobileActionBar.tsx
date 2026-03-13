@@ -32,10 +32,10 @@ export function MobileActionBar({ locale, t }: { locale: string; t: AppCopy }) {
   return (
     <nav className={`mobile-action-bar${hidden ? ' is-hidden' : ''}`} aria-label="Mobile quick actions">
       <div className="mobile-action-bar-inner">
-        <Link className="mobile-action-link" href={`/${locale}#route-checker`}>
+        <Link className="mobile-action-link" href={`/${locale}/intake`}>
           {t.landing.hero.ctaPrimary}
         </Link>
-        <Link className="mobile-action-link mobile-action-link-primary" href={`/${locale}/intake`}>
+        <Link className="mobile-action-link mobile-action-link-primary" href={`/${locale}#route-check`}>
           {t.landing.hero.ctaSecondary}
         </Link>
         <Link className="mobile-action-link" href={`/${locale}/track`}>
