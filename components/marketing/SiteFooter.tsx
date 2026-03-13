@@ -18,59 +18,67 @@ export function SiteFooter({ locale, t }: { locale: string; t: AppCopy }) {
         {t.landing.footer.contactTitle}
       </h2>
 
-      <div className="site-footer-grid">
-        <section className="site-footer-brand" aria-label={t.landing.footer.contactTitle}>
-          <div className="nav-logo-seal" style={{ borderColor: 'rgba(255,255,255,0.25)' }}>
-            <span className="nav-logo-seal-letter" style={{ color: 'var(--white)' }}>E</span>
+      <div className="footer-grid">
+        {/* Col 1: Brand */}
+        <div className="f-brand">
+          <div className="nav-logo" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '13px' }}>
+            <div className="logo-seal f-brand-seal">
+              <span className="logo-seal-letter" style={{ color: 'var(--white)' }}>E</span>
+            </div>
+            <div className="logo-wordmark">
+              <div className="logo-name" style={{ color: 'var(--white)' }}>EGS Verification</div>
+              <div className="logo-tagline">{locale === 'zh' ? '公证认证 · 澳大利亚' : 'Apostille & Legalisation'}</div>
+            </div>
           </div>
-          <p className="footer-brand-name">EGS Verification</p>
-          <p className="footer-brand-tagline">{locale === 'zh' ? '公证认证 · 澳大利亚' : "Apostille & Legalisation"}</p>
-          <p className="footer-brand-descriptor">{t.landing.footer.descriptor}</p>
-          <div className="footer-contact">
+          <p>{t.landing.footer.descriptor}</p>
+          <div className="f-contact">
             <div>{t.landing.footer.address}</div>
             {t.landing.footer.poBox && <div>{t.landing.footer.poBox}</div>}
             <div>{t.landing.footer.phone}</div>
-            {supportEmail && <div>{t.landing.footer.emailLabel}: {supportEmail}</div>}
+            {supportEmail && <div>{supportEmail}</div>}
           </div>
-        </section>
+        </div>
 
-        <section aria-label={t.landing.footer.legalTitle}>
-          <p className="kicker">{t.landing.footer.legalTitle}</p>
-          <div className="footer-links">
-            <Link href={path('/legal/terms')}>{t.common.terms}</Link>
-            <Link href={path('/legal/privacy')}>{t.common.privacy}</Link>
-            <Link href={path('/legal/authorisation')}>{t.common.authorisation}</Link>
-            <Link href={path('/resources')}>{t.resources.linkLabel}</Link>
-          </div>
-        </section>
+        {/* Col 2: Services */}
+        <div className="f-col">
+          <h4>{locale === 'zh' ? '服务' : 'Services'}</h4>
+          <Link href={path('/services')}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
+          <Link href={path('/apostille-australia')}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
+          <Link href={path('/consular-legalisation-australia')}>{locale === 'zh' ? '领馆认证' : 'Consular Legalisation'}</Link>
+          <Link href={path('/document-authentication-sydney')}>{locale === 'zh' ? '文件认证' : 'Document Authentication'}</Link>
+        </div>
 
-        <section aria-label={t.landing.footer.clientAccessTitle}>
-          <p className="kicker">{t.landing.footer.clientAccessTitle}</p>
-          <div className="footer-links">
-            <Link href={path('/track')}>{t.nav.track}</Link>
-            <Link href={path('/order/upload')}>{t.nav.upload}</Link>
-            <Link href={path('/samples')}>{t.resources.samplesLinkLabel}</Link>
-          </div>
-        </section>
+        {/* Col 3: Destinations */}
+        <div className="f-col">
+          <h4>{locale === 'zh' ? '目的地' : 'Destinations'}</h4>
+          <Link href={path('/used-in/china')}>{locale === 'zh' ? '用于中国的文件' : 'Documents for China'}</Link>
+          <Link href={path('/used-in/singapore')}>{locale === 'zh' ? '用于新加坡的文件' : 'Documents for Singapore'}</Link>
+          <Link href={path('/used-in/united-states')}>{locale === 'zh' ? '用于美国的文件' : 'Documents for USA'}</Link>
+          <Link href={path('/used-in/united-kingdom')}>{locale === 'zh' ? '用于英国的文件' : 'Documents for UK'}</Link>
+          <Link href={path('/used-in/canada')}>{locale === 'zh' ? '用于加拿大的文件' : 'Documents for Canada'}</Link>
+          <Link href={path('/routes')}>{locale === 'zh' ? '全部目的地 →' : 'All destinations →'}</Link>
+        </div>
 
-        <section aria-label={locale === 'zh' ? '主要服务' : 'Primary services'}>
-          <p className="kicker">{locale === 'zh' ? '主要服务' : 'Primary services'}</p>
-          <div className="footer-links">
-            <Link href={path('/services')}>{locale === 'zh' ? '服务总页' : 'Services overview'}</Link>
-            <Link href={path('/apostille-australia')}>{locale === 'zh' ? '澳洲海牙认证' : 'Apostille Australia'}</Link>
-            <Link href={path('/consular-legalisation-australia')}>{locale === 'zh' ? '领馆认证' : 'Consular legalisation'}</Link>
-            <Link href={path('/used-in/china')}>{locale === 'zh' ? '用于中国' : 'Used in China'}</Link>
-            <Link href={path('/used-in/singapore')}>{locale === 'zh' ? '用于新加坡' : 'Used in Singapore'}</Link>
-            <Link href={path('/used-in/united-states')}>{locale === 'zh' ? '用于美国' : 'Used in United States'}</Link>
-          </div>
-        </section>
+        {/* Col 4: Client Access + Legal */}
+        <div className="f-col">
+          <h4>{locale === 'zh' ? '客户入口' : 'Client Access'}</h4>
+          <Link href={path('/track')}>{locale === 'zh' ? '追踪订单' : 'Track your order'}</Link>
+          <Link href={path('/order/upload')}>{locale === 'zh' ? '补交文件' : 'Upload additional files'}</Link>
+          <Link href={path('/samples')}>{locale === 'zh' ? '样本库' : 'Sample library'}</Link>
+          <Link href={path('/guides')}>{locale === 'zh' ? '指南' : 'Guides'}</Link>
+          <Link href={path('/faq')}>{locale === 'zh' ? 'FAQ 中心' : 'FAQ hub'}</Link>
+          <h4 style={{ marginTop: '18px' }}>{locale === 'zh' ? '法律文件' : 'Legal'}</h4>
+          <Link href={path('/legal/terms')}>{locale === 'zh' ? '服务条款' : 'Terms of Service'}</Link>
+          <Link href={path('/legal/privacy')}>{locale === 'zh' ? '隐私政策' : 'Privacy Policy'}</Link>
+          <Link href={path('/legal/authorisation')}>{locale === 'zh' ? '授权声明' : 'Authorisation Notice'}</Link>
+        </div>
       </div>
 
-      <div className="site-footer-bottom">
-        <p className="footer-copy">{copyright}</p>
-        <p className="footer-legal">
+      <div className="footer-bottom">
+        <div className="footer-copy">{copyright}</div>
+        <div className="footer-legal">
           {t.landing.footer.roleDisclosure}
-        </p>
+        </div>
       </div>
     </footer>
   );

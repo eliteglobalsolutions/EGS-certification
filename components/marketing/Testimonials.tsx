@@ -100,29 +100,31 @@ export function Testimonials({ t, locale }: { t: AppCopy; locale: Locale }) {
   }
 
   return (
-    <section className="ui-section surface-0 testimonials-section" aria-labelledby="testimonials-heading">
-      <div className="page-header">
-        <div>
-          <p className="kicker">{t.landing.testimonials.kicker}</p>
-          <h2 id="testimonials-heading">{t.landing.testimonials.title}</h2>
+    <section className="reviews-section" aria-labelledby="testimonials-heading">
+      <div className="page-container">
+        <div className="sec-head">
+          <p className="sec-kicker">{t.landing.testimonials.kicker}</p>
+          <h2 id="testimonials-heading" className="sec-h">{t.landing.testimonials.title}</h2>
         </div>
-      </div>
-      <div className="testimonials-grid">
-        {cards.map((item) => (
-          <article className="testimonial-card stack-sm" key={item.key}>
-            <p className="testimonial-quote">{item.quote}</p>
-            <div aria-label={t.landing.testimonials.starLabel} className="testimonial-stars">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <span aria-hidden="true" className="testimonial-star" key={`${item.key}-star-${index + 1}`}>
-                  {index < item.rating ? '★' : '☆'}
-                </span>
-              ))}
+        <div className="reviews-grid">
+          {cards.map((item) => (
+            <div className="review-cell" key={item.key}>
+              <span className="review-open-mark">&ldquo;</span>
+              <p className="review-body">{item.quote}</p>
+              <hr className="review-rule" />
+              <div className="review-name">{item.name}</div>
+              <div className="review-case">{item.type}</div>
+              <div
+                className="review-rating"
+                aria-label={t.landing.testimonials.starLabel}
+              >
+                {Array.from({ length: item.rating }).map((_, index) => (
+                  <span aria-hidden="true" key={`${item.key}-star-${index + 1}`}>★</span>
+                ))}
+              </div>
             </div>
-            <p className="small-text">
-              {item.name} · {item.type}
-            </p>
-          </article>
-        ))}
+          ))}
+        </div>
       </div>
 
       <details className="testimonial-interactive">

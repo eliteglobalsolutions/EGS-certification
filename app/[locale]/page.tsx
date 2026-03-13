@@ -3,14 +3,16 @@ import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { SiteNav } from '@/components/marketing/SiteNav';
 import { Hero } from '@/components/marketing/Hero';
-import { CoverageFlags } from '@/components/marketing/CoverageFlags';
-import { RouteChecker } from '@/components/marketing/RouteChecker';
+import { DataStrip } from '@/components/marketing/DataStrip';
+import { TimingSection } from '@/components/marketing/TimingSection';
+import { DestinationsGrid } from '@/components/marketing/DestinationsGrid';
 import { ProcessStepper } from '@/components/marketing/ProcessStepper';
-import { PricingSection } from '@/components/marketing/PricingSection';
-import { MobileActionBar } from '@/components/marketing/MobileActionBar';
+import { ServiceStandards } from '@/components/marketing/ServiceStandards';
 import { Testimonials } from '@/components/marketing/Testimonials';
 import { MarketingFAQ } from '@/components/marketing/FAQ';
+import { CTABand } from '@/components/marketing/CTABand';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
+import { MobileActionBar } from '@/components/marketing/MobileActionBar';
 import { Card } from '@/components/ui/Card';
 import Link from 'next/link';
 import { resolveLocale } from '@/lib/i18n/locale';
@@ -160,6 +162,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         />
         <SiteNav locale={locale} t={t} />
         <Hero locale={locale} t={t} />
+        <DataStrip t={t} />
+        <TimingSection t={t} />
+        <DestinationsGrid locale={locale} t={t} />
+        <ProcessStepper locale={locale} t={t} />
+        <ServiceStandards locale={locale} t={t} />
+        <Testimonials locale={locale} t={t} />
+        <MarketingFAQ t={t} locale={locale} />
+        <CTABand locale={locale} t={t} />
         <Card muted>
           <div className="stack-md">
             <div className="stack-sm">
@@ -168,7 +178,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <p className="small-text">
                 {locale === 'zh'
                   ? '从首页直接进入主要国家页、服务说明、指南页和 FAQ，可以让搜索引擎和客户都更快找到核心路线。'
-                  : 'These direct text links help both search engines and customers discover the site’s main route, service, guide, and FAQ pages faster.'}
+                  : 'These direct text links help both search engines and customers discover the site\'s main route, service, guide, and FAQ pages faster.'}
               </p>
             </div>
             <div className="grid-2">
@@ -195,12 +205,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </div>
           </div>
         </Card>
-        <CoverageFlags locale={locale} t={t} />
-        <RouteChecker locale={locale} t={t} />
-        <ProcessStepper locale={locale} t={t} />
-        <PricingSection locale={locale} t={t} />
-        <MarketingFAQ t={t} />
-        <Testimonials locale={locale} t={t} />
         <SiteFooter locale={locale} t={t} />
         <MobileActionBar locale={locale} t={t} />
       </Section>

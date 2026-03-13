@@ -8,6 +8,8 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
   const guidesHref = localizedPath(locale, '/guides');
   const routesHref = localizedPath(locale, '/routes');
   const servicesHref = `${localizedPath(locale)}#services`;
+  const faqHref = localizedPath(locale, '/faq');
+  const samplesHref = localizedPath(locale, '/samples');
   const trackHref = localizedPath(locale, '/track');
   const intakeHref = localizedPath(locale, '/intake');
   const zhHref = localizedPath('zh');
@@ -17,11 +19,17 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
       <div className="nav-topbar">
         <div className="nav-topbar-inner">
           <div className="nav-topbar-left">
-            <span>{locale === 'zh' ? '澳大利亚认证专家' : 'Australia\'s apostille & legalisation specialists'}</span>
-            <span className="nav-topbar-sep">·</span>
-            <span>{locale === 'zh' ? 'ABN 注册机构' : 'ABN registered'}</span>
+            <span>185–187 Liverpool Street, Sydney NSW 2000</span>
+            <span className="nav-topbar-sep">|</span>
+            <span>1300 990 666</span>
+            <span className="nav-topbar-sep">|</span>
+            <span>info@eliteglobalsolutions.co</span>
           </div>
           <div className="nav-topbar-right">
+            <Link href={trackHref} className="nav-topbar-link">
+              {locale === 'zh' ? '追踪订单' : 'Track Order'}
+            </Link>
+            <span className="nav-topbar-sep">|</span>
             <div className="lang-pair">
               <Link className={locale === 'en' ? 'on' : ''} href="/">EN</Link>
               <Link className={locale === 'zh' ? 'on' : ''} href={zhHref}>中文</Link>
@@ -42,10 +50,11 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
           </Link>
 
           <nav className="marketing-nav-links" aria-label="Section links">
-            <Link href={guidesHref}>{t.landing.nav.guides}</Link>
-            <Link href={routesHref}>{t.landing.nav.routes}</Link>
             <Link href={servicesHref}>{t.landing.nav.services}</Link>
-            <Link href={trackHref}>{t.landing.nav.track}</Link>
+            <Link href={routesHref}>{t.landing.nav.routes}</Link>
+            <Link href={guidesHref}>{t.landing.nav.guides}</Link>
+            <Link href={faqHref}>{t.landing.nav.faq}</Link>
+            <Link href={samplesHref}>{t.landing.nav.samples}</Link>
           </nav>
 
           <div className="marketing-nav-actions">
@@ -57,17 +66,21 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
                 中文
               </Link>
             </div>
+            <Button href={trackHref} variant="ghost">
+              <span className="nav-cta-full">{t.landing.nav.track}</span>
+            </Button>
             <Button href={intakeHref} variant="primary">
               <span className="nav-cta-full">{t.landing.nav.startOrder}</span>
-              <span className="nav-cta-short">{locale === 'zh' ? '下单' : 'Start'}</span>
+              <span className="nav-cta-short">{locale === 'zh' ? '申请' : 'Apply'}</span>
             </Button>
           </div>
         </div>
         <nav className="marketing-nav-mobile-links" aria-label="Mobile section links">
-          <Link href={guidesHref}>{t.landing.nav.guides}</Link>
-          <Link href={routesHref}>{t.landing.nav.routes}</Link>
           <Link href={servicesHref}>{t.landing.nav.services}</Link>
-          <Link href={trackHref}>{t.landing.nav.track}</Link>
+          <Link href={routesHref}>{t.landing.nav.routes}</Link>
+          <Link href={guidesHref}>{t.landing.nav.guides}</Link>
+          <Link href={faqHref}>{t.landing.nav.faq}</Link>
+          <Link href={samplesHref}>{t.landing.nav.samples}</Link>
         </nav>
       </header>
     </>
