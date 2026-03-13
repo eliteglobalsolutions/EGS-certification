@@ -85,7 +85,7 @@ export const copy = {
         track: 'Track Order',
         contact: 'Contact',
         languageLabel: 'Language',
-        startOrder: 'Begin Application',
+        startOrder: 'Start Application',
       },
       hero: {
         eyebrow: 'Sydney-based · Est. 2016 · 120+ jurisdictions',
@@ -104,7 +104,7 @@ export const copy = {
           'Secure document intake with controlled access and redaction',
           'Independent intermediary — not a law firm or government authority',
         ],
-        ctaPrimary: 'Begin Application',
+        ctaPrimary: 'Start Application',
         ctaPrimaryShort: 'Apply',
         ctaSecondary: 'Check my route first',
         ctaSecondaryShort: 'Route',
@@ -212,6 +212,10 @@ export const copy = {
           failed: 'Unable to estimate route. Please try again.',
         },
         result: {
+          issuingCountry: 'Matched issuing country',
+          issuingHague: 'Issuing country Hague status',
+          destinationCountry: 'Matched destination country',
+          destinationHague: 'Destination Hague status',
           route: 'Likely route',
           summary: 'Route summary',
           eta: 'Estimated timeframe',
@@ -533,8 +537,9 @@ export const copy = {
           { country: 'United States', timing: '1–3 business days', tag: 'Apostille' },
           { country: 'United Kingdom', timing: '3–7 business days', tag: 'Apostille' },
           { country: 'Singapore', timing: '1–3 business days', tag: 'Apostille' },
+          { country: 'China (Hague member since 2023)', timing: '1–3 business days', tag: 'Apostille' },
           { country: 'Other Hague members', timing: '1–10 business days', tag: 'Apostille' },
-          { country: 'China (Hague member since 2023)', timing: '10–20 business days', tag: 'Apostille' },
+          { country: 'Non-Hague members', timing: '10–20 business days', tag: 'Legalisation' },
         ],
         disclaimer: 'All timelines are indicative only and do not constitute a guaranteed turnaround. Authority queues and destination requirements may affect processing time.',
         asideCards: [
@@ -562,7 +567,7 @@ export const copy = {
       ctaBand: {
         label: 'Ready to proceed',
         title: 'Begin your application\nor check your route first',
-        ctaPrimary: 'Begin Application',
+        ctaPrimary: 'Start Application',
         ctaSecondary: 'Check My Route',
       },
       footer: {
@@ -1237,6 +1242,10 @@ export const copy = {
           failed: '路径查询失败，请稍后重试。',
         },
         result: {
+          issuingCountry: '匹配到的签发地',
+          issuingHague: '签发地海牙状态',
+          destinationCountry: '匹配到的使用地',
+          destinationHague: '使用地海牙状态',
           route: '可能路径',
           summary: '路径说明',
           eta: '预计时效',
@@ -1543,8 +1552,9 @@ export const copy = {
           { country: '美国', timing: '1–3 个工作日', tag: 'Apostille' },
           { country: '英国', timing: '3–7 个工作日', tag: 'Apostille' },
           { country: '新加坡', timing: '1–3 个工作日', tag: 'Apostille' },
+          { country: '中国（2023年加入海牙公约）', timing: '1–3 个工作日', tag: 'Apostille' },
           { country: '其他海牙成员国', timing: '1–10 个工作日', tag: 'Apostille' },
-          { country: '中国（2023年加入海牙公约）', timing: '10–20 个工作日', tag: 'Apostille' },
+          { country: '非海牙成员国', timing: '10–20 个工作日', tag: '领馆认证' },
         ],
         disclaimer: '所有时效均为参考值，不构成保证时效。机构排队情况及目的地要求可能影响实际处理时间。',
         asideCards: [

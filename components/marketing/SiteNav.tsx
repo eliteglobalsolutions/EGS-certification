@@ -16,25 +16,6 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
 
   return (
     <>
-      <div className="nav-topbar">
-        <div className="nav-topbar-inner">
-          <div className="nav-topbar-left">
-            <span>1300 990 666</span>
-            <span className="nav-topbar-sep">|</span>
-            <span>info@eliteglobalsolutions.co</span>
-          </div>
-          <div className="nav-topbar-right">
-            <Link href={trackHref} className="nav-topbar-link">
-              {locale === 'zh' ? '追踪订单' : 'Track Order'}
-            </Link>
-            <span className="nav-topbar-sep">|</span>
-            <div className="lang-pair">
-              <Link className={locale === 'en' ? 'on' : ''} href="/">EN</Link>
-              <Link className={locale === 'zh' ? 'on' : ''} href={zhHref}>中文</Link>
-            </div>
-          </div>
-        </div>
-      </div>
       <header className="marketing-nav" aria-label="Primary">
         <div className="marketing-nav-inner page-container">
           <Link className="wordmark" href={homeHref}>

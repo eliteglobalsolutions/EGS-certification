@@ -1,21 +1,46 @@
 'use client';
 
 import Link from 'next/link';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/Button';
 import type { AppCopy, Locale } from '@/lib/i18n/dictionaries';
 import { localizedPath } from '@/lib/i18n/locale';
 
+type CountryOption = {
+  code: string;
+  en: string;
+  zh: string;
+  hague: boolean;
+};
+
+type HeroRouteResult = {
+  routeLabel: string;
+  summary: string;
+  issuingCountryMatched: string;
+  destinationCountryMatched: string;
+  issuingHagueStatus: string;
+  destinationHagueStatus: string;
+  etaRange: string;
+  complianceNote: string;
+};
+
+function getStatusTone(value: string) {
+  if (/Not currently|非海牙|不是/.test(value)) return 'is-negative';
+  if (/specialist|人工复核|not auto-matched|未自动匹配/.test(value)) return 'is-neutral';
+  return 'is-positive';
+}
+
 export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
   const intakeHref = localizedPath(locale, '/intake');
-
-  const issuingOptions =
-    locale === 'zh'
-      ? ['澳大利亚', '美国', '英国', '新加坡', '中国', '加拿大', '新西兰', '其他']
-      : ['Australia', 'United States', 'United Kingdom', 'Singapore', 'China', 'Canada', 'New Zealand', 'Other'];
-
-  const destinationOptions =
-    locale === 'zh'
-      ? ['中国', '新加坡', '美国', '英国', '香港', '加拿大', '阿联酋', '西班牙', '新西兰', '其他']
-      : ['China', 'Singapore', 'United States', 'United Kingdom', 'Hong Kong', 'Canada', 'UAE', 'Spain', 'New Zealand', 'Other'];
+  const postDocumentsHref = localizedPath(locale, '/post-documents');
+  const [issuingCountry, setIssuingCountry] = useState(locale === 'zh' ? '澳大利亚' : 'Australia');
+  const [destinationCountry, setDestinationCountry] = useState('');
+  const [documentType, setDocumentType] = useState('');
+  const [speed, setSpeed] = useState<'standard' | 'express'>('standard');
+  const [countries, setCountries] = useState<CountryOption[]>([]);
+  const [result, setResult] = useState<HeroRouteResult | null>(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const docTypeOptions =
     locale === 'zh'
@@ -26,6 +51,11 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
     locale === 'zh'
       ? ['标准', '加急（视路径而定）']
       : ['Standard', 'Express (where available)'];
+
+  const countrySuggestions = useMemo(
+    () => countries.map((country) => (locale === 'zh' ? country.zh : country.en)),
+    [countries, locale],
+  );
 
   const assuranceItems = locale === 'zh'
     ? [
@@ -38,6 +68,66 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
         'Secure document intake with controlled access and redaction',
         'Independent intermediary — not a law firm or government authority',
       ];
+
+  useEffect(() => {
+    let active = true;
+
+    fetch('/api/countries')
+      .then((res) => res.json())
+      .then((json) => {
+        if (active && Array.isArray(json.countries)) {
+          setCountries(json.countries);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function onRouteCheckSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError('');
+    setResult(null);
+
+    if (!issuingCountry.trim() || !destinationCountry.trim() || !documentType.trim()) {
+      setError(locale === 'zh' ? '请填写签发地、使用地和文件类型。' : 'Please enter the issuing country, destination, and document type.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/route/estimate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          locale,
+          issuingCountry,
+          destinationCountry,
+          documentType,
+          quantity: 1,
+          translationRequired: false,
+          originalHandling: false,
+          speed,
+          haguePreference: 'unsure',
+        }),
+      });
+      const json = await res.json();
+
+      if (!res.ok || !json.result) {
+        setError(json.error || (locale === 'zh' ? '路径查询失败，请稍后重试。' : 'Unable to estimate route. Please try again.'));
+        return;
+      }
+
+      setResult(json.result);
+    } catch {
+      setError(locale === 'zh' ? '路径查询失败，请稍后重试。' : 'Unable to estimate route. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="hero">
@@ -77,12 +167,17 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
           </ul>
 
           <div className="hero-cta">
-            <Link href={intakeHref} className="btn-primary">
-              {locale === 'zh' ? '提交申请' : 'Begin Application'} →
-            </Link>
-            <a href="#route-check" className="link-secondary">
-              {locale === 'zh' ? '先查看路线' : 'Check my route first'}
-            </a>
+            <Button href={intakeHref} variant="primary">
+              {locale === 'zh' ? '提交申请' : 'Start Application'} →
+            </Button>
+            <div className="hero-cta-actions">
+              <Button href="#route-check" variant="secondary">
+                {locale === 'zh' ? '先查看路线' : 'Check my route first'}
+              </Button>
+              <Button href={postDocumentsHref} variant="ghost">
+                {locale === 'zh' ? '邮寄文件给我们' : 'Post documents to us'}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -98,40 +193,48 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
               </div>
             </div>
 
-            <div className="panel-body">
+            <form className="panel-body" onSubmit={onRouteCheckSubmit}>
               <div className="f-group">
                 <label className="f-label">
                   {locale === 'zh' ? '文件签发地' : 'Document issued in'}
                 </label>
-                <select className="f-select" defaultValue="">
-                  <option value="" disabled>
-                    {locale === 'zh' ? '选择国家…' : 'Select country…'}
-                  </option>
-                  {issuingOptions.map((o) => (
-                    <option key={o}>{o}</option>
+                <input
+                  className="f-input"
+                  list="hero-issuing-country-options"
+                  placeholder={locale === 'zh' ? '搜索或输入国家 / 地区' : 'Search or type a country / territory'}
+                  value={issuingCountry}
+                  onChange={(e) => setIssuingCountry(e.target.value)}
+                />
+                <datalist id="hero-issuing-country-options">
+                  {countrySuggestions.map((item) => (
+                    <option key={`hero-issuing-${item}`} value={item} />
                   ))}
-                </select>
+                </datalist>
               </div>
 
               <div className="f-group">
                 <label className="f-label">
                   {locale === 'zh' ? '目的地' : 'For use in'}
                 </label>
-                <select className="f-select" defaultValue="">
-                  <option value="" disabled>
-                    {locale === 'zh' ? '选择目的地…' : 'Select destination…'}
-                  </option>
-                  {destinationOptions.map((o) => (
-                    <option key={o}>{o}</option>
+                <input
+                  className="f-input"
+                  list="hero-destination-country-options"
+                  placeholder={locale === 'zh' ? '搜索或输入国家 / 地区' : 'Search or type a country / territory'}
+                  value={destinationCountry}
+                  onChange={(e) => setDestinationCountry(e.target.value)}
+                />
+                <datalist id="hero-destination-country-options">
+                  {countrySuggestions.map((item) => (
+                    <option key={`hero-destination-${item}`} value={item} />
                   ))}
-                </select>
+                </datalist>
               </div>
 
               <div className="f-group">
                 <label className="f-label">
                   {locale === 'zh' ? '文件类型' : 'Document type'}
                 </label>
-                <select className="f-select" defaultValue="">
+                <select className="f-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
                   <option value="" disabled>
                     {locale === 'zh' ? '选择类型…' : 'Select type…'}
                   </option>
@@ -145,17 +248,56 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
                 <label className="f-label">
                   {locale === 'zh' ? '处理偏好' : 'Processing preference'}
                 </label>
-                <select className="f-select">
+                <select className="f-select" value={speed} onChange={(e) => setSpeed(e.target.value === 'express' ? 'express' : 'standard')}>
                   {speedOptions.map((o) => (
-                    <option key={o}>{o}</option>
+                    <option key={o} value={o === speedOptions[1] ? 'express' : 'standard'}>{o}</option>
                   ))}
                 </select>
               </div>
 
-              <Link href={intakeHref} className="btn-route">
-                {locale === 'zh' ? '确认路线' : 'Confirm Route'}
-              </Link>
-            </div>
+              <div className="hero-route-actions">
+                <button className="btn-route" type="submit">
+                  {loading ? (locale === 'zh' ? '查询中…' : 'Checking…') : locale === 'zh' ? '确认路线' : 'Confirm Route'}
+                </button>
+                <Link
+                  className="btn-route-secondary"
+                  href={`${intakeHref}?${new URLSearchParams({
+                    ...(issuingCountry.trim() ? { issuingCountry } : {}),
+                    ...(destinationCountry.trim() ? { destinationCountry } : {}),
+                    ...(documentType.trim() ? { documentType } : {}),
+                  }).toString()}`}
+                >
+                  {locale === 'zh' ? '进入受理' : 'Start intake'}
+                </Link>
+              </div>
+
+              {error ? <p className="hero-route-error">{error}</p> : null}
+              {result ? (
+                <div className="hero-route-result">
+                  <div className="hero-route-summary-card">
+                    <div className="stack-xs">
+                      <span className="hero-route-kicker">{locale === 'zh' ? '自动判断结果' : 'Auto route result'}</span>
+                      <strong className="hero-route-title">{result.routeLabel}</strong>
+                    </div>
+                    <span className={`hero-route-pill ${getStatusTone(result.routeLabel)}`}>{result.etaRange}</span>
+                  </div>
+                  <p className="hero-route-summary">{result.summary}</p>
+                  <div className="hero-route-grid">
+                    <div className="hero-route-result-block">
+                      <span className="hero-route-label">{locale === 'zh' ? '签发地' : 'Issued in'}</span>
+                      <strong>{result.issuingCountryMatched}</strong>
+                      <span className={`hero-route-pill ${getStatusTone(result.issuingHagueStatus)}`}>{result.issuingHagueStatus}</span>
+                    </div>
+                    <div className="hero-route-result-block">
+                      <span className="hero-route-label">{locale === 'zh' ? '使用地' : 'For use in'}</span>
+                      <strong>{result.destinationCountryMatched}</strong>
+                      <span className={`hero-route-pill ${getStatusTone(result.destinationHagueStatus)}`}>{result.destinationHagueStatus}</span>
+                    </div>
+                  </div>
+                  <p className="hero-route-compliance">{result.complianceNote}</p>
+                </div>
+              ) : null}
+            </form>
 
             <div className="panel-foot">
               <span>
