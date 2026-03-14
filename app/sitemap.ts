@@ -15,7 +15,12 @@ import { siteUrl } from '@/lib/seo';
 import { localizedUrl } from '@/lib/i18n/locale';
 
 const locales = ['en', 'zh'] as const;
-const lastModified = new Date('2026-03-12T00:00:00.000Z');
+const lastModified = new Date(
+  process.env.SITEMAP_LASTMOD
+  || process.env.BUILD_TIMESTAMP
+  || process.env.DEPLOY_TIMESTAMP
+  || Date.now(),
+);
 
 function buildAlternates(path: string) {
   return {
@@ -28,7 +33,7 @@ function buildAlternates(path: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseRoutes = ['', '/services', '/services/apostille', '/services/legalisation', '/routes', '/intake', '/track', '/resources', '/samples', '/guides', '/faq', '/post-documents'];
+  const baseRoutes = ['', '/services', '/services/apostille', '/services/legalisation', '/routes', '/intake', '/resources', '/samples', '/guides', '/faq', '/post-documents'];
   const legalRoutes = ['/legal/privacy', '/legal/terms', '/legal/authorisation'];
   const seoRoutes = [
     '/apostille-australia',
