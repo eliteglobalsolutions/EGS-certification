@@ -944,7 +944,7 @@ export const SERVICE_LEVEL = [
 
 export const COURIER_OPTIONS = [
   { key: 'domestic', en: 'Domestic (Included)', zh: '澳洲境内快递（已含）' },
-  { key: 'intl_dhl', en: 'International DHL (Included)', zh: '国际 DHL（已含）' },
+  { key: 'intl_dhl', en: 'International DHL (A$88)', zh: '国际 DHL（A$88）' },
 ] as const;
 
 export const SUPPORTED_SHIPPING_COUNTRIES = [

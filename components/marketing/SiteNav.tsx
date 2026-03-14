@@ -22,7 +22,7 @@ export function SiteNav({ locale, t }: { locale: 'en' | 'zh'; t: AppCopy }) {
             <div className="nav-logo-seal">
               <span className="nav-logo-seal-letter">E</span>
             </div>
-            <div>
+            <div className="wordmark-copy">
               <span className="wordmark-kicker">{t.landing.nav.wordmarkKicker}</span>
               <strong>
                 <span className="wordmark-full">EGS Verification</span>

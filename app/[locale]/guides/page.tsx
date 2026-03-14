@@ -293,7 +293,7 @@ export default async function GuidesIndexPage({
                 <p className="kicker">Browse</p>
                 <h2 id="browse-guides-heading">Browse guides by category</h2>
               </div>
-              <p className="small-text">A smaller set of organised buckets, grouped by file family and route type.</p>
+              <p className="small-text">Grouped by file family and route type so scanning does not feel like reading a long archive.</p>
             </div>
             <div className="guides-bucket-grid">
               {thematicSections.map((section) => (

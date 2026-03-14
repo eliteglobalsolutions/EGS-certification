@@ -18,7 +18,7 @@ import {
   inferOrderDocumentProfile,
   supportsCombinedNotarialSet,
 } from '@/lib/order-profile';
-import { convertAudCents, detectUserCurrency, formatMoney } from '@/lib/currency';
+import { convertAudCents, detectUserCurrency, formatMoney, normalizeDisplayCurrency } from '@/lib/currency';
 import {
   CERT_OPTIONS,
   COURIER_OPTIONS,
@@ -380,6 +380,45 @@ export default function NewOrderPage() {
   const displayTotal = convertAudCents(summary.total, displayCurrency);
   const showConverted = displayCurrency !== 'AUD';
   const surchargeLabel = locale === 'zh' ? '附加项 / 调整项' : 'Adjustments & add-ons';
+  const stepProgress = Math.round((step / steps.length) * 100);
+  const currentStepLabel = steps[step - 1]?.label || '';
+  const trustPoints = locale === 'zh'
+    ? [
+        '付款前先核验路径与要求，不让客户在错误路线里付费。',
+        '如需寄送原件，页面会明确说明寄送方式、身份文件和下一步。',
+        '订单提交后可继续在平台内跟踪进度、补交材料与查看状态。',
+      ]
+    : [
+        'We confirm the route and requirements before payment is taken.',
+        'If originals are required, this page makes the mailing and ID requirements explicit.',
+        'After submission, the same workspace is used for tracking, follow-up, and document requests.',
+      ];
+  const summaryReady = Boolean(destinationCountry || documentType || recipientName || email);
+  const summaryStatusText = locale === 'zh'
+    ? (summaryReady ? '估算已根据当前输入实时更新' : '先填写路线、文件和收件信息，右侧会实时更新')
+    : (summaryReady ? 'Estimate updates live as you complete the form' : 'Start with route, document, and delivery details to unlock the live summary');
+  const stepHeading = locale === 'zh'
+    ? `第 ${step} 步：${currentStepLabel}`
+    : `Step ${step}: ${currentStepLabel}`;
+  const stepIntro = locale === 'zh'
+    ? [
+        '先确认使用国家与签发国家，避免走错认证链路。',
+        '选择办理路径、服务速度与文件类别，先做合理估算。',
+        '说明文件类型、页数和证书需求，系统会同步更新费用。',
+        '上传扫描件或选择邮寄原件，这一步决定后续核验方式。',
+        '填写收件与时效信息，便于安排 dispatch 和回寄。',
+        '再次确认办理范围、预计时间与费用结构。',
+        '完成授权与条款确认后进入 Stripe 支付。',
+      ][step - 1]
+    : [
+        'Confirm destination and issuing country first so the wrong chain is not quoted.',
+        'Choose route preference, service level, and file category for the initial estimate.',
+        'Describe the document set, page count, and certificate needs so pricing can update.',
+        'Upload scans or choose mail-in submission to determine the review path.',
+        'Add delivery and timing details so dispatch can be planned correctly.',
+        'Review the route, timing, and fee structure before proceeding.',
+        'Accept the required authorisations and continue to Stripe payment.',
+      ][step - 1];
   const draftPayload: OrderDraft = {
     step,
     destinationQuery,
@@ -444,7 +483,7 @@ export default function NewOrderPage() {
       try {
         const res = await fetch('/api/currency/detect', { cache: 'no-store' });
         const json = await res.json();
-        const code = String(json?.currency || '').toUpperCase();
+        const code = normalizeDisplayCurrency(String(json?.currency || ''), 'AUD');
         if (!cancelled && code) {
           setDisplayCurrency(code);
           return;
@@ -453,7 +492,7 @@ export default function NewOrderPage() {
         // Fallback to browser locale detection.
       }
       if (!cancelled) {
-        setDisplayCurrency(detectUserCurrency('AUD'));
+        setDisplayCurrency(normalizeDisplayCurrency(detectUserCurrency('AUD'), 'AUD'));
       }
     }
     resolveCurrency();
@@ -583,6 +622,24 @@ export default function NewOrderPage() {
       <div className="grid-2" style={{ alignItems: 'start' }}>
       <section className="section-card stack-md">
         <PageHeader kicker={t.order.kicker} title={t.order.title} subtitle={t.order.subtitle} />
+        <div className="intake-hero-panel">
+          <div className="intake-hero-main">
+            <p className="intake-progress-label">{locale === 'zh' ? '办理进度' : 'Intake progress'}</p>
+            <div className="intake-progress-bar" aria-hidden="true">
+              <span style={{ width: `${stepProgress}%` }} />
+            </div>
+            <h2>{stepHeading}</h2>
+            <p className="small-text">{stepIntro}</p>
+          </div>
+          <div className="intake-trust-grid">
+            {trustPoints.map((point) => (
+              <div className="intake-trust-card" key={point}>
+                <span className="intake-trust-card-mark" aria-hidden="true">+</span>
+                <p>{point}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         <Stepper
           currentStep={step}
           onStepChange={(nextStep) => {
@@ -1271,8 +1328,31 @@ export default function NewOrderPage() {
         </form>
       </section>
 
-      <aside className="section-card stack-sm summary-panel">
-        <h3>{t.order.summary.title}</h3>
+      <aside className="section-card stack-sm summary-panel intake-summary-panel">
+        <div className="intake-summary-top">
+          <div>
+            <p className="kicker">{locale === 'zh' ? '订单概览' : 'Order summary'}</p>
+            <h3>{t.order.summary.title}</h3>
+          </div>
+          <div className="intake-summary-total">
+            <span>{locale === 'zh' ? '当前估算' : 'Current estimate'}</span>
+            <strong>{formatMoney(displayTotal, displayCurrency, locale)}</strong>
+          </div>
+        </div>
+        <div className="intake-summary-status">
+          <span className={`summary-status-dot${summaryReady ? ' is-ready' : ''}`} aria-hidden="true" />
+          <p>{summaryStatusText}</p>
+        </div>
+        <div className="intake-summary-metrics">
+          <div className="intake-summary-metric">
+            <span>{locale === 'zh' ? '路线' : 'Route'}</span>
+            <strong>{routeText}</strong>
+          </div>
+          <div className="intake-summary-metric">
+            <span>{locale === 'zh' ? '预计时间' : 'Estimated timing'}</span>
+            <strong>{summary.estimatedDays}</strong>
+          </div>
+        </div>
         <InfoRow label={t.order.labels.destination} value={destinationCountry || '-'} />
         <InfoRow label={t.order.labels.service} value={routeText} />
         <InfoRow label={t.order.labels.issuedIn} value={issuedIn === 'AU' ? t.order.options.issuedIn.au : t.order.options.issuedIn.overseas} />

@@ -4,7 +4,6 @@ import {
   getOrderBasePrice,
   getOrderEstimatedWindow,
   inferOrderDocumentProfile,
-  isAustraliaIssuingCountry,
 } from './order-profile';
 
 export type CheckoutPayload = {
@@ -81,12 +80,8 @@ function combinedSetSurcharge(
 }
 
 function postageSurcharge(
-  issuingCountry: string | undefined,
   deliveryMethod: 'domestic' | 'intl_dhl',
 ): number {
-  if (issuingCountry && isAustraliaIssuingCountry(issuingCountry)) {
-    return 0;
-  }
   return deliveryMethod === 'domestic' ? 15 : 88;
 }
 
@@ -109,7 +104,7 @@ export function estimateOrder(payload: CheckoutPayload): {
   // Page increase follows the original tiered pricing model.
   const pageExtra = pagesSurchargePerDoc(pageCount);
   const certificateUnit = certificateUnitPrice(payload.certificateType);
-  const postageAud = postageSurcharge(payload.issuingCountry, payload.deliveryMethod);
+  const postageAud = postageSurcharge(payload.deliveryMethod);
   const combinedSetAud = combinedSetSurcharge(payload.combineIntoOneNotarialSet, payload.combinedDocumentCount);
 
   // Base price is per document copy. Adjustments include page tiers and optional certificate support.

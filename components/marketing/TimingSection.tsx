@@ -14,25 +14,19 @@ export function TimingSection({ t }: { t: AppCopy }) {
 
         <div className="timing-layout">
           <div>
-            <div className="tbl-wrap">
-              <table className="tbl">
-                <thead>
-                  <tr>
-                    {timing.tableHeaders.map((header) => (
-                      <th key={header}>{header}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {timing.rows.map((row) => (
-                    <tr key={row.country}>
-                      <td>{row.country}</td>
-                      <td>{row.timing}</td>
-                      <td><span className="route-tag">{row.tag}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="timing-cards" role="list" aria-label={timing.title}>
+              {timing.rows.map((row) => (
+                <article className="timing-card" key={row.country} role="listitem">
+                  <div className="timing-card-main">
+                    <p className="timing-card-country">{row.country}</p>
+                    <p className="timing-card-window">{row.timing}</p>
+                  </div>
+                  <div className="timing-card-meta">
+                    <span className="timing-card-label">{timing.tableHeaders[1]}</span>
+                    <span className="route-tag">{row.tag}</span>
+                  </div>
+                </article>
+              ))}
             </div>
             <div className="timing-disclaimer">{timing.disclaimer}</div>
           </div>

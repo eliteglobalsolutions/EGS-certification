@@ -76,6 +76,12 @@ export const AUD_FX_RATES: Record<string, number> = {
   ...loadFxOverrides(),
 };
 
+export function normalizeDisplayCurrency(currency: string, fallback = 'AUD'): string {
+  const code = String(currency || '').trim().toUpperCase();
+  if (code === 'AUD' || code === 'USD') return code;
+  return fallback.toUpperCase() === 'USD' ? 'USD' : 'AUD';
+}
+
 export function detectUserCurrency(defaultCurrency = 'AUD'): string {
   if (typeof navigator === 'undefined') return defaultCurrency;
 
@@ -127,20 +133,21 @@ export function detectCurrencyFromRequestHeaders(headers: Headers, defaultCurren
 }
 
 export function convertAudCents(audCents: number, currency: string): number {
-  const code = currency.toUpperCase();
+  const code = normalizeDisplayCurrency(currency, 'AUD');
   const rate = AUD_FX_RATES[code] || 1;
   return Math.round(audCents * rate);
 }
 
 export function formatMoney(cents: number, currency: string, locale: string): string {
+  const safeCurrency = normalizeDisplayCurrency(currency, 'AUD');
   const amount = cents / 100;
   try {
     return new Intl.NumberFormat(locale === 'zh' ? 'zh-CN' : 'en', {
       style: 'currency',
-      currency,
+      currency: safeCurrency,
       maximumFractionDigits: 2,
     }).format(amount);
   } catch {
-    return `${currency} ${amount.toFixed(2)}`;
+    return `${safeCurrency} ${amount.toFixed(2)}`;
   }
 }
