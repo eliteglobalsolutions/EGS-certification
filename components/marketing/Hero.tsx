@@ -198,10 +198,11 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
 
             <form className="panel-body" onSubmit={onRouteCheckSubmit}>
               <div className="f-group">
-                <label className="f-label">
+                <label className="f-label" htmlFor="hero-issuing-country">
                   {locale === 'zh' ? '文件签发地' : 'Document issued in'}
                 </label>
                 <input
+                  id="hero-issuing-country"
                   className="f-input"
                   list="hero-issuing-country-options"
                   placeholder={locale === 'zh' ? '搜索或输入国家 / 地区' : 'Search or type a country / territory'}
@@ -216,10 +217,11 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
               </div>
 
               <div className="f-group">
-                <label className="f-label">
+                <label className="f-label" htmlFor="hero-destination-country">
                   {locale === 'zh' ? '目的地' : 'For use in'}
                 </label>
                 <input
+                  id="hero-destination-country"
                   className="f-input"
                   list="hero-destination-country-options"
                   placeholder={locale === 'zh' ? '搜索或输入国家 / 地区' : 'Search or type a country / territory'}
@@ -234,10 +236,10 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
               </div>
 
               <div className="f-group">
-                <label className="f-label">
+                <label className="f-label" htmlFor="hero-document-type">
                   {locale === 'zh' ? '文件类型' : 'Document type'}
                 </label>
-                <select className="f-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
+                <select id="hero-document-type" className="f-select" value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
                   <option value="" disabled>
                     {locale === 'zh' ? '选择类型…' : 'Select type…'}
                   </option>
@@ -248,10 +250,10 @@ export function Hero({ locale, t }: { locale: Locale; t: AppCopy }) {
               </div>
 
               <div className="f-group">
-                <label className="f-label">
+                <label className="f-label" htmlFor="hero-speed">
                   {locale === 'zh' ? '处理偏好' : 'Processing preference'}
                 </label>
-                <select className="f-select" value={speed} onChange={(e) => setSpeed(e.target.value === 'express' ? 'express' : 'standard')}>
+                <select id="hero-speed" className="f-select" value={speed} onChange={(e) => setSpeed(e.target.value === 'express' ? 'express' : 'standard')}>
                   {speedOptions.map((o) => (
                     <option key={o} value={o === speedOptions[1] ? 'express' : 'standard'}>{o}</option>
                   ))}

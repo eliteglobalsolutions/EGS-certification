@@ -2,8 +2,25 @@ import './globals.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { headers } from 'next/headers';
+import { DM_Sans, Cormorant_Garamond } from 'next/font/google';
 import { TopLoader } from '@/components/ui/TopLoader';
 import { siteUrl } from '@/lib/seo';
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-serif',
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,15 +50,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17994379586';
 
   return (
-    <html lang={htmlLang}>
+    <html lang={htmlLang} className={`${dmSans.variable} ${cormorant.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
       </head>
       <body>
         <Script

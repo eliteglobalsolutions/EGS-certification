@@ -3,6 +3,10 @@ import { resolveLocale } from '@/lib/i18n/locale';
 import { getCopy } from '@/lib/i18n/dictionaries';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export async function generateMetadata({
   params,
 }: {

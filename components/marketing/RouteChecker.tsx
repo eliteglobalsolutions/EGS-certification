@@ -147,8 +147,9 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
           <section className="route-form-card stack-sm" aria-label={t.landing.routeChecker.groups.basics}>
             <p className="kicker">{t.landing.routeChecker.groups.basics}</p>
             <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.issuingCountry}</label>
+              <label className="small-text" htmlFor="rc-issuing-country">{t.landing.routeChecker.fields.issuingCountry}</label>
               <input
+                id="rc-issuing-country"
                 className="input"
                 list="route-issuing-country-options"
                 placeholder={locale === 'zh' ? '可搜索或直接输入国家 / 地区' : 'Search or type a country / territory'}
@@ -162,8 +163,9 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
               </datalist>
             </div>
             <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.destinationCountry}</label>
+              <label className="small-text" htmlFor="rc-destination-country">{t.landing.routeChecker.fields.destinationCountry}</label>
               <input
+                id="rc-destination-country"
                 className="input"
                 list="route-destination-country-options"
                 placeholder={locale === 'zh' ? '可搜索或直接输入国家 / 地区' : 'Search or type a country / territory'}
@@ -177,8 +179,9 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
               </datalist>
             </div>
             <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.documentType}</label>
+              <label className="small-text" htmlFor="rc-document-type">{t.landing.routeChecker.fields.documentType}</label>
               <input
+                id="rc-document-type"
                 className="input"
                 list="route-document-type-options"
                 placeholder={locale === 'zh' ? '例如：毕业证、成绩单、在读证明、法定声明' : 'For example: Degree Certificate, Transcript, Enrollment Letter, Statutory Declaration'}
@@ -192,8 +195,8 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
               </datalist>
             </div>
             <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.quantity}</label>
-              <input className="input" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value.replace(/[^\d]/g, ''))} />
+              <label className="small-text" htmlFor="rc-quantity">{t.landing.routeChecker.fields.quantity}</label>
+              <input id="rc-quantity" className="input" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value.replace(/[^\d]/g, ''))} />
             </div>
           </section>
 
@@ -206,8 +209,8 @@ export function RouteChecker({ locale, t }: { locale: Locale; t: AppCopy }) {
               <input checked={originalHandling} onChange={(e) => setOriginalHandling(e.target.checked)} type="checkbox" /> {t.landing.routeChecker.fields.originalHandling}
             </label>
             <div className="stack-sm">
-              <label className="small-text">{t.landing.routeChecker.fields.speed}</label>
-              <select className="select" value={speed} onChange={(e) => setSpeed(e.target.value as 'standard' | 'express')}>
+              <label className="small-text" htmlFor="rc-speed">{t.landing.routeChecker.fields.speed}</label>
+              <select id="rc-speed" className="select" value={speed} onChange={(e) => setSpeed(e.target.value as 'standard' | 'express')}>
                 <option value="standard">{t.landing.routeChecker.options.standard}</option>
                 <option value="express">{t.landing.routeChecker.options.express}</option>
               </select>
