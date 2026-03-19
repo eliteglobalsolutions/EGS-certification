@@ -65,15 +65,15 @@ function DashboardContent({
           </p>
           <div className="customer-app-stat-strip">
             <div>
-              <strong>{orders.length}</strong>
+              <strong className="customer-app-stat-num">{orders.length}</strong>
               <span>{locale === 'zh' ? '总订单' : 'Total orders'}</span>
             </div>
             <div>
-              <strong>{activeOrders}</strong>
+              <strong className="customer-app-stat-num">{activeOrders}</strong>
               <span>{locale === 'zh' ? '处理中' : 'Active'}</span>
             </div>
             <div>
-              <strong>{latestOrder?.order_no || '--'}</strong>
+              <strong className="customer-app-stat-num">{latestOrder?.order_no || '--'}</strong>
               <span>{locale === 'zh' ? '最近订单' : 'Latest order'}</span>
             </div>
           </div>
@@ -94,16 +94,22 @@ function DashboardContent({
             <p>{locale === 'zh' ? '还没有订单。你可以立即开始第一个订单。' : 'No orders yet. Start your first order now.'}</p>
           ) : null}
           <div className="customer-app-order-list">
-            {orders.slice(0, 4).map((order) => (
-              <Link className="customer-app-order-item" href={`/${locale}/app/orders/${order.id}`} key={order.id}>
-                <div className="customer-app-order-topline">
-                  <strong>{order.order_no}</strong>
-                  <span className="customer-app-status-pill">{order.client_status || '-'}</span>
-                </div>
-                <span>{order.destination_country || '-'}</span>
-                <span>{order.service_type || '-'}</span>
-              </Link>
-            ))}
+            {orders.slice(0, 4).map((order) => {
+              const isActive = order.client_status !== 'Completed' && order.client_status !== 'Dispatched';
+              return (
+                <Link className="customer-app-order-card" href={`/${locale}/app/orders/${order.id}`} key={order.id}>
+                  <div className={`customer-order-strip ${isActive ? 'customer-order-strip-active' : 'customer-order-strip-done'}`} />
+                  <div className="customer-app-order-card-body">
+                    <div className="customer-app-order-topline">
+                      <strong>{order.order_no}</strong>
+                      <span className={`customer-app-status-pill${isActive ? ' is-active' : ''}`}>{order.client_status || '-'}</span>
+                    </div>
+                    <span>{order.destination_country || '-'}</span>
+                    <span>{order.service_type || '-'}</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </article>
 

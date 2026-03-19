@@ -60,32 +60,27 @@ export default function CustomerAuthPage() {
 
   return (
     <main className="customer-auth-shell">
-      <section className="customer-auth-card">
-        <div className="customer-auth-copy">
-          <p className="customer-auth-kicker">{locale === 'zh' ? 'EGS 客户系统' : 'EGS Customer App'}</p>
-          <h1>{locale === 'zh' ? '登录后查看订单、下单并追踪进度' : 'Sign in to place orders and track progress'}</h1>
-          <p>
-            {locale === 'zh'
-              ? '客户 App 会连接现有订单、Stripe 支付状态和文件上传流程。'
-              : 'Your customer app connects orders, Stripe payments, uploads, and status tracking in one place.'}
-          </p>
-          <div className="customer-auth-highlights">
-            <div className="customer-auth-highlight">
-              <strong>{locale === 'zh' ? '下单' : 'Order'}</strong>
-              <span>{locale === 'zh' ? '直接进入服务与路径选择' : 'Start a new service without navigating the marketing site.'}</span>
-            </div>
-            <div className="customer-auth-highlight">
-              <strong>{locale === 'zh' ? '支付' : 'Pay'}</strong>
-              <span>{locale === 'zh' ? '继续使用现有 Stripe 支付链路' : 'Continue into the existing Stripe checkout flow.'}</span>
-            </div>
-            <div className="customer-auth-highlight">
-              <strong>{locale === 'zh' ? '查询' : 'Track'}</strong>
-              <span>{locale === 'zh' ? '登录后查看订单状态、更新时间和补件要求' : 'Review status, updates, and upload requests after sign-in.'}</span>
-            </div>
-          </div>
-        </div>
+      {/* Decorative background rings */}
+      <div className="customer-auth-globe">
+        <div className="customer-auth-globe-ring" style={{ width: 300, height: 300 }} />
+        <div className="customer-auth-globe-ring" style={{ width: 200, height: 300 }} />
+        <div className="customer-auth-globe-ring" style={{ width: 100, height: 300 }} />
+      </div>
 
-        <form className="customer-auth-form" onSubmit={onSubmit}>
+      <div className="customer-auth-content">
+        {/* Seal / brand */}
+        <div className="customer-auth-seal">
+          <div className="customer-auth-seal-inner" />
+          <span className="customer-auth-seal-letter">E</span>
+        </div>
+        <p className="customer-auth-brand-name">EGS Verification</p>
+        <p className="customer-auth-brand-sub">{locale === 'zh' ? '客户门户' : 'Customer Portal'}</p>
+
+        {/* Gold rule */}
+        <div className="customer-auth-rule" />
+
+        {/* Form card */}
+        <div className="customer-auth-form-card">
           <div className="customer-auth-form-intro">
             <strong>{mode === 'signup' ? (locale === 'zh' ? '创建客户账户' : 'Create your customer account') : (locale === 'zh' ? '登录客户账户' : 'Sign in to your customer account')}</strong>
             <p>
@@ -108,32 +103,34 @@ export default function CustomerAuthPage() {
             </button>
           </div>
 
-          <label className="customer-auth-field">
-            <span>Email</span>
-            <input className="input" onChange={(e) => setEmail(e.target.value)} type="email" value={email} />
-          </label>
+          <form onSubmit={onSubmit} style={{ display: 'contents' }}>
+            <label className="customer-auth-field">
+              <span>Email</span>
+              <input className="input" onChange={(e) => setEmail(e.target.value)} type="email" value={email} />
+            </label>
 
-          <label className="customer-auth-field">
-            <span>{locale === 'zh' ? '密码' : 'Password'}</span>
-            <input className="input" onChange={(e) => setPassword(e.target.value)} type="password" value={password} />
-          </label>
+            <label className="customer-auth-field">
+              <span>{locale === 'zh' ? '密码' : 'Password'}</span>
+              <input className="input" onChange={(e) => setPassword(e.target.value)} type="password" value={password} />
+            </label>
 
-          <button className="btn btn-primary customer-auth-submit" disabled={loading} type="submit">
-            {loading
-              ? locale === 'zh' ? '处理中…' : 'Working…'
-              : mode === 'signup'
-                ? locale === 'zh' ? '创建账户' : 'Create Account'
-                : locale === 'zh' ? '登录' : 'Sign In'}
-          </button>
+            <button className="customer-auth-submit" disabled={loading} type="submit">
+              {loading
+                ? locale === 'zh' ? '处理中…' : 'Working…'
+                : mode === 'signup'
+                  ? locale === 'zh' ? '创建账户' : 'Create Account'
+                  : locale === 'zh' ? '登录' : 'Sign In'}
+            </button>
 
-          {message ? <p className="small-text">{message}</p> : null}
-          {error ? <p className="error-text">{error}</p> : null}
+            {message ? <p className="small-text" style={{ color: 'rgba(255,255,255,0.62)', margin: 0 }}>{message}</p> : null}
+            {error ? <p className="error-text" style={{ margin: 0 }}>{error}</p> : null}
+          </form>
+        </div>
 
-          <Link className="customer-auth-back" href={`/${locale}`}>
-            {locale === 'zh' ? '返回官网' : 'Back to website'}
-          </Link>
-        </form>
-      </section>
+        <Link className="customer-auth-back" href={`/${locale}`}>
+          {locale === 'zh' ? '返回官网' : 'Back to website'}
+        </Link>
+      </div>
     </main>
   );
 }

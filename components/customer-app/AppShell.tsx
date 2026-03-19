@@ -86,19 +86,17 @@ export function AppShell({
       </aside>
 
       <main className="customer-app-main">
+        <div className="customer-app-nbar">
+          <span className="customer-app-nbar-brand">E</span>
+          <span className="customer-app-nbar-title">{title}</span>
+          <span className="customer-app-avatar" aria-hidden="true" />
+        </div>
+
         <header className="customer-app-header">
           <div className="customer-app-header-copy">
             <p className="customer-app-eyebrow">{locale === 'zh' ? '已登录客户工作区' : 'Signed-in workspace'}</p>
             <h1>{title}</h1>
             <p>{subtitle}</p>
-          </div>
-          <div className="customer-app-header-actions">
-            <Link className="btn btn-secondary" href={`/${locale}/app/orders`}>
-              {locale === 'zh' ? '查看订单' : 'View Orders'}
-            </Link>
-            <Link className="btn btn-primary" href={`/${locale}/order/new`}>
-              {locale === 'zh' ? '新建订单' : 'Start Order'}
-            </Link>
           </div>
         </header>
 

@@ -55,19 +55,22 @@ function OrdersContent({
       title={locale === 'zh' ? '我的订单' : 'My Orders'}
     >
       <section className="customer-app-list-page">
-        {orders.map((order) => (
-          <Link className="customer-app-order-row" href={`/${locale}/app/orders/${order.id}`} key={order.id}>
-            <div>
-              <strong>{order.order_no}</strong>
-              <p>{order.destination_country || '-'}</p>
-              <span className="customer-app-row-meta">{order.service_type || '-'}</span>
-            </div>
-            <div>
-              <strong className="customer-app-status-pill">{order.client_status || '-'}</strong>
-              <p>{formatDate(order.updated_at)}</p>
-            </div>
-          </Link>
-        ))}
+        {orders.map((order) => {
+          const isActive = order.client_status !== 'Completed' && order.client_status !== 'Dispatched';
+          return (
+            <Link className="customer-app-order-card" href={`/${locale}/app/orders/${order.id}`} key={order.id}>
+              <div className={`customer-order-strip ${isActive ? 'customer-order-strip-active' : 'customer-order-strip-done'}`} />
+              <div className="customer-app-order-card-body">
+                <div className="customer-app-order-topline">
+                  <strong>{order.order_no}</strong>
+                  <span className={`customer-app-status-pill${isActive ? ' is-active' : ''}`}>{order.client_status || '-'}</span>
+                </div>
+                <span>{order.destination_country || '-'}</span>
+                <span>{order.service_type || '-'} &middot; {formatDate(order.updated_at)}</span>
+              </div>
+            </Link>
+          );
+        })}
         {orders.length === 0 ? (
           <article className="customer-app-card">
             <p>{locale === 'zh' ? '当前没有归属到该账户的订单。' : 'No orders are attached to this account yet.'}</p>

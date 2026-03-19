@@ -98,11 +98,12 @@ function OrderDetailContent({
             <div className="customer-app-history-list">
               {(data.history || []).map((item: any) => (
                 <div className="customer-app-history-item" key={item.id}>
-                  <div className="customer-app-order-topline">
+                  <div className="customer-app-history-dot" />
+                  <div className="customer-app-history-body">
                     <strong>{item.client_status}</strong>
-                    <span className="customer-app-row-meta">{formatDateTime(item.created_at)}</span>
+                    <span>{formatDateTime(item.created_at)}</span>
+                    <p>{item.note || '-'}</p>
                   </div>
-                  <p>{item.note || '-'}</p>
                 </div>
               ))}
             </div>
