@@ -222,17 +222,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const rootUrl = `${siteUrl}/`;
-  if (!seen.has(rootUrl)) {
-    seen.add(rootUrl);
-    entries.push({
-      url: rootUrl,
-      alternates: buildAlternates(''),
-      changeFrequency: 'weekly',
-      priority: 1,
-      lastModified,
-    });
-  }
-
   return entries;
 }

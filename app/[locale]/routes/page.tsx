@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
@@ -18,6 +19,33 @@ import {
 } from '@/lib/search-entry-data';
 import { documentPriorityRoutes, getCopyText as getDocumentCopyText } from '@/lib/document-priority-routes-data';
 import { getGuideBySlug } from '@/lib/guides';
+import { buildPageMetadata } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: localeParam } = await params;
+  const locale = resolveLocale(localeParam);
+
+  return buildPageMetadata({
+    locale,
+    path: '/routes',
+    title:
+      locale === 'zh'
+        ? '认证路线总览 | 主线与副线入口'
+        : 'Routes Overview | Apostille and Authentication Route Directory',
+    description:
+      locale === 'zh'
+        ? '查看澳洲文件认证主线与副线入口，按签发地、目的地或文件类型搜索对应路线。'
+        : 'Browse apostille and consular authentication routes by issuing country, destination country, and document type.',
+    keywords:
+      locale === 'zh'
+        ? ['认证路线', '海牙认证', '领事认证', '文件类型', '签发地', '目的地']
+        : ['apostille routes', 'authentication routes', 'document legalisation', 'issuing country', 'destination country'],
+  });
+}
 
 export default async function RoutesOverviewPage({
   params,
