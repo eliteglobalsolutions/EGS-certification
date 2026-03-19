@@ -5613,15 +5613,20 @@ p {
   }
 
   .customer-app-mobile-link {
-    display: grid;
-    place-items: center;
-    min-height: 44px;
-    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 52px;
+    padding: 8px 4px;
     border: 1px solid rgba(18, 27, 45, 0.08);
     background: #1C1C19;
     color: #9A9A91;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
 .customer-app-mobile-link.is-active {
