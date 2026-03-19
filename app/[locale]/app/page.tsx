@@ -22,6 +22,7 @@ type OrderSummary = {
 function DashboardContent({
   locale,
   session,
+  user,
 }: {
   locale: Locale;
   session: Session;
@@ -47,7 +48,7 @@ function DashboardContent({
   }, [session.access_token]);
 
   return (
-    <AppShell locale={locale} title={locale === 'zh' ? '我的门户' : 'My Portal'} subtitle="">
+    <AppShell locale={locale} title={locale === 'zh' ? '我的门户' : 'My Portal'} subtitle="" userEmail={user.email ?? undefined}>
       <div className="customer-app-body">
         {/* Service pills */}
         <div className="customer-app-pill-row">

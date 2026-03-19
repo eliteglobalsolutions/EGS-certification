@@ -4,16 +4,19 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
 import { Home, ClipboardList, MessageSquare, UserCircle } from '@/lib/lucide-react';
+import { TawkChat } from '@/components/customer-app/TawkChat';
 
 export function AppShell({
   locale,
   title,
   subtitle,
+  userEmail,
   children,
 }: {
   locale: 'en' | 'zh';
   title: string;
   subtitle: string;
+  userEmail?: string;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -53,6 +56,7 @@ export function AppShell({
 
   return (
     <div className="customer-app-shell">
+      <TawkChat email={userEmail} />
       <aside className="customer-app-sidebar">
         <div className="customer-app-sidebar-top">
           <div className="customer-app-brand">

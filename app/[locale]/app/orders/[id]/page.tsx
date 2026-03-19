@@ -25,6 +25,7 @@ function formatDateTime(value?: string | null) {
 function OrderDetailContent({
   locale,
   session,
+  user,
 }: {
   locale: Locale;
   session: Session;
@@ -49,6 +50,7 @@ function OrderDetailContent({
       locale={locale}
       subtitle={locale === 'zh' ? '查看单个订单的状态、文件与历史。' : 'Review one order, its files, and its status history.'}
       title={locale === 'zh' ? '订单详情' : 'Order Detail'}
+      userEmail={user.email ?? undefined}
     >
       {!data?.order ? (
         <section className="customer-app-card">

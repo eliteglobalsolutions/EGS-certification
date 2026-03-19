@@ -30,6 +30,7 @@ function formatDate(value: string) {
 function OrdersContent({
   locale,
   session,
+  user,
 }: {
   locale: Locale;
   session: Session;
@@ -53,6 +54,7 @@ function OrdersContent({
       locale={locale}
       subtitle={locale === 'zh' ? '按账户查看你的全部订单。' : 'View all orders attached to your account.'}
       title={locale === 'zh' ? '我的订单' : 'My Orders'}
+      userEmail={user.email ?? undefined}
     >
       <section className="customer-app-list-page">
         {orders.map((order) => {
