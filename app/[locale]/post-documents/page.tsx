@@ -96,7 +96,6 @@ export default async function PostDocumentsPage({
                     : 'This step is optional, but if you are unsure about the route, supporting documents, or whether postal handling is suitable, send us a scan or clear photo first. We can then help double-check the route, supporting documents, and whether a passport copy, supporting pages, or authority pages should also be included.'}
                 </p>
                 <ul className="samples-bullet-list">
-                  <li>WhatsApp: +61 402 344 990</li>
                   <li>WeChat ID: Eliteglobalsolutions</li>
                   <li>Instagram: @Eliteglobalsolution</li>
                   <li>Email: info@eliteglobalsolutions.co</li>
