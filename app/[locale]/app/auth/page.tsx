@@ -15,7 +15,7 @@ export default function CustomerAuthPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<'splash' | 'signin' | 'signup'>('splash');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -58,15 +58,79 @@ export default function CustomerAuthPage() {
     router.replace(next);
   }
 
+  if (mode === 'splash') {
+    return (
+      <main className="customer-auth-shell">
+        {/* Globe rings */}
+        <div className="customer-auth-globe">
+          <div className="customer-auth-globe-ring" style={{ width: 300, height: 300 }} />
+          <div className="customer-auth-globe-ring" style={{ width: 200, height: 300 }} />
+          <div className="customer-auth-globe-ring" style={{ width: 100, height: 300 }} />
+        </div>
+
+        <div className="customer-auth-content">
+          {/* Seal */}
+          <div className="customer-auth-seal">
+            <div className="customer-auth-seal-inner" />
+            <span className="customer-auth-seal-letter">E</span>
+          </div>
+          <p className="customer-auth-brand-name">EGS Verification</p>
+          <p className="customer-auth-brand-sub">Global Document Services</p>
+          <div className="customer-auth-rule" />
+
+          <h2 className="customer-auth-headline">
+            Documents that <em>cross borders.</em>
+          </h2>
+
+          {/* Service pills */}
+          <div className="customer-auth-pills">
+            <span className="customer-auth-pill">
+              <span className="customer-auth-pill-dot" />
+              Apostille Service
+            </span>
+            <span className="customer-auth-pill">
+              <span className="customer-auth-pill-dot" />
+              Legalisation Service
+            </span>
+          </div>
+
+          <p className="customer-auth-caption">Coordinating across 120+ jurisdictions</p>
+        </div>
+
+        {/* Actions */}
+        <div className="customer-auth-actions">
+          <button className="customer-auth-btn-primary" onClick={() => setMode('signup')} type="button">
+            {locale === 'zh' ? '创建账户' : 'Create Account'}
+          </button>
+          <button className="customer-auth-btn-ghost" onClick={() => setMode('signin')} type="button">
+            {locale === 'zh' ? '登录' : 'Sign In'}
+          </button>
+          <div className="customer-auth-divider">
+            <span className="customer-auth-divider-line" />
+            <span className="customer-auth-divider-text">{locale === 'zh' ? '已有单号' : 'existing client'}</span>
+            <span className="customer-auth-divider-line" />
+          </div>
+          <Link className="customer-auth-btn-gold" href={`/${locale}/track`}>
+            {locale === 'zh' ? '用单号查询订单' : 'Track Order by Reference'}
+          </Link>
+          <p className="customer-auth-disclaimer">
+            Independent coordination service · Not a legal practice,{' '}
+            notary, or government authority
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className="customer-auth-shell">
-      {/* Decorative background rings */}
-      <div className="customer-auth-globe">
-        <div className="customer-auth-globe-ring" style={{ width: 300, height: 300 }} />
-        <div className="customer-auth-globe-ring" style={{ width: 200, height: 300 }} />
-        <div className="customer-auth-globe-ring" style={{ width: 100, height: 300 }} />
+    <main className="customer-auth-shell customer-auth-shell-form">
+      <div className="customer-auth-nbar">
+        <button className="customer-auth-back-btn" onClick={() => setMode('splash')} type="button">←</button>
+        <span className="customer-auth-nbar-title">{mode === 'signup' ? (locale === 'zh' ? '创建账户' : 'Sign Up') : (locale === 'zh' ? '登录' : 'Sign In')}</span>
+        <span style={{width: 24}} />
       </div>
 
+      {/* existing form content */}
       <div className="customer-auth-content">
         {/* Seal / brand */}
         <div className="customer-auth-seal">

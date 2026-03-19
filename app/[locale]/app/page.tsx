@@ -22,7 +22,6 @@ type OrderSummary = {
 function DashboardContent({
   locale,
   session,
-  user,
 }: {
   locale: Locale;
   session: Session;
@@ -30,8 +29,7 @@ function DashboardContent({
 }) {
   const [orders, setOrders] = useState<OrderSummary[]>([]);
   const [loading, setLoading] = useState(true);
-  const activeOrders = orders.filter((order) => order.client_status !== 'Completed').length;
-  const latestOrder = orders[0] || null;
+  const activeOrders = orders.filter((order) => order.client_status !== 'Completed' && order.client_status !== 'Dispatched').length;
 
   useEffect(() => {
     async function loadOrders() {
@@ -49,50 +47,41 @@ function DashboardContent({
   }, [session.access_token]);
 
   return (
-    <AppShell
-      locale={locale}
-      subtitle={locale === 'zh' ? '管理你的认证订单、支付与文件提交。' : 'Manage orders, payments, and uploads in one customer workspace.'}
-      title={locale === 'zh' ? '客户概览' : 'Customer Overview'}
-    >
-      <section className="customer-app-grid">
-        <article className="customer-app-card customer-app-card-hero">
-          <p className="customer-app-card-kicker">{locale === 'zh' ? '欢迎回来' : 'Welcome back'}</p>
-          <h2>{user.email}</h2>
-          <p>
-            {locale === 'zh'
-              ? '从这里开始下单、查看当前订单、继续上传材料，或者查看产品与适用路径。'
-              : 'Start a new order, continue an existing one, and review product options without leaving the app shell.'}
-          </p>
-          <div className="customer-app-stat-strip">
-            <div>
-              <strong className="customer-app-stat-num">{orders.length}</strong>
-              <span>{locale === 'zh' ? '总订单' : 'Total orders'}</span>
-            </div>
-            <div>
-              <strong className="customer-app-stat-num">{activeOrders}</strong>
-              <span>{locale === 'zh' ? '处理中' : 'Active'}</span>
-            </div>
-            <div>
-              <strong className="customer-app-stat-num">{latestOrder?.order_no || '--'}</strong>
-              <span>{locale === 'zh' ? '最近订单' : 'Latest order'}</span>
-            </div>
-          </div>
-          <div className="customer-app-card-actions">
-            <Link className="btn btn-primary" href={`/${locale}/order/new`}>
-              {locale === 'zh' ? '开始下单' : 'Start Order'}
-            </Link>
-            <Link className="btn btn-secondary" href={`/${locale}/app/products`}>
-              {locale === 'zh' ? '产品介绍' : 'Product Guide'}
-            </Link>
-          </div>
-        </article>
+    <AppShell locale={locale} title={locale === 'zh' ? '我的门户' : 'My Portal'} subtitle="">
+      <div className="customer-app-body">
+        {/* Service pills */}
+        <div className="customer-app-pill-row">
+          <span className="customer-app-pill"><span className="customer-app-pill-dot" />Apostille Service</span>
+          <span className="customer-app-pill"><span className="customer-app-pill-dot" />{locale === 'zh' ? '公证认证' : 'Legalisation Service'}</span>
+        </div>
 
-        <article className="customer-app-card">
-          <p className="customer-app-card-kicker">{locale === 'zh' ? '最近订单' : 'Recent orders'}</p>
-          {loading ? <p>{locale === 'zh' ? '载入中…' : 'Loading…'}</p> : null}
-          {!loading && orders.length === 0 ? (
-            <p>{locale === 'zh' ? '还没有订单。你可以立即开始第一个订单。' : 'No orders yet. Start your first order now.'}</p>
-          ) : null}
+        {/* Stats grid */}
+        <div className="customer-app-stats-grid">
+          <div className="customer-app-stat-cell">
+            <strong className="customer-app-stat-num">{loading ? '…' : activeOrders}</strong>
+            <span className="customer-app-stat-label">{locale === 'zh' ? '处理中' : 'Active orders'}</span>
+          </div>
+          <div className="customer-app-stat-cell">
+            <strong className="customer-app-stat-num">120+</strong>
+            <span className="customer-app-stat-label">{locale === 'zh' ? '覆盖地区' : 'Jurisdictions'}</span>
+          </div>
+          <div className="customer-app-stat-cell customer-app-stat-cell-last">
+            <strong className="customer-app-stat-num">{orders.length}</strong>
+            <span className="customer-app-stat-label">{locale === 'zh' ? '全部订单' : 'Total orders'}</span>
+          </div>
+        </div>
+
+        {/* Active orders kicker */}
+        <p className="customer-app-kicker">{locale === 'zh' ? '处理中订单' : 'Active orders'}</p>
+
+        {loading ? (
+          <p className="customer-app-loading-inline">{locale === 'zh' ? '载入中…' : 'Loading…'}</p>
+        ) : orders.length === 0 ? (
+          <div className="customer-app-empty">
+            <p className="customer-app-empty-text">{locale === 'zh' ? '暂无订单。' : 'No active orders.'}</p>
+            <p className="customer-app-empty-sub">{locale === 'zh' ? '下方开始新申请。' : 'Begin a new application below.'}</p>
+          </div>
+        ) : (
           <div className="customer-app-order-list">
             {orders.slice(0, 4).map((order) => {
               const isActive = order.client_status !== 'Completed' && order.client_status !== 'Dispatched';
@@ -101,36 +90,30 @@ function DashboardContent({
                   <div className={`customer-order-strip ${isActive ? 'customer-order-strip-active' : 'customer-order-strip-done'}`} />
                   <div className="customer-app-order-card-body">
                     <div className="customer-app-order-topline">
-                      <strong>{order.order_no}</strong>
-                      <span className={`customer-app-status-pill${isActive ? ' is-active' : ''}`}>{order.client_status || '-'}</span>
+                      <div>
+                        <strong className="customer-app-order-title">{order.destination_country || '-'}</strong>
+                        <span className="customer-app-order-service">{order.service_type || '-'}</span>
+                        <span className="customer-app-order-ref">#{order.order_no}</span>
+                      </div>
+                      <span className={`customer-app-status-pill${isActive ? ' is-active' : ''}`}>
+                        {isActive ? (locale === 'zh' ? '处理中' : 'Active') : (locale === 'zh' ? '已完成' : 'Complete')}
+                      </span>
                     </div>
-                    <span>{order.destination_country || '-'}</span>
-                    <span>{order.service_type || '-'}</span>
+                    <p className={`customer-app-order-note${isActive ? ' is-active' : ''}`}>
+                      {order.client_status || '-'}
+                    </p>
                   </div>
                 </Link>
               );
             })}
           </div>
-        </article>
+        )}
 
-        <article className="customer-app-card">
-          <p className="customer-app-card-kicker">{locale === 'zh' ? '下一步' : 'Next actions'}</p>
-          <div className="customer-app-task-list">
-            <div className="customer-app-task-item">
-              <strong>{locale === 'zh' ? '1. 确认服务路径' : '1. Confirm the route'}</strong>
-              <p>{locale === 'zh' ? '先从产品页或下单页进入服务选择。' : 'Start from products or go directly into the order flow.'}</p>
-            </div>
-            <div className="customer-app-task-item">
-              <strong>{locale === 'zh' ? '2. 提交订单并支付' : '2. Submit and pay'}</strong>
-              <p>{locale === 'zh' ? '订单创建后继续走现有 Stripe 支付流程。' : 'After order creation, continue into the existing Stripe checkout.'}</p>
-            </div>
-            <div className="customer-app-task-item">
-              <strong>{locale === 'zh' ? '3. 查看更新与补件' : '3. Review updates and uploads'}</strong>
-              <p>{locale === 'zh' ? '后续在订单详情页查看状态和上传要求。' : 'Use order detail to monitor status and respond to upload requests.'}</p>
-            </div>
-          </div>
-        </article>
-      </section>
+        <div className="customer-app-rule" />
+        <Link className="customer-app-btn-primary" href={`/${locale}/order/new`}>
+          {locale === 'zh' ? '新建申请' : 'New Application'}
+        </Link>
+      </div>
     </AppShell>
   );
 }

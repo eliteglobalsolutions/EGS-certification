@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
-import { Home, Package, ClipboardList, Plus } from '@/lib/lucide-react';
+import { Home, ClipboardList, MessageSquare, UserCircle } from '@/lib/lucide-react';
 
 export function AppShell({
   locale,
@@ -21,27 +21,27 @@ export function AppShell({
   const navItems = [
     {
       href: `/${locale}/app`,
-      label: locale === 'zh' ? '概览' : 'Overview',
+      label: locale === 'zh' ? '首页' : 'Home',
       shortLabel: locale === 'zh' ? '首页' : 'Home',
       icon: <Home size={20} />,
     },
     {
-      href: `/${locale}/app/products`,
-      label: locale === 'zh' ? '产品介绍' : 'Products',
-      shortLabel: locale === 'zh' ? '产品' : 'Products',
-      icon: <Package size={20} />,
-    },
-    {
       href: `/${locale}/app/orders`,
-      label: locale === 'zh' ? '我的订单' : 'My Orders',
+      label: locale === 'zh' ? '我的订单' : 'Orders',
       shortLabel: locale === 'zh' ? '订单' : 'Orders',
       icon: <ClipboardList size={20} />,
     },
     {
-      href: `/${locale}/order/new`,
-      label: locale === 'zh' ? '开始下单' : 'New Order',
-      shortLabel: locale === 'zh' ? '下单' : 'New',
-      icon: <Plus size={20} />,
+      href: `/${locale}/app/messages`,
+      label: locale === 'zh' ? '消息' : 'Messages',
+      shortLabel: locale === 'zh' ? '消息' : 'Messages',
+      icon: <MessageSquare size={20} />,
+    },
+    {
+      href: `/${locale}/app/account`,
+      label: locale === 'zh' ? '账户' : 'Account',
+      shortLabel: locale === 'zh' ? '账户' : 'Account',
+      icon: <UserCircle size={20} />,
     },
   ];
 
@@ -75,7 +75,7 @@ export function AppShell({
               href={item.href}
               key={item.href}
             >
-              {item.label}
+              {item.shortLabel}
             </Link>
           ))}
         </nav>
