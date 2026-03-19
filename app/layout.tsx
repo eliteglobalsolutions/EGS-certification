@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { headers } from 'next/headers';
 import { DM_Sans, Cormorant_Garamond } from 'next/font/google';
 import { TopLoader } from '@/components/ui/TopLoader';
+import { TawkChat } from '@/components/customer-app/TawkChat';
 import { siteUrl } from '@/lib/seo';
 
 const dmSans = DM_Sans({
@@ -78,6 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           `}
         </Script>
         <TopLoader />
+        <TawkChat />
         {children}
       </body>
     </html>
