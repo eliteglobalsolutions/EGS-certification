@@ -156,7 +156,8 @@ main {
 
 .ui-card {
   background: var(--panel);
-  border: 1px solid var(--rule);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-top: 2px solid rgba(201,169,110,0.35);
   border-radius: 0;
   padding: 22px;
   box-shadow: none;
@@ -204,7 +205,8 @@ main {
 
 .section-card {
   background: rgba(224, 225, 221, 0.04);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-top: 2px solid rgba(201,169,110,0.35);
   border-radius: var(--radius-card);
   padding: 26px;
   box-shadow: var(--shadow-none);
@@ -212,11 +214,13 @@ main {
 
 .card-main {
   border-color: rgba(255,255,255,0.08);
+  border-top: 2px solid rgba(201,169,110,0.35);
   background: #1C1C19;
 }
 
 .card-sub {
   border-color: rgba(255,255,255,0.06);
+  border-top: 2px solid rgba(201,169,110,0.28);
   background: #1C1C19;
 }
 
@@ -8313,6 +8317,29 @@ details[open] .faq-toggle-icon {
 @keyframes ticker-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* ── Design brief 2026-03: visual refinement ────────────────── */
+/* Change 1 — promote body copy to --ink-mid for better contrast */
+.card p,
+.card-main p,
+.card-sub p,
+.section-card p,
+.service-description,
+.step-body,
+.faq-answer,
+.faq-answer-new p,
+.timeline-body,
+.commitment-body {
+  color: var(--ink-mid);
+}
+.std-desc { color: var(--ink-mid); }
+
+/* Change 4 — warm gold-alpha dividers instead of cool white-alpha */
+hr,
+.divider,
+[class*='divider']:not([class*='customer']) {
+  border-color: rgba(201,169,110,0.20);
 }
 
 /* ── Legal pages ─────────────────────────────────────────────── */
