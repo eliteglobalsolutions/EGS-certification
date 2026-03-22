@@ -7615,6 +7615,7 @@ p {
 .p-step {
   padding: 32px 20px;
   border-right: 1px solid rgba(255,255,255,0.08);
+  border-top: 2px solid rgba(201,169,110,0.35);
   text-decoration: none;
   background: rgba(255,255,255,0.03);
   transition: background .15s, border-color .15s;
@@ -7633,7 +7634,7 @@ p {
 }
 .p-step:hover .p-num { color: var(--gold); }
 .p-title { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #f5f2ec; margin-bottom: 8px; }
-.p-desc { font-size: 13px; color: rgba(245, 242, 236, 0.68); line-height: 1.6; }
+.p-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
 @media (max-width: 900px) {
   .process-row { grid-template-columns: 1fr 1fr; }
   .p-step:nth-child(2n) { border-right: none; }
