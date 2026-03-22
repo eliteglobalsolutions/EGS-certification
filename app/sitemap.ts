@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next';
-import { getSampleSlugs } from '@/lib/sample-library';
 import { priorityRoutes } from '@/lib/priority-routes-data';
 import { documentPriorityRoutes } from '@/lib/document-priority-routes-data';
 import {
@@ -43,7 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: MetadataRoute.Sitemap = [];
   const seen = new Set<string>();
-  const sampleSlugs = await getSampleSlugs();
   const guideSlugs = getGuideSlugs();
   const guideSlugSet = new Set(guideSlugs);
   const faqSlugs = getFaqSlugs();
@@ -74,19 +72,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 : route.startsWith('/legal/')
                   ? 0.42
                   : 0.7,
-        lastModified,
-      });
-    }
-
-    for (const slug of sampleSlugs) {
-      const url = localizedUrl(locale, siteUrl, `/samples/${slug}`);
-      if (seen.has(url)) continue;
-      seen.add(url);
-      entries.push({
-        url,
-        alternates: buildAlternates(`/samples/${slug}`),
-        changeFrequency: 'monthly',
-        priority: 0.65,
         lastModified,
       });
     }

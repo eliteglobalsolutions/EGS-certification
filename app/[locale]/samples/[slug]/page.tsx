@@ -29,13 +29,16 @@ export async function generateMetadata({
     return {};
   }
 
-  return buildPageMetadata({
-    locale,
-    path: `/samples/${slug}`,
-    title: locale === 'zh' ? `${item.sampleTitle}｜样本说明` : `${item.sampleTitle} | Sample Detail`,
-    description: locale === 'zh' ? item.routeDescription : item.routeDescription,
-    keywords: [item.documentType, item.issuingCountry, ...item.tags].filter(Boolean),
-  });
+  return {
+    ...buildPageMetadata({
+      locale,
+      path: `/samples/${slug}`,
+      title: locale === 'zh' ? `${item.sampleTitle}｜样本说明` : `${item.sampleTitle} | Sample Detail`,
+      description: locale === 'zh' ? item.routeDescription : item.routeDescription,
+      keywords: [item.documentType, item.issuingCountry, ...item.tags].filter(Boolean),
+    }),
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function SampleDetailPage({
