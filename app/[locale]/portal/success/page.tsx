@@ -65,7 +65,11 @@ export default function PortalSuccessPage() {
     const gtag = (window as any).gtag;
     if (typeof gtag !== 'function') return;
 
-    gtag('event', 'conversion', { send_to: `${googleAdsId}/${googleAdsConversionLabel}` });
+    gtag('event', 'conversion', {
+      send_to: `${googleAdsId}/${googleAdsConversionLabel}`,
+      value: typeof data.amount_total === 'number' ? data.amount_total / 100 : 1.0,
+      currency: (data.currency || 'AUD').toUpperCase(),
+    });
     gtag('event', 'ads_conversion___1', {
       order_id: data.id || undefined,
       order_no: data.order_no || undefined,
