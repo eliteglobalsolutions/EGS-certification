@@ -97,6 +97,8 @@ const DESTINATION_OVERRIDES: Record<string, string> = {
   'australia-education-certificate': 'Singapore',
   'australia-company-document': 'China',
   'australia-company-document-2': 'Hong Kong',
+  'australia-death-certificate-nsw': 'International Use',
+  'australia-digital-police-certificate': 'International Use',
   'australia-police-check': 'USA',
   'australia-police-check-2': 'International Use',
   'australia-police-check-3': 'International Use',
@@ -181,6 +183,8 @@ const SAMPLE_TITLE_OVERRIDES: Record<string, string> = {
   'australia-academic-document': 'Australian Academic Document for Use in Singapore',
   'australia-academic-document-consulate': 'Australian Academic Document for Use in the UAE',
   'australia-academic-document-consulate-2': 'Australian Academic Certificate for Use in the UAE',
+  'australia-death-certificate-nsw': 'NSW Death Certificate for Overseas Use',
+  'australia-digital-police-certificate': 'Australian Digital National Police Certificate for Overseas Use',
   'australia-bank-statement': 'Australia-issued Bank Statement for Overseas Use',
   'australia-company-document': 'Australian Company Documents for Use in China',
   'australia-company-document-2': 'Australian Company Documents for Use in Hong Kong',
@@ -621,4 +625,19 @@ export function toSampleDocumentPageSlug(documentType: string): string | null {
 
 export function toSampleCountryPageSlug(value: string): string | null {
   return COUNTRY_PAGE_SLUGS[value] || value.toLowerCase().replace(/\s+/g, '-');
+}
+
+export async function getRecentlyProcessedSamples(limit = 6): Promise<EnrichedSampleRecord[]> {
+  try {
+    const indexPath = path.join(process.cwd(), 'public', 'samples', 'index.json');
+    const raw = await readFile(indexPath, 'utf8');
+    const items = JSON.parse(raw) as RawSampleRecord[];
+    return items
+      .filter((item) => item.reviewed_at && item.reviewed_by === 'egs-team')
+      .sort((a, b) => (b.reviewed_at ?? '').localeCompare(a.reviewed_at ?? ''))
+      .slice(0, limit)
+      .map(enrichSampleRecord);
+  } catch {
+    return [];
+  }
 }

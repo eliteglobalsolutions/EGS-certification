@@ -5,7 +5,8 @@ import { getCopy } from '@/lib/i18n/dictionaries';
 import { SamplesGallery } from '@/components/SamplesGallery';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
-import { loadSampleLibrary, toSampleDocumentPageSlug } from '@/lib/sample-library';
+import { loadSampleLibrary, toSampleDocumentPageSlug, getRecentlyProcessedSamples } from '@/lib/sample-library';
+import { RecentlyProcessed } from '@/components/RecentlyProcessed';
 import { buildPageMetadata, siteUrl } from '@/lib/seo';
 
 export async function generateMetadata({
@@ -39,7 +40,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
   const { locale: localeParam } = await params;
   const locale = resolveLocale(localeParam);
   const t = getCopy(locale);
-  const items = await loadSampleLibrary();
+  const [items, recentItems] = await Promise.all([loadSampleLibrary(), getRecentlyProcessedSamples(6)]);
   const topDocumentTypes = Array.from(
     items.reduce((map, item) => map.set(item.documentType, (map.get(item.documentType) || 0) + 1), new Map<string, number>())
   )
@@ -102,6 +103,7 @@ export default async function SamplesPage({ params }: { params: Promise<{ locale
           </div>
         </div>
       </div>
+      <RecentlyProcessed items={recentItems} locale={locale} />
       <SamplesGallery
         items={items}
         locale={locale}

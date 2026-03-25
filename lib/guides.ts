@@ -3882,6 +3882,307 @@ const guides: Guide[] = [
       documentSlug: 'academic-transcript',
     },
   }),
+  documentRouteGuide({
+    slug: 'nsw-death-certificate-apostille-for-overseas-use',
+    publishedAt: '2026-03-25',
+    featured: true,
+    title: 'NSW Death Certificate Apostille for Overseas Use',
+    seoTitle: 'NSW Death Certificate Apostille for Overseas Use | EGS Guides',
+    metaDescription:
+      'Step-by-step guide to obtaining apostille or authentication for an NSW death certificate for overseas use. Covers NSW BDM issue, DFAT handling, 1 business day completion, and common risks.',
+    excerpt:
+      'An NSW death certificate is commonly needed for estate, probate, inheritance, visa, and family-status matters overseas. This guide explains the practical route from NSW BDM issue through DFAT apostille, with notes on timing, translation, and destination requirements.',
+    intro: [
+      'An NSW death certificate for overseas use is most commonly needed for estate administration, probate, inheritance, family visa, and civil-status matters. The practical question is not only whether a death certificate exists, but whether it is the current registry-issued version and whether the downstream authentication step matches what the overseas authority will accept.',
+      'This guide covers the typical route from the NSW Registry of Births, Deaths and Marriages through DFAT Apostille, with notes on how destination country rules, translation, and receiver-specific requirements affect the final document path.',
+    ],
+    issuingCountry: 'Australia',
+    destinationCountry: 'Overseas use',
+    documentTypes: ['Death Certificate'],
+    primaryKeyword: 'nsw death certificate apostille overseas use',
+    relatedKeywords: [
+      'australian death certificate apostille',
+      'nsw death certificate for overseas',
+      'dfat apostille death certificate nsw',
+      'death certificate authentication australia',
+      'nsw bdm death certificate overseas',
+    ],
+    summaryPoints: [
+      'For overseas use, the starting document should be the current registry-issued death certificate from NSW Births, Deaths and Marriages, not an older or informal copy.',
+      'DFAT Apostille is the standard Australian authentication step for Hague Convention countries. Non-Hague destinations may require additional consular legalisation.',
+      'EGS has completed NSW death certificate apostille handling within 1 business day for same-day reviewed files.',
+    ],
+    whoThisGuideIsFor: [
+      'Families and estates using an NSW death certificate for overseas probate, inheritance, or estate administration.',
+      'Clients using a death certificate for family visa, spousal or dependant status, or civil-registry matters in a foreign jurisdiction.',
+      'Users who need to understand whether apostille, authentication, or consular legalisation is the correct route for their destination country.',
+    ],
+    commonDocumentTypesCovered: [
+      'NSW Registry of Births, Deaths and Marriages death certificate — standard or commemorative format',
+      'Death certificate reviewed as part of an estate or probate document pack for overseas authority',
+      'Death certificate submitted for visa, family-status, or civil-registry purposes in a foreign country',
+    ],
+    routeOverview: {
+      heading: t('Typical route overview'),
+      paragraphs: mapTexts([
+        'For most overseas-use cases, the practical sequence is: confirm the current NSW BDM-issued death certificate is in hand, identify whether the destination country is a Hague Convention member, submit for DFAT Apostille or Authentication, and then consider whether translation or further consular steps are required by the final receiver.',
+        'EGS can review the document against the intended destination and advise whether apostille is sufficient or whether consular legalisation is needed for the specific country. Where the file is ready and the route is clear, handling has been completed within 1 business day.',
+      ]),
+      bullets: mapTexts([
+        'The current NSW BDM-issued certificate is almost always needed — ceremonial or older copies may not be accepted by overseas authorities.',
+        'Hague Convention destinations typically require DFAT Apostille; non-Hague destinations may require DFAT Authentication followed by embassy or consular legalisation.',
+        'Translation may also be required by the receiving authority and is separate from the apostille or authentication step.',
+      ]),
+    },
+    requirements: [
+      'Current NSW Registry of Births, Deaths and Marriages death certificate (not a ceremonial or outdated copy)',
+      'Destination country and the authority or institution receiving the document (estate lawyer, court, embassy, or civil registry)',
+      'Any wording from the receiver about apostille, authentication, legalisation, or translation',
+      'Whether supporting identity documents or a wider estate pack are also required',
+    ],
+    digitalDocumentNotes: [
+      'Some NSW BDM certificates are available in digital format. The acceptance of a digital certificate by overseas authorities should be confirmed before relying on this format for an overseas submission.',
+    ],
+    originalDocumentNotes: [
+      'Many overseas probate and estate matters require the physical original death certificate rather than a certified copy. This should be confirmed with the overseas authority or legal advisor before submitting.',
+    ],
+    timelineNotes: [
+      'EGS has completed NSW death certificate apostille handling within 1 business day for files that are reviewed and ready. Timeline depends on document readiness and whether any additional steps such as translation or consular legalisation are required.',
+      'Obtaining a fresh certificate from NSW BDM, if needed, takes additional time and should be factored into planning.',
+    ],
+    feeNotes: [
+      'Costs may include the NSW BDM registry fee if a new certificate must be ordered, DFAT Apostille government fee, any required translation, and EGS coordination fees as an independent administrative intermediary.',
+      'EGS does not charge for DFAT, BDM, or consular government fees — these are paid separately.',
+    ],
+    extraStepNotes: [
+      'If the destination country is not a Hague Apostille Convention member, DFAT Authentication may need to be followed by further embassy or consular legalisation before the document is accepted overseas.',
+      'Translation requirements vary by destination and receiving authority. The translation step usually follows apostille rather than preceding it.',
+      'For estate and probate matters, the overseas lawyer or executor should advise on the exact document chain required before lodgement.',
+    ],
+    reportSections: [
+      {
+        heading: t('What is an NSW death certificate?'),
+        paragraphs: mapTexts([
+          'A death certificate issued by the NSW Registry of Births, Deaths and Marriages is the official public record of a death registered in New South Wales. For overseas use, it is typically the only version foreign authorities will accept, as it carries the official registry seal and is the source document for any downstream apostille or authentication.',
+          'NSW BDM issues death certificates in standard and commemorative formats. For overseas-use purposes, the standard registry-issued certificate is almost always the appropriate document. Commemorative versions are generally not accepted for legal or civil-registry purposes abroad.',
+        ]),
+      },
+      {
+        heading: t('Why apostille is needed for overseas use'),
+        paragraphs: mapTexts([
+          'An apostille is a certificate issued by DFAT under the Hague Apostille Convention that authenticates the official nature of the NSW BDM registry seal and signature on the death certificate. For countries that are Hague Convention members, an apostilled death certificate is recognised as a verified public document without the need for further embassy involvement.',
+          'For countries that are not Hague Convention members, DFAT Authentication followed by consular or embassy legalisation from the destination country is usually required instead. The correct route should be confirmed against the specific destination country before submission.',
+        ]),
+      },
+      {
+        heading: t('Completion time: 1 business day'),
+        paragraphs: mapTexts([
+          'EGS has completed NSW death certificate apostille handling within 1 business day for files that arrive reviewed and ready for submission. This applies where the document is current, the destination is a standard Hague Convention country, and no additional consular or translation steps are required before or after apostille.',
+          'Where translation, non-Hague consular legalisation, or a replacement certificate from NSW BDM is also needed, the full timeline will be longer. EGS reviews the complete file before confirming the route and expected timeframe.',
+        ]),
+      },
+    ],
+    faq: [
+      {
+        question: 'Which NSW death certificate version do I need for overseas use?',
+        answer:
+          'The standard registry-issued death certificate from NSW Births, Deaths and Marriages is the correct version for overseas-use purposes. A commemorial or older copy is generally not accepted.',
+      },
+      {
+        question: 'Does every death certificate need apostille?',
+        answer:
+          'No. Apostille is required when the destination country is a Hague Convention member and the receiving authority asks for it. Some non-Hague destinations require a different legalisation path instead.',
+      },
+      {
+        question: 'How long does the apostille take?',
+        answer:
+          'EGS has completed NSW death certificate apostille handling within 1 business day for ready files. Timing depends on document readiness and whether additional translation or consular steps are required.',
+      },
+      {
+        question: 'Does EGS decide whether the document is accepted overseas?',
+        answer:
+          'No. EGS coordinates route review and preparation as an independent administrative intermediary. The NSW BDM, DFAT, any relevant consulate, and the final overseas receiving authority determine issuance and acceptance.',
+      },
+    ],
+    officialLinks: [
+      {
+        label: { en: 'NSW Registry of Births, Deaths and Marriages' },
+        url: 'https://www.nsw.gov.au/births-deaths-marriages/death-certificates',
+      },
+      {
+        label: { en: 'DFAT: Authentications and Apostilles' },
+        url: 'https://www.dfat.gov.au/about-us/our-services/notarial-services/authentications-and-apostilles',
+      },
+    ],
+    relatedGuideSlugs: [
+      'australian-birth-certificate-for-overseas-use',
+      'australian-marriage-certificate-for-use-overseas',
+      'australian-police-check-for-overseas-use',
+    ],
+    relatedSampleKeys: ['australia-death-certificate-nsw'],
+    routeCategory: 'civil',
+    heroKicker: 'Civil document route',
+    heroPdf: {
+      src: '/samples/australia/australia-death-certificate-nsw/Death%20Certificate%20-%20NSW%20-%20Watermarked.pdf',
+      pages: 1,
+      watermarked: true,
+    },
+    prefill: {
+      issuingSlug: 'australia',
+      documentSlug: 'death-certificate',
+    },
+  }),
+  documentRouteGuide({
+    slug: 'australian-digital-national-police-certificate-apostille',
+    publishedAt: '2026-03-25',
+    featured: true,
+    title: 'Australian Digital National Police Certificate Apostille',
+    seoTitle: 'Australian Digital National Police Certificate Apostille | EGS Guides',
+    metaDescription:
+      'Guide to apostille and authentication for the AFP Digital National Police Certificate for overseas use. Covers digital format acceptance, DFAT handling, 1 business day completion, and destination-country rules.',
+    excerpt:
+      'The AFP Digital National Police Certificate is increasingly used for overseas migration, employment, and licensing matters. This guide explains how the digital format interacts with DFAT apostille, what destination countries typically require, and how EGS completes the process within 1 business day.',
+    intro: [
+      'The Australian Federal Police now issues the National Police Certificate in digital format for most standard name-based applications. While this makes the certificate faster to obtain, digital format introduces an additional practical question: whether the destination authority, embassy, or receiving institution will accept a digitally issued document for apostille or legalisation purposes.',
+      'This guide explains the route for the AFP Digital National Police Certificate for overseas use, including when digital format is accepted, how DFAT Apostille applies, what fingerprint-supported applications are and when they are needed, and how EGS handles the preparation and submission.',
+    ],
+    issuingCountry: 'Australia',
+    destinationCountry: 'Overseas use',
+    documentTypes: ['National Police Certificate', 'Police Check'],
+    primaryKeyword: 'australian digital national police certificate apostille',
+    relatedKeywords: [
+      'afp digital police certificate overseas use',
+      'digital national police certificate apostille',
+      'afp police check apostille australia',
+      'digital police certificate legalisation',
+      'afp national police certificate authentication',
+    ],
+    summaryPoints: [
+      'The AFP Digital National Police Certificate is the standard output for most name-based applications and is accepted by DFAT for apostille purposes.',
+      'Destination-country acceptance of a digitally issued certificate varies — some receivers require a certified paper chain or confirmation that the certificate is the official AFP-issued record.',
+      'EGS has completed AFP Digital National Police Certificate apostille handling within 1 business day for reviewed and ready files.',
+    ],
+    whoThisGuideIsFor: [
+      'Applicants using an AFP Digital National Police Certificate for migration, overseas employment, study, professional licensing, or long-term residency matters.',
+      'Clients who have received a digital AFP certificate and need to confirm whether it can be used directly for DFAT Apostille or Authentication.',
+      'Users who have been told to obtain apostille or legalisation for their police certificate and want to understand the route before submitting.',
+    ],
+    commonDocumentTypesCovered: [
+      'AFP Digital National Police Certificate for Commonwealth, ACT, visa, migration, and overseas-use matters',
+      'Digital police certificate reviewed together with passport identity support and destination-specific instructions',
+      'Police certificate submitted as part of a migration, employment, study, or licensing pack for an overseas authority',
+    ],
+    routeOverview: {
+      heading: t('Typical route overview'),
+      paragraphs: mapTexts([
+        'For most overseas-use cases, the practical sequence is: apply for and receive the AFP Digital National Police Certificate, confirm the destination country and receiver requirements, submit for DFAT Apostille or Authentication, and then consider any further translation or consular step required by the final receiver.',
+        'Digital-format police certificates are generally accepted by DFAT for apostille purposes. The practical question is whether the end receiver will accept the digitally issued original. Where receiver confirmation is needed, EGS can help identify the right route before submission.',
+      ]),
+      bullets: mapTexts([
+        'Most Hague Convention destinations accept apostilled AFP Digital National Police Certificates, but receiver-specific confirmation is recommended for employment, licensing, and regulatory matters.',
+        'Non-Hague destinations may require DFAT Authentication followed by consular legalisation from the relevant embassy.',
+        'Fingerprint-supported applications are a different pathway and produce a different certificate — only required when the receiver explicitly asks for them.',
+      ]),
+    },
+    requirements: [
+      'The AFP Digital National Police Certificate — the issuer-generated PDF or digital record, not a screenshot or informal copy',
+      'Destination country and the specific authority or institution receiving the certificate (employer, migration authority, licensing body, or civil registry)',
+      'Any receiver instruction that mentions fingerprints, validity period, apostille, authentication, legalisation, or translation',
+      'Passport or identity document used to support the AFP application, if additional identity support is requested',
+    ],
+    digitalDocumentNotes: [
+      'The AFP Digital National Police Certificate is an issuer-generated digital record and is generally accepted by DFAT for apostille. However, some overseas authorities specifically require a paper original or a certified copy chain. This should be confirmed with the final receiver before proceeding.',
+      'Do not use screenshots, browser-printed PDFs, or email attachments that are not the original AFP-issued file. The review will be based on the original digital certificate.',
+    ],
+    originalDocumentNotes: [
+      'Where a receiver requires a physical paper original, a fingerprint-supported application may also be more appropriate. This is a different AFP process and takes longer than the standard digital pathway.',
+    ],
+    timelineNotes: [
+      'EGS has completed AFP Digital National Police Certificate apostille handling within 1 business day for files that are reviewed and ready. Timeline depends on document readiness and whether additional consular or translation steps are required for the destination.',
+      'The AFP advises that standard name-based applications typically take 5 to 15 business days to issue. Fingerprint-supported applications may take 15 to 30 business days. AFP issuance time is separate from the EGS coordination and DFAT apostille steps.',
+    ],
+    feeNotes: [
+      'Costs may include the AFP application fee for the National Police Certificate, DFAT Apostille government fee, any required translation, and EGS coordination fees as an independent administrative intermediary.',
+      'EGS does not charge for AFP, DFAT, or consular government fees — these are paid separately.',
+    ],
+    extraStepNotes: [
+      'A fingerprint-supported application may be required where the destination authority or employer specifically requests stronger identity linkage. This is a separate AFP pathway and should not be assumed as the default.',
+      'If the destination country is not a Hague Convention member, DFAT Authentication may need to be followed by embassy or consular legalisation.',
+      'Some receivers impose a validity window on police certificates — typically 6 or 12 months from the date of issue. The certificate should be reviewed against this window before submission.',
+    ],
+    reportSections: [
+      {
+        heading: t('What is the AFP Digital National Police Certificate?'),
+        paragraphs: mapTexts([
+          'The AFP Digital National Police Certificate is the standard output for name-based National Police Check applications. The AFP issues it as a digital PDF that applicants receive by email. It records disclosed offender history as at the application date and is issued under the AFP's standard identity verification process.',
+          'For overseas-use purposes, the relevant question is not only whether the certificate has been issued, but whether the digital format and the issuing date are accepted by the destination authority and any intermediate body such as DFAT or a relevant consulate.',
+        ]),
+      },
+      {
+        heading: t('Digital format and DFAT Apostille'),
+        paragraphs: mapTexts([
+          'DFAT generally accepts digital AFP National Police Certificates for apostille purposes. The apostille authenticates the AFP's seal and signature on the certificate, confirming it is a genuine official record. This process applies to digitally issued certificates in the same way it applies to paper-issued ones.',
+          'The practical issue is whether the final overseas receiver will accept the apostilled digital certificate or whether they expect a physical paper original or a certified paper chain. Where receiver acceptance is uncertain, this should be confirmed before the apostille step rather than after.',
+        ]),
+      },
+      {
+        heading: t('Completion time: 1 business day'),
+        paragraphs: mapTexts([
+          'EGS has completed AFP Digital National Police Certificate apostille handling within 1 business day for files that arrive reviewed and ready for submission. This applies where the certificate is current, the destination is a standard Hague Convention country, and no additional consular or translation steps are required before or after apostille.',
+          'Where translation, non-Hague consular legalisation, or identity support documents are also needed, the full timeline will be longer. EGS reviews the complete file before confirming the route and expected timeframe.',
+        ]),
+      },
+    ],
+    faq: [
+      {
+        question: 'Is the AFP Digital National Police Certificate accepted for overseas use?',
+        answer:
+          'Generally yes, including for DFAT Apostille. The practical question is whether the final overseas receiver accepts the digital format. This should be confirmed with the receiver before submission.',
+      },
+      {
+        question: 'Do I always need a fingerprint-based police check?',
+        answer:
+          'No. The standard name-based Digital National Police Certificate is the correct starting point for most overseas-use cases. Fingerprints are only appropriate where the final receiver specifically requires them.',
+      },
+      {
+        question: 'How long does the apostille take?',
+        answer:
+          'EGS has completed AFP Digital National Police Certificate apostille handling within 1 business day for ready files. Timing depends on document readiness and whether additional consular or translation steps are required.',
+      },
+      {
+        question: 'Does EGS decide whether the police certificate is accepted overseas?',
+        answer:
+          'No. EGS coordinates route review and preparation as an independent administrative intermediary. The AFP, DFAT, any relevant consulate, and the final receiving institution determine issuance and acceptance.',
+      },
+    ],
+    officialLinks: [
+      {
+        label: { en: 'Australian Federal Police: National Police Checks' },
+        url: 'https://www.afp.gov.au/our-services/national-police-checks',
+      },
+      {
+        label: { en: 'DFAT: Authentications and Apostilles' },
+        url: 'https://www.dfat.gov.au/about-us/our-services/notarial-services/authentications-and-apostilles',
+      },
+    ],
+    relatedGuideSlugs: [
+      'australian-police-check-for-overseas-use',
+      'nsw-death-certificate-apostille-for-overseas-use',
+      'australian-birth-certificate-for-overseas-use',
+    ],
+    relatedSampleKeys: ['australia-digital-police-certificate', 'australia-police-check'],
+    routeCategory: 'police',
+    heroKicker: 'Police document route',
+    heroPdf: {
+      src: '/samples/australia/australia-digital-police-certificate/Digital%20National%20Police%20Certificate%20-%20Watermarked.pdf',
+      pages: 1,
+      watermarked: true,
+    },
+    prefill: {
+      issuingSlug: 'australia',
+      documentSlug: 'police-check',
+    },
+  }),
 ];
 
 const guideMap = new Map(guides.map((guide) => [guide.slug, guide]));

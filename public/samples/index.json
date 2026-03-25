@@ -1,5 +1,27 @@
 [
   {
+    "country": "Australia",
+    "slug": "australia-death-certificate-nsw",
+    "title": "Death Certificate - NSW",
+    "file_path": "/samples/australia/australia-death-certificate-nsw/Death%20Certificate%20-%20NSW%20-%20Watermarked.pdf",
+    "thumb_path": null,
+    "reviewed": true,
+    "reviewed_by": "egs-team",
+    "reviewed_at": "2026-03-25",
+    "notes": "NSW BDM death certificate, apostille completed in 1 business day"
+  },
+  {
+    "country": "Australia",
+    "slug": "australia-digital-police-certificate",
+    "title": "Digital National Police Certificate",
+    "file_path": "/samples/australia/australia-digital-police-certificate/Digital%20National%20Police%20Certificate%20-%20Watermarked.pdf",
+    "thumb_path": null,
+    "reviewed": true,
+    "reviewed_by": "egs-team",
+    "reviewed_at": "2026-03-25",
+    "notes": "AFP Digital National Police Certificate, apostille completed in 1 business day"
+  },
+  {
     "reviewed_at" : null,
     "file_path" : "\/samples\/australia\/australia-academic-document-consulate\/Australia%20-%20Academic%20Document%20-%20Consulate.pdf",
     "country" : "Australia",
