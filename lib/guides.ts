@@ -4114,14 +4114,14 @@ const guides: Guide[] = [
       {
         heading: t('What is the AFP Digital National Police Certificate?'),
         paragraphs: mapTexts([
-          'The AFP Digital National Police Certificate is the standard output for name-based National Police Check applications. The AFP issues it as a digital PDF that applicants receive by email. It records disclosed offender history as at the application date and is issued under the AFP's standard identity verification process.',
+          "The AFP Digital National Police Certificate is the standard output for name-based National Police Check applications. The AFP issues it as a digital PDF that applicants receive by email. It records disclosed offender history as at the application date and is issued under the AFP's standard identity verification process.",
           'For overseas-use purposes, the relevant question is not only whether the certificate has been issued, but whether the digital format and the issuing date are accepted by the destination authority and any intermediate body such as DFAT or a relevant consulate.',
         ]),
       },
       {
         heading: t('Digital format and DFAT Apostille'),
         paragraphs: mapTexts([
-          'DFAT generally accepts digital AFP National Police Certificates for apostille purposes. The apostille authenticates the AFP's seal and signature on the certificate, confirming it is a genuine official record. This process applies to digitally issued certificates in the same way it applies to paper-issued ones.',
+          "DFAT generally accepts digital AFP National Police Certificates for apostille purposes. The apostille authenticates the AFP's seal and signature on the certificate, confirming it is a genuine official record. This process applies to digitally issued certificates in the same way it applies to paper-issued ones.",
           'The practical issue is whether the final overseas receiver will accept the apostilled digital certificate or whether they expect a physical paper original or a certified paper chain. Where receiver acceptance is uncertain, this should be confirmed before the apostille step rather than after.',
         ]),
       },
