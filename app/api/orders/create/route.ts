@@ -55,67 +55,93 @@ export async function POST(req: Request) {
     const legal = getLegalContent(locale);
     const legalVersion = '2026-02-27';
 
+    const coreInsertPayload = {
+      order_no: orderCode,
+      order_code: orderCode,
+      access_token: accessToken,
+      status: 'created',
+      internal_status: 'received',
+      client_status: 'received',
+      customer_email: email || null,
+      locale,
+      destination_country: destinationCountry || null,
+      service_type: [routeOverride, serviceLevel].filter(Boolean).join('_') || serviceLevel || null,
+      document_type: documentType || null,
+      document_quantity: Math.max(1, documentQuantity || 1),
+      delivery_method: deliveryMethod || 'domestic',
+      estimated_days: estimatedDays || null,
+      currency: 'aud',
+      subtotal_amount: Math.max(0, subtotalAmount || 0),
+      service_fee: Math.max(0, serviceFee || 0),
+      amount_total: Math.max(0, amountTotal || 0),
+    };
+
+    const advancedOrderFields = {
+      customer_user_id: customerUser?.id || null,
+      checkout_mode: customerUser ? 'customer_portal' : 'guest',
+      customer_profile_snapshot: customerUser
+        ? {
+            user_id: customerUser.id,
+            email: customerUser.email || email || null,
+          }
+        : {},
+      customer_phone: phone || null,
+      issuing_country: issuingCountry || null,
+      speed: serviceLevel || null,
+      delivery_address: {
+        recipient_name: recipientName || null,
+        phone: phone || null,
+        email: email || null,
+        postcode: postcode || null,
+        address_line1: addressLine1 || null,
+        address_line2: addressLine2 || null,
+        city: city || null,
+        state_province: stateProvince || null,
+        country: country || null,
+        mailing_address: mailingAddress || null,
+      },
+      latest_scanned_copy_deadline: latestScannedCopyDeadline || null,
+    };
+
     const { data, error } = await supabaseAdmin
       .from('orders')
-      .insert({
-        order_no: orderCode,
-        order_code: orderCode,
-        access_token: accessToken,
-        status: 'created',
-        internal_status: 'received',
-        client_status: 'received',
-        customer_email: email || null,
-        customer_user_id: customerUser?.id || null,
-        checkout_mode: customerUser ? 'customer_portal' : 'guest',
-        customer_profile_snapshot: customerUser
-          ? {
-              user_id: customerUser.id,
-              email: customerUser.email || email || null,
-            }
-          : {},
-        customer_phone: phone || null,
-        locale,
-        destination_country: destinationCountry || null,
-        issuing_country: issuingCountry || null,
-        service_type: [routeOverride, serviceLevel].filter(Boolean).join('_') || serviceLevel || null,
-        speed: serviceLevel || null,
-        document_type: documentType || null,
-        document_quantity: Math.max(1, documentQuantity || 1),
-        delivery_method: deliveryMethod || 'domestic',
-        delivery_address: {
-          recipient_name: recipientName || null,
-          phone: phone || null,
-          email: email || null,
-          postcode: postcode || null,
-          address_line1: addressLine1 || null,
-          address_line2: addressLine2 || null,
-          city: city || null,
-          state_province: stateProvince || null,
-          country: country || null,
-          mailing_address: mailingAddress || null,
-        },
-        latest_scanned_copy_deadline: latestScannedCopyDeadline || null,
-        estimated_days: estimatedDays || null,
-        currency: 'aud',
-        subtotal_amount: Math.max(0, subtotalAmount || 0),
-        service_fee: Math.max(0, serviceFee || 0),
-        amount_total: Math.max(0, amountTotal || 0),
-      })
+      .insert(coreInsertPayload)
       .select('id,order_code,order_no')
       .single();
 
     if (error) throw error;
     const orderId = data.id;
 
+    // Best-effort compatibility layer: if production is behind on additive migrations,
+    // order creation still succeeds using the core schema and advanced fields are skipped.
+    const advancedUpdate = await supabaseAdmin
+      .from('orders')
+      .update(advancedOrderFields)
+      .eq('id', orderId);
+    if (advancedUpdate.error) {
+      console.warn('Create order advanced field sync skipped', {
+        orderId,
+        code: advancedUpdate.error.code,
+        message: advancedUpdate.error.message,
+      });
+    }
+
     if (customerUser?.id) {
       const profileEmail = customerUser.email || email || null;
-      await supabaseAdmin.from('customer_profiles').upsert({
+      const profileUpsert = await supabaseAdmin.from('customer_profiles').upsert({
         user_id: customerUser.id,
         email: profileEmail,
         full_name: recipientName || null,
         phone: phone || null,
         locale,
       });
+      if (profileUpsert.error) {
+        console.warn('Customer profile sync skipped', {
+          userId: customerUser.id,
+          code: profileUpsert.error.code,
+          message: profileUpsert.error.message,
+        });
+      }
     }
 
     const { error: consentError } = await supabaseAdmin.from('order_consents').insert({

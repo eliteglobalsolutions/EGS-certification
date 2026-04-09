@@ -292,6 +292,7 @@ export default function NewOrderPage() {
         serviceLevel,
         docCategory,
         issuedIn,
+        issuingCountry,
         documentType: combineIntoOneNotarialSet && combinedDocumentNames.length
           ? `${documentType} + ${combinedDocumentNames.join(' + ')}`
           : documentType,
@@ -304,6 +305,7 @@ export default function NewOrderPage() {
         deliveryMethod,
         certificateType,
         certificateQuantity,
+        latestScannedCopyDeadline: deadlineDate || null,
         estimatedDays: summary.estimatedDays,
         subtotalAmount: summary.subtotal,
         serviceFee: summary.serviceFee,
